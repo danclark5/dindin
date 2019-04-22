@@ -1,13 +1,21 @@
-# README
+# Din Din
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is a application based on [Michael Hartl's Rails Tutorial](https://www.railstutorial.org/). It's designed to store
+and serve dinner ideas, pun intended.
 
-Things you may want to cover:
+## Requirements
+- Ruby 2.?
+- Rails 5.1?
 
-* Ruby version
+## Getting Started
 
-* System dependencies
+First clone the repo and install the needed gems.
+
+```
+bundle install --without production
+```
+
+Other things I may cover
 
 * Configuration
 
@@ -20,5 +28,3 @@ Things you may want to cover:
 * Services (job queues, cache servers, search engines, etc.)
 
 * Deployment instructions
-
-* ...
