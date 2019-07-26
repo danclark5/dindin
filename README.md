@@ -28,3 +28,32 @@ Other things I may cover
 * Services (job queues, cache servers, search engines, etc.)
 
 * Deployment instructions
+
+## Planning
+
+### Requirements
+- Basic meal suggestions for x days for y people to create a meal schedule.
+- It's acceptable to make it so that meals are randomly selected at first. Eventually this should have some logic to
+  avoid repeats or suggest favorites periodically.
+- Should be able ask for a new suggestion for initial, undesirable meal suggestions (Roll again).
+- Should be able to raise a dialog to replace meal suggestions with specific meals. (I know what I want)
+- Should be able to remove a meal (because we're skipping that meal for some reason)
+- At first don't worry about users, but if we want to make this usable to others we'll need to add in users.
+- Needs to be able to display meals.
+  - View schedule (high level)
+  - Today's meals
+  - Next meal.
+- Create shopping list based off of meal listing.
+
+### Persistence Schema
+- schedules: Stores a list of meals that are coupled to upcoming days.
+  - start days
+  - duration in days
+  - include_breakfast?
+  - include_lunch?
+  - include_dinner?
+  - default_participant_count (could be moved to users table eventually).
+- scheduled_meals: Links meals to a schedule.
+  - participant_count_override
+- meals: General description of potential meals
+- ingredients: for each meal by person
