@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :scheduled_meals
+  resources :meals
+  resources :schedules, only: [:index, :new, :create]
   root 'static_pages#home'
   get 'static_pages/home'
   get 'static_pages/help'
