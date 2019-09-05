@@ -1,0 +1,14 @@
+<h1> Add a new schedule </h1>
+<%= form_with model: @schedule do |form| %>
+  <%= label_tag(:start_date, "Start Date") %>
+  <%= form.date_field(:start_date) %>
+  <%= label_tag(:end_date, "Start Date") %>
+  <%= form.date_field(:end_date) %>
+  <%= label_tag(:include_breakfast, "Include Breakfast") %>
+  <%= form.check_box(:include_breakfast) %>
+  <%= label_tag(:include_lunch, "Include Lunch") %>
+  <%= form.check_box(:include_lunch) %>
+  <%= label_tag(:include_dinner, "Include Dinner") %>
+  <%= form.check_box(:include_dinner) %>
+  <%= form.submit "Create" %>
+<% end %>

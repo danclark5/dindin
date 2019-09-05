@@ -1,0 +1,2 @@
+module ScheduledMealsHelper
+end
