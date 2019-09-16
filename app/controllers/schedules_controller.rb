@@ -1,3 +1,4 @@
+require 'pry'
 class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
   
@@ -17,11 +18,14 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = Schedule.new(schedule_params)
+    binding.pry
 
     if @schedule.save
       redirect_to @schedule 
+      puts '*'*80 + "\nSaved"
     else 
       render :new
+      puts '*'*80 + "\nFailed"
     end
   end
 
@@ -40,6 +44,6 @@ class SchedulesController < ApplicationController
     end
 
     def schedule_params
-      params.require(:schedule).permit(:start_date, :end_date, :include_breakfast)
+      params.require(:schedule).permit(:start_date, :end_date, :include_breakfast, :include_lunch, :include_dinner, :default_participant_count)
     end
 end

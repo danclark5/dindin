@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   resources :scheduled_meals
   resources :meals
-  resources :schedules, only: [:index, :show, :new, :create, :edit, :update, ]
+  resources :schedules, except: :destroy
   root 'static_pages#home'
   get 'static_pages/home'
   get 'static_pages/help'

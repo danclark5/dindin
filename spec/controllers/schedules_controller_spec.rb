@@ -19,7 +19,6 @@ RSpec.describe SchedulesController, type: :controller do
       include_dinner: true,
       default_participant_count: "a lot"}
   }
-
   let(:valid_session) { {} }
 
   describe "GET #index" do
@@ -69,6 +68,7 @@ RSpec.describe SchedulesController, type: :controller do
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
+        binding.pry
         post :create, params: {schedule: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
@@ -101,23 +101,6 @@ RSpec.describe SchedulesController, type: :controller do
         put :update, params: {id: schedule.to_param, schedule: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
-    end
-  end
-
-  describe "DELETE #destroy" do
-    it "destroys the requested schedule" do
-      skip "Not sure if this is going to be implemented."
-      schedule = Schedule.create! valid_attributes
-      expect {
-        delete :destroy, params: {id: schedule.to_param}, session: valid_session
-      }.to change(Schedule, :count).by(-1)
-    end
-
-    it "redirects to the schedules list" do
-      skip "Not sure if this is going to be implemented."
-      schedule = Schedule.create! valid_attributes
-      delete :destroy, params: {id: schedule.to_param}, session: valid_session
-      expect(response).to redirect_to(schedule_url)
     end
   end
 end
