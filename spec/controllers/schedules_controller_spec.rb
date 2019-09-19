@@ -5,8 +5,8 @@ RSpec.describe SchedulesController, type: :controller do
   let(:valid_attributes) {
     { start_date: Time.now,
       end_date: Time.now,
-      include_breakfast: false,
-      include_lunch: false,
+      include_breakfast: true,
+      include_lunch: true,
       include_dinner: true,
       default_participant_count: 4}
   }
@@ -68,7 +68,6 @@ RSpec.describe SchedulesController, type: :controller do
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        binding.pry
         post :create, params: {schedule: invalid_attributes}, session: valid_session
         expect(response).to be_successful
       end
@@ -78,14 +77,19 @@ RSpec.describe SchedulesController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { start_date: Time.now,
+          end_date: Time.now,
+          include_breakfast: true,
+          include_lunch: true,
+          include_dinner: true,
+          default_participant_count: 5}
       }
 
       it "updates the requested schedule" do
         schedule = Schedule.create! valid_attributes
         put :update, params: {id: schedule.to_param, schedule: new_attributes}, session: valid_session
         schedule.reload
-        skip("Add assertions for updated state")
+        expect(schedule[:default_participant_count]).to eq(5)
       end
 
       it "redirects to the schedule" do

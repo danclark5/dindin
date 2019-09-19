@@ -18,14 +18,11 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = Schedule.new(schedule_params)
-    binding.pry
 
     if @schedule.save
       redirect_to @schedule 
-      puts '*'*80 + "\nSaved"
     else 
       render :new
-      puts '*'*80 + "\nFailed"
     end
   end
 
