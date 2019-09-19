@@ -3,14 +3,36 @@ require 'rails_helper'
 RSpec.describe ScheduledMealsController, type: :controller do
 
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      date: Time.now,
+      meal_id: meal.id,
+      meal_type_id: meal_type.id,
+      schedule_id: schedule.id
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      date: "Maybe",
+      meal_id: "No",
+      meal_type_id: "nope",
+      schedule_id: "" 
+    }
   }
 
   let(:valid_session) { {} }
+
+  # What's the best way to do this? A factory?
+  let(:meal_type) { MealType.new(id: 1, description: "some meal type") }
+  let(:meal) { Meal.new(id: 1, name: "some meal type") }
+  let(:schedule) { Schedule.new(id: 1,
+                                start_date: Time.now,
+                                end_date: Time.now,
+                                include_breakfast: false,
+                                include_lunch: false,
+                                include_dinner: true,
+                                default_participant_count: 5
+                               ) }
 
   describe "GET #index" do
     it "returns a success response" do
