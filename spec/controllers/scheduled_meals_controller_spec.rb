@@ -21,22 +21,14 @@ RSpec.describe ScheduledMealsController, type: :controller do
   }
 
   let(:valid_session) { {} }
-
-  # What's the best way to do this? A factory?
-  let(:meal_type) { MealType.new(id: 1, description: "some meal type") }
-  let(:meal) { Meal.new(id: 1, name: "some meal type") }
-  let(:schedule) { Schedule.new(id: 1,
-                                start_date: Time.now,
-                                end_date: Time.now,
-                                include_breakfast: false,
-                                include_lunch: false,
-                                include_dinner: true,
-                                default_participant_count: 5
-                               ) }
+  let(:meal_type) { build(:meal_type) }
+  let(:meal) { build(:meal) }
+  let(:schedule) { build(:schedule) }
 
   describe "GET #index" do
     it "returns a success response" do
-      ScheduledMeal.create! valid_attributes
+      #TODO: This is where I left off on 9/30 it's failing on the route as the id is not present on ScheduledMeal
+      scheduled_meal = create(:scheduled_meal)
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
     end
@@ -44,7 +36,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      scheduled_meal = ScheduledMeal.create! valid_attributes
+      scheduled_meal = build(:scheduled_meal)
       get :show, params: {id: scheduled_meal.to_param}, session: valid_session
       expect(response).to be_successful
     end
