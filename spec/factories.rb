@@ -10,7 +10,10 @@ FactoryBot.define do
   factory :schedule do
     start_date { 3.days.from_now }
     end_date { start_date + 6.days }
+    include_breakfast { false }
+    include_lunch { true }
     include_dinner { true }
+    default_participant_count { 2 }
   end
 
   factory :scheduled_meal do

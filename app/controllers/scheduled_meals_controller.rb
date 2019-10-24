@@ -56,6 +56,6 @@ class ScheduledMealsController < ApplicationController
     end
 
     def scheduled_meal_params
-      params.require(:scheduled_meal).permit(:meal_id, :date, :meal_type_id)
+      params.require(:scheduled_meal).permit(:meal_id, :date, :meal_type_id, :schedule_id)
     end
 end

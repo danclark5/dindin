@@ -2,6 +2,11 @@ require 'rails_helper'
 
 RSpec.describe ScheduledMealsController, type: :controller do
 
+  let(:valid_session) { {} }
+  let(:meal_type) { create(:meal_type) }
+  let(:meal) { create(:meal) }
+  let(:schedule) { create(:schedule) }
+
   let(:valid_attributes) {
     {
       date: Time.now,
@@ -20,14 +25,8 @@ RSpec.describe ScheduledMealsController, type: :controller do
     }
   }
 
-  let(:valid_session) { {} }
-  let(:meal_type) { build(:meal_type) }
-  let(:meal) { build(:meal) }
-  let(:schedule) { build(:schedule) }
-
   describe "GET #index" do
     it "returns a success response" do
-      #TODO: This is where I left off on 9/30 it's failing on the route as the id is not present on ScheduledMeal
       scheduled_meal = create(:scheduled_meal)
       get :index, params: {}, session: valid_session
       expect(response).to be_successful
@@ -36,7 +35,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      scheduled_meal = build(:scheduled_meal)
+      scheduled_meal = create(:scheduled_meal)
       get :show, params: {id: scheduled_meal.to_param}, session: valid_session
       expect(response).to be_successful
     end
@@ -51,7 +50,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
   describe "GET #edit" do
     it "returns a success response" do
-      scheduled_meal = ScheduledMeal.create! valid_attributes
+      scheduled_meal = create(:scheduled_meal)
       get :edit, params: {id: scheduled_meal.to_param}, session: valid_session
       expect(response).to be_successful
     end
@@ -81,19 +80,23 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
   describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
+      let(:second_meal) { create(:meal, name: "second dinner") }
+      let(:new_attributes) {{
+        date: Time.now,
+        meal_id: second_meal.id,
+        meal_type_id: meal_type.id,
+        schedule_id: schedule.id
+      }}
 
       it "updates the requested scheduled_meal" do
-        scheduled_meal = ScheduledMeal.create! valid_attributes
+        scheduled_meal = create(:scheduled_meal)
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: new_attributes}, session: valid_session
         scheduled_meal.reload
-        skip("Add assertions for updated state")
+        expect(scheduled_meal.meal_id).to eq(second_meal.id)
       end
 
       it "redirects to the scheduled_meal" do
-        scheduled_meal = ScheduledMeal.create! valid_attributes
+        scheduled_meal = create(:scheduled_meal)
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: valid_attributes}, session: valid_session
         expect(response).to redirect_to(scheduled_meal)
       end
