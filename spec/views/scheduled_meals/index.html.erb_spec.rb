@@ -4,12 +4,14 @@ RSpec.describe "scheduled_meals/index", type: :view do
   before(:each) do
     assign(:scheduled_meals, [
       ScheduledMeal.create!(
-        :meal => nil,
-        :meal_type => nil
+        :meal => create(:meal),
+        :meal_type => create(:meal_type),
+        :schedule => create(:schedule)
       ),
       ScheduledMeal.create!(
-        :meal => nil,
-        :meal_type => nil
+        :meal => create(:meal),
+        :meal_type => create(:meal_type),
+        :schedule => create(:schedule)
       )
     ])
   end
