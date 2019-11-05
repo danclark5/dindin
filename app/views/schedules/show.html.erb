@@ -7,5 +7,24 @@
   <%= @schedule.end_date%>
 </p>
 
+<table>
+  <tr>
+    <th> Date </th>
+    <th> Day </th>
+    <th> Breakfast </th>
+    <th> Lunch </th>
+    <th> Dinner </th>
+  </tr>
+  <% @schedule.included_dates.each do |included_date| %>
+    <tr>
+      <td> <%= included_date %> </td>
+      <td> <%= included_date.strftime('%A') %> </td>
+      <td> Something for Breakfast</td>
+      <td> Something for Lunch </td>
+      <td> Something for Dinner </td>
+    </tr>
+  <% end %>
+</table>
+
 <%= link_to 'Edit', edit_schedule_path(@schedule) %> |
 <%= link_to 'Back', schedules_path %>
