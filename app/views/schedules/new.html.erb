@@ -10,5 +10,7 @@
   <%= form.check_box(:include_lunch) %>
   <%= label_tag(:include_dinner, "Include Dinner") %>
   <%= form.check_box(:include_dinner) %>
+  <%= label_tag(:default_participant_count, "Default Participant Count") %>
+  <%= form.text_field(:default_participant_count) %>
   <%= form.submit "Create" %>
 <% end %>
