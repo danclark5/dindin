@@ -9,7 +9,8 @@ class ScheduledMealsController < ApplicationController
   end
 
   def new
-    @scheduled_meal = ScheduledMeal.new
+    @meals = Meal.select("name, id").all
+    @scheduled_meal = ScheduledMeal.new(set_up_scheduled_meal_params)
   end
 
   def edit
@@ -20,8 +21,8 @@ class ScheduledMealsController < ApplicationController
 
     respond_to do |format|
       if @scheduled_meal.save
-        format.html { redirect_to @scheduled_meal, notice: 'Scheduled meal was successfully created.' }
-        format.json { render :show, status: :created, location: @scheduled_meal }
+        format.html { redirect_to @scheduled_meal.schedule, notice: 'Scheduled meal was successfully created.' }
+        format.json { render :show, status: :created, location: @scheduled_meal.schedule }
       else
         format.html { render :new }
         format.json { render json: @scheduled_meal.errors, status: :unprocessable_entity }
@@ -57,5 +58,8 @@ class ScheduledMealsController < ApplicationController
 
     def scheduled_meal_params
       params.require(:scheduled_meal).permit(:meal_id, :date, :meal_type_id, :schedule_id)
+    end
+    def set_up_scheduled_meal_params
+      params.permit(:date, :meal_type_id, :schedule_id)
     end
 end

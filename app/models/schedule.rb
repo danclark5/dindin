@@ -9,6 +9,6 @@ class Schedule < ApplicationRecord
   end
 
   def meal_for date, meal_type
-    self.scheduled_meals.select { |scheduled_meal| scheduled_meal.date == date && scheduled_meal.meal_type == meal_type }.first
+    self.scheduled_meals.select { |scheduled_meal| scheduled_meal.date == date && scheduled_meal.meal_type.description == meal_type }.first
   end
 end
