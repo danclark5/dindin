@@ -1,6 +1,14 @@
 <h1>Editing Schedule</h1>
 
-<%= render 'form', schedule: @schedule%>
+<%= form_with model: @schedule do |form| %>
+  <%= label_tag(:start_date, "Start Date") %>
+  <%= form.date_field(:start_date) %>
+  <%= label_tag(:end_date, "Start Date") %>
+  <%= form.date_field(:end_date) %>
+  <%= label_tag(:default_participant_count, "Default Participant Count") %>
+  <%= form.text_field(:default_participant_count) %>
+  <%= form.submit "Update" %>
+<% end %>
 
 <%= link_to 'Show', @schedule %> |
 <%= link_to 'Back', schedules_path %>

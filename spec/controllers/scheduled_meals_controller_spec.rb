@@ -66,7 +66,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
       it "redirects to the created scheduled_meal" do
         post :create, params: {scheduled_meal: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(ScheduledMeal.last)
+        expect(response).to redirect_to(schedule)
       end
     end
 
@@ -98,7 +98,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
       it "redirects to the scheduled_meal" do
         scheduled_meal = create(:scheduled_meal)
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: valid_attributes}, session: valid_session
-        expect(response).to redirect_to(scheduled_meal)
+        expect(response).to redirect_to(schedule)
       end
     end
 

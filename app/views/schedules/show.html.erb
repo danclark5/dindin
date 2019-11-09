@@ -11,16 +11,12 @@
   <tr>
     <th> Date </th>
     <th> Day </th>
-    <th> Breakfast </th>
-    <th> Lunch </th>
     <th> Dinner </th>
   </tr>
   <% @schedule.included_dates.each do |included_date| %>
     <tr>
       <td> <%= included_date %> </td>
       <td> <%= included_date.strftime('%A') %> </td>
-      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::BREAKFAST %></td>
-      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::LUNCH %></td>
       <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::DINNER %></td>
     </tr>
   <% end %>
