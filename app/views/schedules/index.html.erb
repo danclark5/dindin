@@ -1,18 +1,17 @@
-<h1>Listed Schedules</h1>
+<h1>Schedules</h1>
 <table>
   <thead>
   </thead>
     <tr>
       <th> Start Date </th>
-      <th> End Date </th>
     </tr>
   </tbody>
   <% @schedules.each do |schedule| %>
     <tr>
-      <td><%=schedule.start_date %></td>
-      <td><%=schedule.end_date %></td>
+      <td><%= link_to schedule.start_date, schedule%></td>
     </tr>
   <% end %>
   </tbody>
 </table>
+<p> <%= link_to 'Create a new schedule', new_schedule_path %> </p>
 

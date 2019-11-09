@@ -19,9 +19,9 @@
     <tr>
       <td> <%= included_date %> </td>
       <td> <%= included_date.strftime('%A') %> </td>
-      <td> <%= @schedule.meal_for(included_date, "Breakfast")&.meal&.name or link_to 'Add meal', new_scheduled_meal_path(date: included_date, meal_type_id: 2, schedule_id: @schedule.id) %></td>
-      <td> <%= @schedule.meal_for(included_date, "Lunch")&.meal&.name or link_to 'Add meal', new_scheduled_meal_path(date: included_date, meal_type_id: 3, schedule_id: @schedule.id) %></td>
-      <td> <%= @schedule.meal_for(included_date, "Dinner")&.meal&.name or link_to 'Add meal', new_scheduled_meal_path(date: included_date, meal_type_id: 1, schedule_id: @schedule.id) %></td>
+      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::BREAKFAST %></td>
+      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::LUNCH %></td>
+      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::DINNER %></td>
     </tr>
   <% end %>
 </table>

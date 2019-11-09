@@ -14,6 +14,7 @@ class ScheduledMealsController < ApplicationController
   end
 
   def edit
+    @meals = Meal.select("name, id").all
   end
 
   def create
@@ -33,7 +34,7 @@ class ScheduledMealsController < ApplicationController
   def update
     respond_to do |format|
       if @scheduled_meal.update(scheduled_meal_params)
-        format.html { redirect_to @scheduled_meal, notice: 'Scheduled meal was successfully updated.' }
+        format.html { redirect_to @scheduled_meal.schedule, notice: 'Scheduled meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @scheduled_meal }
       else
         format.html { render :edit }
