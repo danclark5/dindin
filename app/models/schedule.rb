@@ -8,8 +8,8 @@ class Schedule < ApplicationRecord
     (self.start_date..self.end_date).to_a
   end
 
-  def meal_for date, meal_type
-    self.scheduled_meals.select { |scheduled_meal| scheduled_meal.date == date && scheduled_meal.meal_type.id == meal_type }.first
+  def meal_for date
+    self.scheduled_meals.select { |scheduled_meal| scheduled_meal.date == date}.first
   end
 
   def start_date_before_end_date

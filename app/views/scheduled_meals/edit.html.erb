@@ -1,10 +1,8 @@
 <h1>Editing Scheduled Meal</h1>
 
 Date: <%= @scheduled_meal.date %>
-Type: <%= @scheduled_meal.meal_type.description %>
 
 <%= form_with model: @scheduled_meal do |form| %>
-  <%= form.hidden_field(:meal_type_id, value: @scheduled_meal.meal_type_id) %>
   <%= form.hidden_field(:schedule_id, value: @scheduled_meal.schedule_id) %>
   <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
   <%= form.select(:meal_id, options_for_select(@meals.collect {|meal| [meal.name, meal.id]}, @scheduled_meal&.meal&.id))%>

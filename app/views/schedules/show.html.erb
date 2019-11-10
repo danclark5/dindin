@@ -17,7 +17,7 @@
     <tr>
       <td> <%= included_date %> </td>
       <td> <%= included_date.strftime('%A') %> </td>
-      <td> <%= link_to_add_or_edit_meal @schedule, included_date, MealType::DINNER %></td>
+      <td> <%= link_to_add_or_edit_meal @schedule, included_date %></td>
     </tr>
   <% end %>
 </table>

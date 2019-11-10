@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe ScheduledMealsController, type: :controller do
 
   let(:valid_session) { {} }
-  let(:meal_type) { create(:meal_type) }
   let(:meal) { create(:meal) }
   let(:schedule) { create(:schedule) }
 
@@ -11,7 +10,6 @@ RSpec.describe ScheduledMealsController, type: :controller do
     {
       date: Time.now,
       meal_id: meal.id,
-      meal_type_id: meal_type.id,
       schedule_id: schedule.id
     }
   }
@@ -20,7 +18,6 @@ RSpec.describe ScheduledMealsController, type: :controller do
     {
       date: "Maybe",
       meal_id: "No",
-      meal_type_id: "nope",
       schedule_id: "" 
     }
   }
@@ -84,7 +81,6 @@ RSpec.describe ScheduledMealsController, type: :controller do
       let(:new_attributes) {{
         date: Time.now,
         meal_id: second_meal.id,
-        meal_type_id: meal_type.id,
         schedule_id: schedule.id
       }}
 
