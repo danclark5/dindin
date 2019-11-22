@@ -3,7 +3,7 @@ class SchedulesController < ApplicationController
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
   
   def index
-    @schedules = Schedule.where(user_id: current_user).all.order(start_date: :desc)
+    @schedules = Schedule.where(user: current_user).all.order(start_date: :desc)
   end
 
   def show
@@ -40,6 +40,9 @@ class SchedulesController < ApplicationController
 
     def set_schedule
       @schedule = Schedule.find(params[:id])
+      if @schedule.user != current_user
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     def schedule_params
