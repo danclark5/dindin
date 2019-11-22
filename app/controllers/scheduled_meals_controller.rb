@@ -1,4 +1,5 @@
 class ScheduledMealsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_scheduled_meal, only: [:show, :edit, :update, :destroy]
 
   def index

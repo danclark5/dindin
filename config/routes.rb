@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   resources :scheduled_meals
   resources :meals
   resources :schedules, except: :destroy
