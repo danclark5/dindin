@@ -6,5 +6,7 @@
   <%= form.date_field(:end_date) %>
   <%= label_tag(:default_participant_count, "Default Participant Count") %>
   <%= form.text_field(:default_participant_count) %>
+  <%= label_tag(:populate_schedule, "Populate Schedule") %>
+  <%= form.check_box(:populate_schedule) %>
   <%= form.submit "Create" %>
 <% end %>

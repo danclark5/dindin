@@ -19,6 +19,7 @@ class SchedulesController < ApplicationController
     @schedule = Schedule.new(schedule_params)
 
     if @schedule.save
+      create_scheduled_meals if params[:schedule][:populate_schedule]
       redirect_to @schedule 
     else 
       render :new
@@ -40,6 +41,17 @@ class SchedulesController < ApplicationController
     end
 
     def schedule_params
-      params.require(:schedule).permit(:start_date, :end_date, :include_breakfast, :include_lunch, :include_dinner, :default_participant_count)
+      params.require(:schedule).permit(:start_date, :end_date, :default_participant_count)
+    end
+
+    def create_scheduled_meals
+      return nil if @schedule.included_dates.empty?
+      suggested_meals = Meal.get_suggested_meals(@schedule.included_dates.length)
+      @schedule.included_dates.each_with_index do |included_date, index|
+        break if index >= suggested_meals.length
+        ScheduledMeal.new(meal_id: suggested_meals[index].id,
+                          date: included_date,
+                          schedule_id: @schedule.id).save
+      end
     end
 end
