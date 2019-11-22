@@ -20,6 +20,7 @@ class ScheduledMealsController < ApplicationController
 
   def create
     @scheduled_meal = ScheduledMeal.new(scheduled_meal_params)
+    @scheduled_meal.user = current_user
 
     respond_to do |format|
       if @scheduled_meal.save

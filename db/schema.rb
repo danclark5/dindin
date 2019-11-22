@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_22_194450) do
+ActiveRecord::Schema.define(version: 2019_11_22_203138) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,10 @@ ActiveRecord::Schema.define(version: 2019_11_22_194450) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "schedule_id"
+    t.bigint "user_id"
     t.index ["meal_id"], name: "index_scheduled_meals_on_meal_id"
     t.index ["schedule_id"], name: "index_scheduled_meals_on_schedule_id"
+    t.index ["user_id"], name: "index_scheduled_meals_on_user_id"
   end
 
   create_table "schedules", force: :cascade do |t|
@@ -40,6 +42,8 @@ ActiveRecord::Schema.define(version: 2019_11_22_194450) do
     t.integer "default_participant_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
+    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -56,4 +60,6 @@ ActiveRecord::Schema.define(version: 2019_11_22_194450) do
 
   add_foreign_key "scheduled_meals", "meals"
   add_foreign_key "scheduled_meals", "schedules"
+  add_foreign_key "scheduled_meals", "users"
+  add_foreign_key "schedules", "users"
 end
