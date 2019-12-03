@@ -3,6 +3,7 @@ class Schedule < ApplicationRecord
   validate :start_date_before_end_date
 
   has_many :scheduled_meals
+  belongs_to :user
 
   def included_dates
     (self.start_date..self.end_date).to_a

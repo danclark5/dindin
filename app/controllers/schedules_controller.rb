@@ -1,8 +1,9 @@
 class SchedulesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
   
   def index
-    @schedules = Schedule.all.order(start_date: :desc)
+    @schedules = Schedule.where(user: current_user).all.order(start_date: :desc)
   end
 
   def show
@@ -17,6 +18,7 @@ class SchedulesController < ApplicationController
 
   def create
     @schedule = Schedule.new(schedule_params)
+    @schedule.user = current_user
 
     if @schedule.save
       create_scheduled_meals if params[:schedule][:populate_schedule]
@@ -38,6 +40,9 @@ class SchedulesController < ApplicationController
 
     def set_schedule
       @schedule = Schedule.find(params[:id])
+      if @schedule.user != current_user
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     def schedule_params
@@ -51,7 +56,8 @@ class SchedulesController < ApplicationController
         break if index >= suggested_meals.length
         ScheduledMeal.new(meal_id: suggested_meals[index].id,
                           date: included_date,
-                          schedule_id: @schedule.id).save
+                          schedule: @schedule,
+                          user: current_user).save
       end
     end
 end

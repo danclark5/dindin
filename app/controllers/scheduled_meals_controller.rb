@@ -1,8 +1,9 @@
 class ScheduledMealsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_scheduled_meal, only: [:show, :edit, :update, :destroy]
 
   def index
-    @scheduled_meals = ScheduledMeal.all
+    @scheduled_meals = ScheduledMeal.where(user: current_user).all
   end
 
   def show
@@ -19,6 +20,7 @@ class ScheduledMealsController < ApplicationController
 
   def create
     @scheduled_meal = ScheduledMeal.new(scheduled_meal_params)
+    @scheduled_meal.user = current_user
 
     respond_to do |format|
       if @scheduled_meal.save
@@ -55,6 +57,9 @@ class ScheduledMealsController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_scheduled_meal
       @scheduled_meal = ScheduledMeal.find(params[:id])
+      if @scheduled_meal.user != current_user
+        raise ActiveRecord::RecordNotFound
+      end
     end
 
     def scheduled_meal_params
