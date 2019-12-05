@@ -7,7 +7,6 @@ RSpec.describe Meal, type: :model do
     end
     context "7 meals are requested" do
       it "returns 7 unique meals" do
-        binding.pry
         expect(Meal.get_suggested_meals(7).uniq.length).to eq(7)
       end
     end

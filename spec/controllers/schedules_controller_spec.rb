@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe SchedulesController, type: :controller do
+  login_user
 
   let(:valid_attributes) {
     { start_date: Time.now,
@@ -19,11 +20,10 @@ RSpec.describe SchedulesController, type: :controller do
       include_dinner: true,
       default_participant_count: "a lot"}
   }
-  let(:valid_session) { {} }
 
   describe "GET #index" do
     it "returns a success response" do
-      Schedule.create! valid_attributes
+      Schedule.create! valid_attributes.merge({ user: subject.current_user })
       get :index
       expect(response).to have_http_status(:success)
     end
@@ -31,23 +31,23 @@ RSpec.describe SchedulesController, type: :controller do
 
   describe "GET #show" do
     it "returns a success response" do
-      schedule = Schedule.create! valid_attributes
-      get :show, params: {id: schedule.to_param}, session: valid_session
+      schedule = Schedule.create! valid_attributes.merge({ user: subject.current_user })
+      get :show, params: {id: schedule.to_param}
       expect(response).to be_successful
     end
   end
 
   describe "GET #new" do
     it "returns a success response" do
-      get :new, params: {}, session: valid_session
+      get :new, params: {}
       expect(response).to be_successful
     end
   end
 
   describe "GET #edit" do
     it "returns a success response" do
-      schedule = Schedule.create! valid_attributes
-      get :edit, params: {id: schedule.to_param}, session: valid_session
+      schedule = Schedule.create! valid_attributes.merge({ user: subject.current_user })
+      get :edit, params: {id: schedule.to_param}
       expect(response).to be_successful
     end
   end
@@ -56,19 +56,19 @@ RSpec.describe SchedulesController, type: :controller do
     context "with valid params" do
       it "creates a new Scheduled" do
         expect {
-          post :create, params: {schedule: valid_attributes}, session: valid_session
+          post :create, params: {schedule: valid_attributes}
         }.to change(Schedule, :count).by(1)
       end
 
       it "redirects to the created schedule" do
-        post :create, params: {schedule: valid_attributes}, session: valid_session
+        post :create, params: {schedule: valid_attributes}
         expect(response).to redirect_to(Schedule.last)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'new' template)" do
-        post :create, params: {schedule: invalid_attributes}, session: valid_session
+        post :create, params: {schedule: invalid_attributes}
         expect(response).to be_successful
       end
     end
@@ -86,23 +86,23 @@ RSpec.describe SchedulesController, type: :controller do
       }
 
       it "updates the requested schedule" do
-        schedule = Schedule.create! valid_attributes
-        put :update, params: {id: schedule.to_param, schedule: new_attributes}, session: valid_session
+        schedule = Schedule.create! valid_attributes.merge({ user: subject.current_user })
+        put :update, params: {id: schedule.to_param, schedule: new_attributes}
         schedule.reload
         expect(schedule[:default_participant_count]).to eq(5)
       end
 
       it "redirects to the schedule" do
-        schedule = Schedule.create! valid_attributes
-        put :update, params: {id: schedule.to_param, schedule: valid_attributes}, session: valid_session
+        schedule = Schedule.create! valid_attributes.merge({ user: subject.current_user })
+        put :update, params: {id: schedule.to_param, schedule: valid_attributes}
         expect(response).to redirect_to(schedule)
       end
     end
 
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
-        schedule = Schedule.create! valid_attributes
-        put :update, params: {id: schedule.to_param, schedule: invalid_attributes}, session: valid_session
+        schedule = Schedule.create! valid_attributes.merge({ user: subject.current_user })
+        put :update, params: {id: schedule.to_param, schedule: invalid_attributes}
         expect(response).to be_successful
       end
     end

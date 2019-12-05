@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "Meals", type: :request do
+  before(:each) do
+    test_user = FactoryBot.create(:user)
+    sign_in test_user
+  end
+
   describe "GET /meals" do
     it "works! (now write some real specs)" do
       get meals_path
