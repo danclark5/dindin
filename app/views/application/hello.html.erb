@@ -1,0 +1,47 @@
+<% provide :title, "Home" %>
+<h1>DnnrPckr</h1>
+<h3>What's for dinner?</h3>
+
+<h2> For Today </h2>
+<% if @upcoming_meals[0] %>
+  <%= @upcoming_meals[0].meal.name %> </br></br>
+<% else %>
+  Nothing is planned for today.</br></br>
+  How about <%= @suggested_meals[0].name %>
+<%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
+  <%= form.hidden_field(:date, value: Date.today) %>
+  <%= form.hidden_field(:meal_id, value: @suggested_meals[0].id) %>
+  <%= form.submit "Add" %>
+<% end %>
+<% end %>
+
+
+<h2> For Tomorrow </h2>
+<% if @upcoming_meals[1] %>
+  <%= @upcoming_meals[1].meal.name %> </br></br>
+<% else %>
+  Nothing is planned for today.</br></br>
+  How about <%= @suggested_meals[1].name %>?
+<%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
+  <%= form.hidden_field(:date, value: 1.days.since) %>
+  <%= form.hidden_field(:meal_id, value: @suggested_meals[1].id) %>
+  <%= form.submit "Add" %>
+<% end %>
+<% end %>
+
+<h2> For <%= 2.day.since.strftime("%A") %></h2>
+<% if @upcoming_meals[2] %>
+  <%= @upcoming_meals[2].meal.name %> </br></br>
+<% else %>
+  Nothing is planned for today.</br></br>
+  How about <%= @suggested_meals[2].name %>?
+<%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
+  <%= form.hidden_field(:date, value: 2.days.since) %>
+  <%= form.hidden_field(:meal_id, value: @suggested_meals[2].id) %>
+  <%= form.submit "Add" %>
+<% end %>
+<% end %>
+</br>
+</br>
+<%= link_to 'View Schedules', schedules_path %>
+<%= link_to 'View Meals', meals_path %>

@@ -53,19 +53,42 @@ class ScheduledMealsController < ApplicationController
     end
   end
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_scheduled_meal
-      @scheduled_meal = ScheduledMeal.find(params[:id])
-      if @scheduled_meal.user != current_user
-        raise ActiveRecord::RecordNotFound
-      end
-    end
+  def attach_suggested_meal
+    @scheduled_meal = ScheduledMeal.new(attach_scheduled_meal_params)
+    @scheduled_meal.user = current_user
+    @scheduled_meal.schedule = schedule_for_date(@scheduled_meal.date)
 
-    def scheduled_meal_params
-      params.require(:scheduled_meal).permit(:meal_id, :date, :schedule_id)
+    if @scheduled_meal.save
+      redirect_back(fallback_location: root_path, notice: 'Scheduled meal was successfully added.')
+    else
+      redirect_back(fallback_location: root_path, notice: 'Something went wrong.')
     end
-    def set_up_scheduled_meal_params
-      params.permit(:date, :schedule_id)
+  end
+
+  private
+
+  def set_scheduled_meal
+    @scheduled_meal = ScheduledMeal.find(params[:id])
+    if @scheduled_meal.user != current_user
+      raise ActiveRecord::RecordNotFound
     end
+  end
+
+  def schedule_for_date(date)
+    Schedule.where("user_id = :user_id and :date between start_date and end_date",
+                   user_id: current_user.id,
+                   date: date).first
+  end
+
+  def scheduled_meal_params
+    params.require(:scheduled_meal).permit(:meal_id, :date, :schedule_id)
+  end
+
+  def set_up_scheduled_meal_params
+    params.permit(:date, :schedule_id)
+  end
+
+  def attach_scheduled_meal_params
+    params.require(:scheduled_meal).permit(:meal_id, :date)
+  end
 end
