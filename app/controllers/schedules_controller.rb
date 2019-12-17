@@ -2,15 +2,10 @@ class SchedulesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_schedule, only: [:show, :edit, :update, :destroy]
   
-  def index
-    @schedules = Schedule.where(user: current_user).all.order(start_date: :desc)
-  end
-
+  #TODO
+  # - Need a page to show a whole week for scheduling
+  # - Need to be autopopulate
   def show
-  end
-
-  def new
-   @schedule = Schedule.new
   end
 
   def edit
@@ -37,13 +32,6 @@ class SchedulesController < ApplicationController
   end
 
   private
-
-    def set_schedule
-      @schedule = Schedule.find(params[:id])
-      if @schedule.user != current_user
-        raise ActiveRecord::RecordNotFound
-      end
-    end
 
     def schedule_params
       params.require(:schedule).permit(:start_date, :end_date, :default_participant_count)

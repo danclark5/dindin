@@ -2,9 +2,9 @@
 
 <p>
   <strong>Start:</strong>
-  <%= @schedule.start_date%>
+  <%= @schedule.start_date.strftime('%c')%>
   <strong>End:</strong>
-  <%= @schedule.end_date%>
+  <%= @schedule.end_date.strftime('%C')%>
 </p>
 
 <table>
@@ -15,7 +15,7 @@
   </tr>
   <% @schedule.included_dates.each do |included_date| %>
     <tr>
-      <td> <%= included_date %> </td>
+      <td> <%= included_date.strftime('%c') %> </td>
       <td> <%= included_date.strftime('%A') %> </td>
       <td> <%= link_to_add_or_edit_meal @schedule, included_date %></td>
     </tr>

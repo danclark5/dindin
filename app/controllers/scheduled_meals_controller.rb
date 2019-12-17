@@ -3,7 +3,11 @@ class ScheduledMealsController < ApplicationController
   before_action :set_scheduled_meal, only: [:show, :edit, :update, :destroy]
 
   def index
-    @scheduled_meals = ScheduledMeal.where(user: current_user).all
+    start_date = Date.today.strftime
+    end_date = 7.days.since.strftime '%F'
+    @scheduled_meals = ScheduledMeal.joins("right join generate_series('#{start_date}', '#{end_date}', '1 day'::interval) as dates on scheduled_meals.date = dates")
+                                    .select("dates as schedule_date", :id, :meal_id)
+                                    .order(schedule_date: :asc).all
   end
 
   def show
@@ -24,8 +28,8 @@ class ScheduledMealsController < ApplicationController
 
     respond_to do |format|
       if @scheduled_meal.save
-        format.html { redirect_to @scheduled_meal.schedule, notice: 'Scheduled meal was successfully created.' }
-        format.json { render :show, status: :created, location: @scheduled_meal.schedule }
+        format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully created.' }
+        format.json { render :show, status: :created, location: scheduled_meals_path }
       else
         format.html { render :new }
         format.json { render json: @scheduled_meal.errors, status: :unprocessable_entity }
@@ -56,7 +60,6 @@ class ScheduledMealsController < ApplicationController
   def attach_suggested_meal
     @scheduled_meal = ScheduledMeal.new(attach_scheduled_meal_params)
     @scheduled_meal.user = current_user
-    @scheduled_meal.schedule = schedule_for_date(@scheduled_meal.date)
 
     if @scheduled_meal.save
       redirect_back(fallback_location: root_path, notice: 'Scheduled meal was successfully added.')
@@ -81,11 +84,11 @@ class ScheduledMealsController < ApplicationController
   end
 
   def scheduled_meal_params
-    params.require(:scheduled_meal).permit(:meal_id, :date, :schedule_id)
+    params.require(:scheduled_meal).permit(:meal_id, :date)
   end
 
   def set_up_scheduled_meal_params
-    params.permit(:date, :schedule_id)
+    params.permit(:date)
   end
 
   def attach_scheduled_meal_params
