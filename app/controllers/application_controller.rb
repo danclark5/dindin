@@ -9,6 +9,6 @@ class ApplicationController < ActionController::Base
 
   def lookup_upcoming_meals
     ScheduledMeal.where(user: current_user)
-      .where(date: (Time.now.midnight)..Time.now.midnight + 2.day)
+      .where(date: (Time.now.midnight)..Time.now.midnight + 2.day).order(date: :asc)
   end
 end
