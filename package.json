@@ -1,5 +1,7 @@
 {
   "name": "dindin",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "bulma": "^0.8.0"
+  }
 }
