@@ -8,7 +8,13 @@ class ApplicationController < ActionController::Base
   private
 
   def lookup_upcoming_meals
-    ScheduledMeal.where(user: current_user)
-      .where(date: (Date.today)..Date.today + 2.day).order(date: :asc)
+    start_date = Date.today.strftime
+    end_date = 2.days.since.strftime '%F'
+    ScheduledMeal
+      .joins(:meal)
+      .joins("right join generate_series('#{start_date}', '#{end_date}', '1 day'::interval) as dates on dates = scheduled_meals.date")
+      .where("scheduled_meals.user_id = ? or scheduled_meals.user_id is null", current_user.id)
+      .select("dates as schedule_date", :id, :meal_id, "meals.name as meal_name")
+      .order(schedule_date: :asc)
   end
 end

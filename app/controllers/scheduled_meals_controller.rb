@@ -5,9 +5,11 @@ class ScheduledMealsController < ApplicationController
   def index
     start_date = Date.today.strftime
     end_date = 7.days.since.strftime '%F'
-    @scheduled_meals = ScheduledMeal.joins("right join generate_series('#{start_date}', '#{end_date}', '1 day'::interval) as dates on scheduled_meals.date = dates")
-                                    .select("dates as schedule_date", :id, :meal_id)
-                                    .order(schedule_date: :asc).all
+    @scheduled_meals = ScheduledMeal
+      .joins("right join generate_series('#{start_date}', '#{end_date}', '1 day'::interval) as dates on scheduled_meals.date = dates")
+      .where("scheduled_meals.user_id = ? or scheduled_meals.user_id is null", current_user.id)
+      .select("dates as schedule_date", :id, :meal_id)
+      .order(schedule_date: :asc).all
   end
 
   def show
