@@ -42,7 +42,7 @@ class ScheduledMealsController < ApplicationController
   def update
     respond_to do |format|
       if @scheduled_meal.update(scheduled_meal_params)
-        format.html { redirect_to @scheduled_meal.schedule, notice: 'Scheduled meal was successfully updated.' }
+        format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @scheduled_meal }
       else
         format.html { render :edit }
