@@ -13,4 +13,4 @@ load = ->
     for navbar_burger in navbar_burgers
       navbar_burger.addEventListener('click', toggle_burger)
 
-document.addEventListener('DOMContentLoaded', load)
+document.addEventListener('turbolinks:load', load)
