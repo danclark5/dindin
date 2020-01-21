@@ -1,11 +1,7 @@
-<h1>New Scheduled Meal</h1>
+<h2 class="subtitle">New Scheduled Meal</h2>
 
 Date: <%= @scheduled_meal.date %>
 
-<%= form_with model: @scheduled_meal do |form| %>
-  <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
-  <%= form.select(:meal_id, options_for_select(@meals.collect {|meal| [meal.name, meal.id]}))%>
-  <%= form.submit "Add Meal" %>
-<% end %>
+<%= render "form" %>
 
 <%= link_to 'Back', scheduled_meals_path %>

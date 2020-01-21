@@ -1,27 +1,21 @@
-<%= form_with(model: scheduled_meal, local: true) do |form| %>
-  <% if scheduled_meal.errors.any? %>
+<br/>
+<%= form_with model: @scheduled_meal do |form| %>
+  <% if @scheduled_meal.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(scheduled_meal.errors.count, "error") %> prohibited this scheduled_meal from being saved:</h2>
-
+      <h2><%= pluralize(@scheduled_meal.errors.count, "error") %> prohibited this scheduled_meal from being saved:</h2>
       <ul>
-      <% scheduled_meal.errors.full_messages.each do |message| %>
+      <% @scheduled_meal.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
       </ul>
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :meal_id %>
-    <%= form.text_field :meal_id %>
-  </div>
 
-  <div class="field">
-    <%= form.label :date %>
-    <%= form.date_select :date %>
+  <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
+  <div class="select">
+  <%= form.select(:meal_id, options_for_select(@meals.collect {|meal| [meal.name, meal.id]}))%>
   </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= form.submit "Save Meal", class:"button is-small"%>
 <% end %>
+<br/>
