@@ -46,14 +46,7 @@ Other things I may cover
 - Create shopping list based off of meal listing.
 
 ### Persistence Schema
-- schedules: Stores a list of meals that are coupled to upcoming days.
-  - start days
-  - duration in days
-  - include_breakfast?
-  - include_lunch?
-  - include_dinner?
-  - default_participant_count (could be moved to users table eventually).
-- scheduled_meals: Links meals to a schedule.
+- scheduled_meals: Links meals that have been scheduled.
   - participant_count_override
 - meals: General description of potential meals
 - ingredients: for each meal by person

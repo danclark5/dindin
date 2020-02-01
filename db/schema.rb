@@ -10,13 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_12_10_132216) do
+ActiveRecord::Schema.define(version: 2020_02_01_222658) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "meals", force: :cascade do |t|
     t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "posts", force: :cascade do |t|
+    t.string "title"
+    t.text "text"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -29,19 +36,6 @@ ActiveRecord::Schema.define(version: 2019_12_10_132216) do
     t.bigint "user_id"
     t.index ["meal_id"], name: "index_scheduled_meals_on_meal_id"
     t.index ["user_id"], name: "index_scheduled_meals_on_user_id"
-  end
-
-  create_table "schedules", force: :cascade do |t|
-    t.date "start_date"
-    t.date "end_date"
-    t.boolean "include_breakfast"
-    t.boolean "include_lunch"
-    t.boolean "include_dinner"
-    t.integer "default_participant_count"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "user_id"
-    t.index ["user_id"], name: "index_schedules_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -58,5 +52,4 @@ ActiveRecord::Schema.define(version: 2019_12_10_132216) do
 
   add_foreign_key "scheduled_meals", "meals"
   add_foreign_key "scheduled_meals", "users"
-  add_foreign_key "schedules", "users"
 end
