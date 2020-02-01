@@ -25,7 +25,7 @@
       <tr>
         <td><%= scheduled_meal.schedule_date.strftime('%F') %></td>
         <td><%= scheduled_meal.schedule_date.strftime('%A') %></td>
-        <td><%= link_to_add_or_edit_meal scheduled_meal %></td>
+        <td data-turbolinks="false"><%= link_to_add_or_edit_meal scheduled_meal %></td>
         <% if scheduled_meal.id %>
           <td><%= link_to 'Destroy', scheduled_meal, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
