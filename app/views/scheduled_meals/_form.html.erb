@@ -14,7 +14,8 @@
 
   <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
   <div class="select">
-  <%= form.select(:meal_id, options_for_select(@meals.collect {|meal| [meal.name, meal.id]}))%>
+  <input as="search" data-autocomplete-source="/meals" type="text" name="meal" id="meal" class="ui-autocomplete-input" autocomplete="off">
+  <%= form.hidden_field(:meal_id) %>
   </div>
   <%= form.submit "Save Meal", class:"button is-small"%>
 <% end %>

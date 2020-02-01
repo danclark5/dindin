@@ -4,6 +4,11 @@ class MealsController < ApplicationController
 
   def index
     @meals = Meal.all
+    @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(:label)
+    respond_to do |format|
+       format.html
+       format.json { render json: @autocomplete_meals }
+     end
   end
 
   def show
