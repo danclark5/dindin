@@ -5,7 +5,11 @@ FactoryBot.define do
     email { Faker::Internet.email }
     password { "password"}
     password_confirmation { "password" }
-#    confirmed_at { Date.today }
+    user_type { 'free' }
+
+    trait :admin do
+      user_type { 'admin' }
+    end
   end
 
   factory :meal do
