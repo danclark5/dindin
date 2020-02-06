@@ -3,10 +3,10 @@ class ScheduledMealsController < ApplicationController
   before_action :set_scheduled_meal, only: [:show, :edit, :update, :destroy]
 
   def index
-    start_date = Date.today.strftime
-    end_date = 7.days.since.strftime '%F'
+    start_date = DateTime.now.in_time_zone(current_user.preferred_timezone)
+    end_date = start_date + 2.days
     @scheduled_meals = ScheduledMeal
-      .joins("right join generate_series('#{start_date}', '#{end_date}', '1 day'::interval) as dates on scheduled_meals.date = dates")
+      .joins("right join generate_series('#{start_date.strftime('%F')}', '#{end_date.strftime('%F')}', '1 day'::interval) as dates on dates = scheduled_meals.date")
       .where("scheduled_meals.user_id = ? or scheduled_meals.user_id is null", current_user.id)
       .select("dates as schedule_date", :id, :meal_id)
       .order(schedule_date: :asc).all
