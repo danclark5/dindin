@@ -1,10 +1,17 @@
 class ApplicationController < ActionController::Base
+ before_action :configure_permitted_parameters, if: :devise_controller?
+
   def hello
     @upcoming_meals = lookup_upcoming_meals
     @suggested_meals = Meal.get_suggested_meals(3)
     @scheduled_meal = ScheduledMeal.new()
   end
 
+  protected
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_up) { |u| u.permit(:preferred_timezone, :email, :password)}
+    devise_parameter_sanitizer.permit(:account_update) { |u| u.permit(:preferred_timezone, :email, :password, :current_password)}
+  end
   private
 
   def lookup_upcoming_meals
