@@ -5,7 +5,12 @@ class MealsController < ApplicationController
 
   def index
     @meals = Meal.all
-    @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(label: :desc)
+    if params[:term].empty?
+      @autocomplete_meals = Meal.select("id as value", "name as label").order(label: :asc).all
+    else
+      @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(label: :desc)
+    end
+
     respond_to do |format|
        format.html
        format.json { render json: @autocomplete_meals }
