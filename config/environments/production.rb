@@ -95,12 +95,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   ActionMailer::Base.smtp_settings = {
-    from:           'dan@dnnrpckr.com',
-    user_name: ENV['SENDGRID_USERNAME'],
-    password:  ENV['SENDGRID_PASSWORD'],
-    domain: 'dnnrpckr.com',
-    address: 'smtp.sendgrid.net',
-    port: 587,
+    from:           'wpu.clark@gmail.com',
+    user_name:      ENV['SENDMAIL_USERNAME'],
+    password:       ENV['SENDMAIL_PASSWORD'],
+    domain:         'dnnrpckr.com',
+    address:        'smtp.gmail.com',
+    port:           '587',
     authentication: :plain,
     enable_starttls_auto: true
   }
