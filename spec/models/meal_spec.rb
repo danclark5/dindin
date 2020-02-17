@@ -16,4 +16,15 @@ RSpec.describe Meal, type: :model do
       end
     end
   end
+
+  describe ".user_meals" do
+    let(:user_meals) { create_list(:user_with_meal, 2) }
+    let(:user) { user_meals.first }
+    before do
+      create(:meal)
+    end
+    it "returns meals that belong to that user or global meals" do
+      expect(Meal.meals_for(user).length).to eq (2)
+    end
+  end
 end

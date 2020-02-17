@@ -16,15 +16,24 @@ RSpec.describe MealsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      Meal.create! valid_attributes
+      create(:meal)
       get :index, params: {}
       expect(response).to be_successful
+    end
+
+    context "the user created a meal" do
+      it "returns meals created by the user" do
+        create(:user_with_meals)
+        get :index, params: {}, xhr: true
+        binding.pry
+        expect(response).to be_successful
+      end
     end
   end
 
   describe "GET #show" do
     it "returns a success response" do
-      meal = Meal.create! valid_attributes
+      meal = create(:meal)
       get :show, params: {id: meal.to_param}
       expect(response).to be_successful
     end

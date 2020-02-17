@@ -4,11 +4,11 @@ class MealsController < ApplicationController
   before_action :redirect_non_admin, only: [:create, :update, :destroy]
 
   def index
-    @meals = Meal.all
-    if params[:term].empty?
-      @autocomplete_meals = Meal.select("id as value", "name as label").order(label: :asc).all
+    @meals = Meal.meals_for(current_user)
+    if params[:term]
+      @autocomplete_meals = Meal.meals_for(current_user).search(params[:term]).select("meals.id as value", "meals.name as label").order(label: :desc)
     else
-      @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(label: :desc)
+      @autocomplete_meals = Meal.meals_for(current_user).select("meals.id as value", "meals.name as label").order(label: :asc).all
     end
 
     respond_to do |format|
@@ -64,7 +64,7 @@ class MealsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_meal
-      @meal = Meal.find(params[:id])
+      @meal = Meal.meals_for(current_user).find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

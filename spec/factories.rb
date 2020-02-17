@@ -10,6 +10,12 @@ FactoryBot.define do
     trait :admin do
       user_type { 'admin' }
     end
+
+    factory :user_with_meal do
+      after(:create) do |user|
+        create(:meal, name: "User Meal", users: [user])
+      end
+    end
   end
 
   factory :meal do
