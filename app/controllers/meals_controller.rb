@@ -4,16 +4,17 @@ class MealsController < ApplicationController
   before_action :redirect_non_admin, only: [:create, :update, :destroy]
 
   def index
-    @meals = Meal.all
-    if params[:term].empty?
-      @autocomplete_meals = Meal.select("id as value", "name as label").order(label: :asc).all
-    else
-      @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(label: :desc)
-    end
 
     respond_to do |format|
-       format.html
-       format.json { render json: @autocomplete_meals }
+       format.html { @meals = Meal.all }
+       format.json do
+         if params.fetch(:term, "").empty?
+           @autocomplete_meals = Meal.select("id as value", "name as label").order(label: :asc).all
+         else
+           @autocomplete_meals = Meal.search(params[:term]).select("id as value", "name as label").order(label: :desc)
+         end
+         render json: @autocomplete_meals
+       end
      end
   end
 
