@@ -1,9 +1,9 @@
 require 'rails_helper'
-require 'pry'
 
 RSpec.describe MealsController, type: :controller do
 
   let(:valid_attributes) { {name: "Chicken"} }
+  let(:valid_attributes_with_global) { {name: "Chicken", global_meal: '1'} }
   let(:invalid_attributes) { {name: ""} }
   login_free_user
 
@@ -16,17 +16,36 @@ RSpec.describe MealsController, type: :controller do
 
   describe "GET #index" do
     it "returns a success response" do
-      Meal.create! valid_attributes
+      create(:meal)
       get :index, params: {}
       expect(response).to be_successful
     end
   end
 
   describe "GET #show" do
-    it "returns a success response" do
-      meal = Meal.create! valid_attributes
-      get :show, params: {id: meal.to_param}
-      expect(response).to be_successful
+    context "when viewing a global meal" do
+      it "returns a success response" do
+        meal = create(:meal)
+        get :show, params: {id: meal.id}
+        expect(response).to be_successful
+      end
+    end
+
+    context "when viewing a user created meal" do
+      it "returns a success response" do
+        meal = create(:meal, user: controller.current_user)
+        get :show, params: {id: meal.id}
+        expect(response).to be_successful
+      end
+    end
+
+    context "when viewing another user's meal" do
+      let(:other_user) { create(:user_with_meal) }
+      it "redirects with an error" do
+        get :show, params: {id: other_user.meals.first.id}
+        expect(response).to redirect_to(Meal)
+        expect(response.request.env['rack.session']['flash']['flashes']['alert']).to eq('Meal not found')
+      end
     end
   end
 
@@ -43,12 +62,12 @@ RSpec.describe MealsController, type: :controller do
       context "with valid params" do
         it "creates a new Meal" do
           expect {
-            post :create, params: {meal: valid_attributes}
+            post :create, params: {meal: valid_attributes_with_global}
           }.to change(Meal, :count).by(1)
         end
 
         it "redirects to the created meal" do
-          post :create, params: {meal: valid_attributes}
+          post :create, params: {meal: valid_attributes_with_global}
           expect(response).to redirect_to(Meal.last)
         end
       end
@@ -62,19 +81,70 @@ RSpec.describe MealsController, type: :controller do
     end
 
     context "as a free user" do
-      login_free_user
-      it "redirects to index" do
-        post :create, params: {meal: valid_attributes}
-        expect(response).to redirect_to(meals_path)
+      context "with valid params" do
+        it "creates a new Meal" do
+          expect {
+            post :create, params: {meal: valid_attributes}
+          }.to change(Meal, :count).by(1)
+        end
+
+        it "redirects to the created meal" do
+          post :create, params: {meal: valid_attributes}
+          expect(response).to redirect_to(Meal.last)
+        end
+      end
+
+      context "with valid params and global_meal" do
+        it "creates a new Meal" do
+          expect {
+            post :create, params: {meal: valid_attributes_with_global}
+          }.to change(Meal, :count).by(1)
+        end
+
+        it "redirects to the created meal" do
+          post :create, params: {meal: valid_attributes_with_global}
+          expect(response).to redirect_to(Meal.last)
+        end
+        
+        it "does sets the user attribute anyway" do
+          post :create, params: {meal: valid_attributes_with_global}
+          expect(Meal.last.user).to eq(controller.current_user)
+        end
+      end
+
+      context "with invalid params" do
+        it "returns a success response (i.e. to display the 'new' template)" do
+          post :create, params: {meal: invalid_attributes}
+          expect(response).to be_successful
+        end
       end
     end
   end
 
   describe "GET #edit" do
-    it "returns a success response" do
-      meal = Meal.create! valid_attributes
-      get :edit, params: {id: meal.to_param}
-      expect(response).to be_successful
+    context "when viewing a global meal" do
+      it "returns a success response" do
+        meal = create(:meal)
+        get :edit, params: {id: meal.id}
+        expect(response).to be_successful
+      end
+    end
+
+    context "when viewing a user created meal" do
+      it "returns a success response" do
+        meal = create(:meal, user: controller.current_user)
+        get :edit, params: {id: meal.id}
+        expect(response).to be_successful
+      end
+    end
+
+    context "when viewing another user's meal" do
+      let(:other_user) { create(:user_with_meal) }
+      it "redirects with an error" do
+        get :edit, params: {id: other_user.meals.first.id}
+        expect(response).to redirect_to(Meal)
+        expect(response.request.env['rack.session']['flash']['flashes']['alert']).to eq('Meal not found')
+      end
     end
   end
 
@@ -109,10 +179,67 @@ RSpec.describe MealsController, type: :controller do
 
     context "as a free user" do
       login_free_user
-      it "redirects to index" do
-        meal = Meal.create! valid_attributes
-        put :update, params: {id: meal.to_param, meal: valid_attributes}
-        expect(response).to redirect_to(meals_path)
+      context "with valid params" do
+        let(:new_attributes) { {name: "Beef"} }
+
+        it "updates the requested meal" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: new_attributes}
+          meal.reload
+          expect(meal.name).to eq( "Beef" )
+        end
+
+        it "redirects to the meal" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: valid_attributes}
+          expect(response).to redirect_to(meal)
+        end
+
+        it "doesn't update global meals" do
+          meal = create(:meal)
+          put :update, params: {id: meal.id, meal: new_attributes}
+          meal.reload
+          expect(meal.name).not_to eq( "Beef" )
+        end
+
+        it "doesn't update other user meals" do
+          other_user = create(:user_with_meal)
+          meal = other_user.meals.first
+          put :update, params: {id: meal.id, meal: new_attributes}
+          meal.reload
+          expect(meal.name).not_to eq( "Beef" )
+        end
+      end
+
+      context "with valid params and global_meal" do
+        let(:new_attributes) { {name: "Beef", global_meal: "1"} }
+        it "updates the meal" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: new_attributes}
+          meal.reload
+          expect(meal.name).to eq( "Beef" )
+        end
+
+        it "redirects to the updated meal" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: valid_attributes}
+          expect(response).to redirect_to(meal)
+        end
+        
+        it "does sets the user attribute anyway" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: new_attributes}
+          meal.reload
+          expect(meal.user).to eq( controller.current_user )
+        end
+      end
+
+      context "with invalid params" do
+        it "returns a success response (i.e. to display the 'new' template)" do
+          meal = create(:meal, user: controller.current_user)
+          put :update, params: {id: meal.to_param, meal: invalid_attributes}
+          expect(response).to be_successful
+        end
       end
     end
   end
@@ -136,18 +263,38 @@ RSpec.describe MealsController, type: :controller do
 
     context "as a free user" do
       login_free_user
-      it "doesn't remove the meal" do
-        meal = Meal.create! valid_attributes
-        expect {
-          delete :destroy, params: {id: meal.to_param}
-        }.not_to change(Meal, :count)
+      it "destroys the user's meals" do
+          meal = create(:meal, user: controller.current_user)
+          expect {
+            delete :destroy, params: {id: meal.id}
+          }.to change(Meal, :count).by(-1)
       end
 
-      it "redirects to index" do
+      it "redirects to index after a successfuly destroy" do
         meal = Meal.create! valid_attributes
-        delete :destroy, params: {id: meal.to_param}
+        delete :destroy, params: {id: meal.id}
         expect(response).to redirect_to(meals_path)
       end
+
+      it "doesn't destroy global meals" do
+          meal = create(:meal)
+          delete :destroy, params: {id: meal.id}
+          expect(Meal.exists?(meal.id)).to be_truthy
+      end
+
+      it "doesn't destroy other user's meals" do
+          other_user = create(:user_with_meal)
+          meal = other_user.meals.first
+          delete :destroy, params: {id: meal.id}
+          expect(Meal.exists?(meal.id)).to be_truthy 
+      end
+
+      it "redirects to the index after an unsuccessful destroy" do
+        meal = create(:meal)
+        delete :destroy, params: {id: meal.id}
+        expect(response).to redirect_to(meals_url)
+      end
+
     end
   end
 end

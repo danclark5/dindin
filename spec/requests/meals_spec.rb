@@ -2,8 +2,8 @@ require 'rails_helper'
 
 RSpec.describe "Meals", type: :request do
   before(:each) do
-    test_user = FactoryBot.create(:user)
-    sign_in test_user
+    user = create(:user)
+    sign_in user
   end
 
   describe "GET /meals" do
