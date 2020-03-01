@@ -17,4 +17,7 @@ class Meal < ApplicationRecord
     left_joins(:scheduled_meal).group(:id).select(:id, :name).order("COUNT(scheduled_meals.meal_id) ASC").limit(number_of_meals).all.shuffle
   end
 
+  def accessible_to_user?(user)
+    self.user == user || self.user.nil?
+  end
 end

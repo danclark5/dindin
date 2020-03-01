@@ -35,4 +35,29 @@ RSpec.describe Meal, type: :model do
       end
     end
   end
+
+  describe ".accessible_to_user?" do
+    let(:user) { create(:user) }
+    context "global meal" do
+      let(:meal) { create(:meal) }
+      it "returns true" do
+        expect(meal.accessible_to_user?(user)).to be_truthy
+      end
+    end
+
+    context "user owned meal" do
+      let(:meal) { create(:meal, user: user) }
+      it "returns true" do
+        expect(meal.accessible_to_user?(user)).to be_truthy
+      end
+    end
+
+    context "meal owned by another user" do
+      let(:other_user) { create(:user) }
+      let(:meal) { create(:meal, user: other_user) }
+      it "returns false" do
+        expect(meal.accessible_to_user?(user)).to be_falsey
+      end
+    end
+  end
 end

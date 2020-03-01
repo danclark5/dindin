@@ -4,13 +4,11 @@ RSpec.describe ScheduledMealsController, type: :controller do
   login_free_user
 
   let(:meal) { create(:meal) }
-  let(:schedule) { create(:schedule) }
 
   let(:valid_attributes) {
     {
       date: Time.now,
       meal_id: meal.id,
-      schedule_id: schedule.id
     }
   }
 
@@ -18,7 +16,13 @@ RSpec.describe ScheduledMealsController, type: :controller do
     {
       date: "Maybe",
       meal_id: "No",
-      schedule_id: "" 
+    }
+  }
+
+  let(:other_user_meal_attributes) {
+    {
+      date: Time.now,
+      meal_id: create(:meal, name: 'Nope', user: create(:user))
     }
   }
 
@@ -31,24 +35,24 @@ RSpec.describe ScheduledMealsController, type: :controller do
   end
 
   describe "GET #show" do
+    let (:scheduled_meal) { create(:scheduled_meal, user: subject.current_user) }
+    let (:forbidden_scheduled_meal) {  create(:scheduled_meal, user: create(:user)) }
+
     it "returns a success response" do
-      scheduled_meal = create(:scheduled_meal, user: subject.current_user)
       get :show, params: {id: scheduled_meal.to_param}
       expect(response).to be_successful
+    end
+
+    it "redirects when viewing another user's scheduled meal" do
+      get :show, params: {id: forbidden_scheduled_meal.to_param}
+      expect(response).to redirect_to(ScheduledMeal)
+      expect(response.request.env['rack.session']['flash']['flashes']['alert']).to eq('Scheduled meal not found')
     end
   end
 
   describe "GET #new" do
     it "returns a success response" do
       get :new, params: {}
-      expect(response).to be_successful
-    end
-  end
-
-  describe "GET #edit" do
-    it "returns a success response" do
-      scheduled_meal = create(:scheduled_meal, user: subject.current_user)
-      get :edit, params: {id: scheduled_meal.to_param}
       expect(response).to be_successful
     end
   end
@@ -63,7 +67,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
       it "redirects to the created scheduled_meal" do
         post :create, params: {scheduled_meal: valid_attributes}
-        expect(response).to redirect_to(schedule)
+        expect(response).to redirect_to(ScheduledMeal)
       end
     end
 
@@ -73,6 +77,21 @@ RSpec.describe ScheduledMealsController, type: :controller do
         expect(response).to be_successful
       end
     end
+
+    context "with another user's meal" do
+      it "returns a success response (i.e. to display the 'new' template)" do
+        post :create, params: {scheduled_meal: other_user_meal_attributes}
+        expect(response).to be_successful
+      end
+    end
+  end
+
+  describe "GET #edit" do
+    it "returns a success response" do
+      scheduled_meal = create(:scheduled_meal, user: subject.current_user)
+      get :edit, params: {id: scheduled_meal.to_param}
+      expect(response).to be_successful
+    end
   end
 
   describe "PUT #update" do
@@ -81,7 +100,6 @@ RSpec.describe ScheduledMealsController, type: :controller do
       let(:new_attributes) {{
         date: Time.now,
         meal_id: second_meal.id,
-        schedule_id: schedule.id
       }}
 
       it "updates the requested scheduled_meal" do
@@ -94,7 +112,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
       it "redirects to the scheduled_meal" do
         scheduled_meal = create(:scheduled_meal, user: subject.current_user)
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: valid_attributes}
-        expect(response).to redirect_to(schedule)
+        expect(response).to redirect_to(ScheduledMeal)
       end
     end
 
@@ -103,6 +121,23 @@ RSpec.describe ScheduledMealsController, type: :controller do
         scheduled_meal = ScheduledMeal.create! valid_attributes.merge({ user: subject.current_user })
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: invalid_attributes}
         expect(response).to be_successful
+      end
+    end
+
+    context "with another user's meal" do
+      it "returns a success response (i.e. to display the 'edit' template)" do
+        scheduled_meal = ScheduledMeal.create! valid_attributes.merge({ user: subject.current_user })
+        put :update, params: {id: scheduled_meal.to_param, scheduled_meal: other_user_meal_attributes}
+        expect(response).to be_successful
+      end
+    end
+
+    context "with another user's scheduled meal" do
+      let (:forbidden_scheduled_meal) {  create(:scheduled_meal, user: create(:user)) }
+      it "redirects when viewing another user's scheduled meal" do
+        put :update, params: {id: forbidden_scheduled_meal.to_param, scheduled_meal: invalid_attributes}
+        expect(response).to redirect_to(ScheduledMeal)
+        expect(response.request.env['rack.session']['flash']['flashes']['alert']).to eq('Scheduled meal not found')
       end
     end
   end
@@ -119,6 +154,13 @@ RSpec.describe ScheduledMealsController, type: :controller do
       scheduled_meal = ScheduledMeal.create! valid_attributes.merge({ user: subject.current_user })
       delete :destroy, params: {id: scheduled_meal.to_param}
       expect(response).to redirect_to(scheduled_meals_url)
+    end
+
+    it "redirects when viewing another user's scheduled meal" do
+      forbidden_scheduled_meal = create(:scheduled_meal, user: create(:user))
+      delete :destroy, params: {id: forbidden_scheduled_meal.to_param}
+      expect(response).to redirect_to(ScheduledMeal)
+      expect(response.request.env['rack.session']['flash']['flashes']['alert']).to eq('Scheduled meal not found')
     end
   end
 

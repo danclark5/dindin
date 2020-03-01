@@ -29,7 +29,7 @@ class ScheduledMealsController < ApplicationController
     @scheduled_meal.user = current_user
 
     respond_to do |format|
-      if @scheduled_meal.save
+      if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.save
         format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully created.' }
         format.json { render :show, status: :created, location: scheduled_meals_path }
       else
@@ -41,7 +41,7 @@ class ScheduledMealsController < ApplicationController
 
   def update
     respond_to do |format|
-      if @scheduled_meal.update(scheduled_meal_params)
+      if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.update(scheduled_meal_params)
         format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @scheduled_meal }
       else
@@ -77,6 +77,14 @@ class ScheduledMealsController < ApplicationController
     if @scheduled_meal.user != current_user
       raise ActiveRecord::RecordNotFound
     end
+  rescue ActiveRecord::RecordNotFound
+    redirect_to scheduled_meals_path, alert: "Scheduled meal not found"
+  end
+
+  def desired_meal
+    Meal.find(scheduled_meal_params[:meal_id])
+  rescue ActiveRecord::RecordNotFound
+    nil
   end
 
   def schedule_for_date(date)
