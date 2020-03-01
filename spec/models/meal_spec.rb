@@ -16,4 +16,23 @@ RSpec.describe Meal, type: :model do
       end
     end
   end
+
+  describe ".user_meals" do
+    context "the user has no owned meals" do
+      let!(:user_meals) { create_list(:user_with_meal, 2) }
+      let!(:user) { user_meals.first }
+      it "returns meals that belong to that user or global meals" do
+        expect(Meal.meals_for(user).length).to eq (1)
+      end
+    end
+
+    context "there are user owned meals and global meals" do
+      let!(:user_meals) { create_list(:user_with_meal, 2) }
+      let!(:user) { user_meals.first }
+      let!(:other_meal) { create(:meal) }
+      it "returns meals that belong to that user or global meals" do
+        expect(Meal.meals_for(user).length).to eq (2)
+      end
+    end
+  end
 end

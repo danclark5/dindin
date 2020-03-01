@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ScheduledMealsController, type: :controller do
-  login_user
+  login_free_user
 
   let(:meal) { create(:meal) }
   let(:schedule) { create(:schedule) }

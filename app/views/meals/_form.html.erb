@@ -12,11 +12,18 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name, required: true %>
+    <%= form.label :name, class: "label" %>
+    <%= form.text_field :name, required: true, class: "input" %>
   </div>
 
+  <% if current_user.user_type == 'admin' %>
+    <div class="field">
+      <%= form.label :global_meal, class: "checkbox" %>
+      <%= form.check_box :global_meal %>
+    </div>
+  <% end %>
+
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "button is-small" %>
   </div>
 <% end %>
