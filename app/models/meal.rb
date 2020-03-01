@@ -14,7 +14,7 @@ class Meal < ApplicationRecord
   }
 
   def self.get_suggested_meals(number_of_meals)
-    left_joins(:scheduled_meal).group(:id).select(:id, :name).order("COUNT(scheduled_meals.meal_id) ASC").limit(number_of_meals).all.shuffle
+    left_joins(:scheduled_meals).group(:id).select(:id, :name).order("COUNT(scheduled_meals.meal_id) ASC").limit(number_of_meals).all.shuffle
   end
 
   def accessible_to_user?(user)
