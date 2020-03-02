@@ -8,11 +8,11 @@ class MealsController < ApplicationController
       format.json do
          if params.fetch(:term, "").empty?
            @autocomplete_meals = Meal.meals_for(current_user).
-             select("id as value", "name as label").order(label: :asc).all
+             select("meals.id as value", "meals.name as label").order(label: :asc).all
          else
            @autocomplete_meals = Meal.meals_for(current_user).
              search(params[:term]).
-             select("id as value", "name as label").order(label: :desc)
+             select("meals.id as value", "meals.name as label").order(label: :desc)
          end
          render json: @autocomplete_meals
        end
