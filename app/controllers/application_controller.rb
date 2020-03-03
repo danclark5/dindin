@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def hello
     @upcoming_meals = lookup_upcoming_meals
-    @suggested_meals = Meal.get_suggested_meals(3, current_user.id)
+    @suggested_meals = Meal.get_suggested_meals(3, current_user)
     @scheduled_meal = ScheduledMeal.new()
   end
 
