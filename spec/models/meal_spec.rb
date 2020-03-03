@@ -2,17 +2,29 @@ require 'rails_helper'
 
 RSpec.describe Meal, type: :model do
   describe ".get_suggested_meals" do
+    let(:user) { create(:user) }
     before do
       create_list(:meal, 10)
     end
     context "7 meals are requested" do
       it "returns 7 unique meals" do
-        expect(Meal.get_suggested_meals(7).uniq.length).to eq(7)
+        expect(Meal.get_suggested_meals(7, user.id).uniq.length).to eq(7)
+      end
+
+      it "stores the suggestions" do
+        puts "user_id: #{user.id}"
+        Meal.get_suggested_meals(7, user.id)
+        expect(MealSuggestionLog.count). to eq(7)
       end
     end
     context "0 meals are requested" do
       it "returns an empty array" do
-        expect(Meal.get_suggested_meals(0)).to match_array([])
+        expect(Meal.get_suggested_meals(0, user.id)).to match_array([])
+      end
+
+      it "does not store the suggestions" do
+        Meal.get_suggested_meals(0, user.id)
+        expect(MealSuggestionLog.count). to eq(0)
       end
     end
   end

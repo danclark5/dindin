@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_23_183625) do
+ActiveRecord::Schema.define(version: 2020_03_03_112624) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "meal_suggestion_logs", force: :cascade do |t|
+    t.bigint "meal_id"
+    t.bigint "user_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["meal_id"], name: "index_meal_suggestion_logs_on_meal_id"
+    t.index ["user_id"], name: "index_meal_suggestion_logs_on_user_id"
+  end
 
   create_table "meals", force: :cascade do |t|
     t.string "name", null: false
@@ -61,6 +70,8 @@ ActiveRecord::Schema.define(version: 2020_02_23_183625) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "meal_suggestion_logs", "meals"
+  add_foreign_key "meal_suggestion_logs", "users"
   add_foreign_key "meals", "users"
   add_foreign_key "scheduled_meals", "meals"
   add_foreign_key "scheduled_meals", "users"
