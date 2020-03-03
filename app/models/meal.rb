@@ -5,6 +5,7 @@ class Meal < ApplicationRecord
 
   validates :name, presence: true
   has_many :scheduled_meals
+  has_many :meal_suggestion_logs
   belongs_to :user, optional: true
 
   pg_search_scope :search, against: :name, using: {:tsearch => {:prefix => true}}
@@ -13,8 +14,16 @@ class Meal < ApplicationRecord
       .where("users.id = ? OR users.id is null", user.id)
   }
 
-  def self.get_suggested_meals(number_of_meals)
-    left_joins(:scheduled_meals).group(:id).select(:id, :name).order("COUNT(scheduled_meals.meal_id) ASC").limit(number_of_meals).all.shuffle
+  def self.get_suggested_meals(number_of_meals, user_id)
+    meals = joins("left join scheduled_meals on scheduled_meals.meal_id = meals.id and scheduled_meals.user_id = #{user_id}").
+      joins("left join meal_suggestion_logs on meal_suggestion_logs.meal_id = meals.id and meal_suggestion_logs.user_id = #{user_id}").
+      group(:id).
+      select(:id, :name).
+      order("(COUNT(scheduled_meals.meal_id) + COUNT(meal_suggestion_logs.meal_id) + random()*10) ASC").
+      limit(number_of_meals).all.shuffle
+
+    MealSuggestionLog.create(meals.map { |meal| {meal_id: meal.id, user_id: user_id} })
+    meals
   end
 
   def accessible_to_user?(user)
