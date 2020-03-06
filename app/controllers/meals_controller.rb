@@ -7,14 +7,19 @@ class MealsController < ApplicationController
       format.html { @meals = Meal.includes(:user).meals_for(current_user) }
       format.json do
          if params.fetch(:term, "").empty?
-           @autocomplete_meals = Meal.meals_for(current_user).
+           @meals = Meal.meals_for(current_user).
              select("meals.id as value", "meals.name as label").order(label: :asc).all
          else
-           @autocomplete_meals = Meal.meals_for(current_user).
+           direct_meals = Meal.meals_for(current_user).
              search(params[:term]).
-             select("meals.id as value", "meals.name as label").order(label: :desc)
+             select("meals.id as value", "meals.name as label").reorder("")
+           tagged_meals = Tag.search(params[:term]).
+             joins(:meals).
+             merge(Meal.meals_for(current_user)).
+             select('"meals".id as value', '"meals".name as label').reorder("")
+           @meals = Meal.from("(#{direct_meals.to_sql} UNION #{tagged_meals.to_sql}) AS meals").order(label: :asc)
          end
-         render json: @autocomplete_meals
+         render json: @meals
        end
      end
   end
