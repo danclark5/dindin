@@ -22,6 +22,7 @@
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
         </a>
       </div>
 
@@ -31,6 +32,9 @@
           <% if user_signed_in? %>
             <%= link_to 'Plan ahead', scheduled_meals_path, class: "navbar-item" %>
             <%= link_to 'View Meals', meals_path, class: "navbar-item" %>
+            <% if current_user.user_type == 'admin' %>
+              <%= link_to 'View Tags', tags_path, class: "navbar-item" %>
+            <% end %>
             <%= link_to 'Profile', edit_user_registration_path, class: "navbar-item" %>
           <% end %>
         </div>
