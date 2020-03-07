@@ -17,14 +17,21 @@
 <% if current_user.user_type == 'admin' %>
   <%= form_with(url: "/meals/tag", method: "post") do %>
     <%= hidden_field_tag(:meal_id, @meal.id) %>
-    <div class="select">
-      <%= select_tag(:tag_id, options_from_collection_for_select(@tags, 'id', 'name'))%>
+    <div class="field">
+      <label class="label">Tag</label>
+      <div class="control">
+        <div class="select">
+          <%= select_tag(:tag_id, options_from_collection_for_select(@tags, 'id', 'name'))%>
+        </div>
+      </div>
     </div>
-    <%= submit_tag("Add Tag", class: "button") %>
+    <div class="field">
+      <%= submit_tag("Add Tag", class: "button is-link") %>
+    </div>
   <% end %>
 <% end %>
 
-<div class="container">
+<br>
+
 <%= link_to 'Edit', edit_meal_path(@meal) %> |
 <%= link_to 'Back', meals_path %>
-</div>
