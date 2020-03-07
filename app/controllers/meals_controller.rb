@@ -7,19 +7,25 @@ class MealsController < ApplicationController
       format.html { @meals = Meal.includes(:user).meals_for(current_user) }
       format.json do
          if params.fetch(:term, "").empty?
-           @autocomplete_meals = Meal.meals_for(current_user).
+           @meals = Meal.meals_for(current_user).
              select("meals.id as value", "meals.name as label").order(label: :asc).all
          else
-           @autocomplete_meals = Meal.meals_for(current_user).
+           direct_meals = Meal.meals_for(current_user).
              search(params[:term]).
-             select("meals.id as value", "meals.name as label").order(label: :desc)
+             select("meals.id as value", "meals.name as label").reorder("")
+           tagged_meals = Tag.search(params[:term]).
+             joins(:meals).
+             merge(Meal.meals_for(current_user)).
+             select('"meals".id as value', '"meals".name as label').reorder("")
+           @meals = Meal.from("(#{direct_meals.to_sql} UNION #{tagged_meals.to_sql}) AS meals").order(label: :asc)
          end
-         render json: @autocomplete_meals
+         render json: @meals
        end
      end
   end
 
   def show
+    @tags = Tag.all
   end
 
   def new
@@ -84,6 +90,44 @@ class MealsController < ApplicationController
     end
   end
 
+  def tag
+    if current_user.user_type != 'admin'
+      redirect_to meals_path, notice: 'Unauthorized Action'
+      return
+    end
+    meal = Meal.find(tag_params[:meal_id])
+    tag = Tag.find(tag_params[:tag_id])
+    meal.tags << tag
+    respond_to do |format|
+      if meal.save
+        format.html { redirect_to meal, notice: 'Tag added!.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to meal, alert: 'Unable add tag.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def untag
+    if current_user.user_type != 'admin'
+      redirect_to meals_path, notice: 'Unauthorized Action'
+      return
+    end
+    meal = Meal.find(tag_params[:meal_id])
+    tag = Tag.find(tag_params[:tag_id])
+    meal.tags -= [tag]
+    respond_to do |format|
+      if meal.save
+        format.html { redirect_to meal, notice: 'Tag removed!.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to meal, alert: 'Unable remove tag.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_meal
@@ -96,5 +140,9 @@ class MealsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def meal_params
     params.require(:meal).permit(:name, :global_meal)
+  end
+
+  def tag_params
+    params.permit(:meal_id, :tag_id)
   end
 end

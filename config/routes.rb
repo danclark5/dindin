@@ -10,7 +10,10 @@ Rails.application.routes.draw do
       post 'attach_suggested_meal'
     end
   end
+  post '/meals/tag', to: 'meals#tag'
+  delete '/meals/untag', to: 'meals#untag'
   resources :meals
+  resources :tags
   get 'static_pages/home'
   get 'static_pages/help'
   get 'static_pages/about'

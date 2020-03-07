@@ -27,4 +27,8 @@ FactoryBot.define do
     date { Date.today }
     user
   end
+
+  factory :tag do
+    name { "A tag" }
+  end
 end

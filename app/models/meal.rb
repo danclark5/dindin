@@ -7,6 +7,7 @@ class Meal < ApplicationRecord
   has_many :scheduled_meals
   has_many :meal_suggestion_logs
   belongs_to :user, optional: true
+  has_and_belongs_to_many :tags
 
   pg_search_scope :search, against: :name, using: {:tsearch => {:prefix => true}}
   scope :meals_for, ->(user) {
