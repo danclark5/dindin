@@ -1,9 +1,30 @@
-<p id="notice"><%= notice %></p>
+<h2 class="subtitle is-2">
+  <%=@meal.name %>
+</h2>
 
-<p>
-  <strong>Name:</strong>
-  <%= @meal.name %>
-</p>
+<div class="tags">
+<% @meal.tags.each do |tag| %>
+  <span class="tag is-primary">
+    <%= tag.name %>
+    <% if current_user.user_type == 'admin' %>
+      <%= button_to [:meals_untag], class: "delete is-small", method: :delete, params: {meal_id: @meal.id, tag_id: tag.id}, data: { confirm: 'Are you sure?' } do %>
+      <% end %>
+    <% end %>
+  </span>
+<% end %>
+</div>
 
+<% if current_user.user_type == 'admin' %>
+  <%= form_with(url: "/meals/tag", method: "post") do %>
+    <%= hidden_field_tag(:meal_id, @meal.id) %>
+    <div class="select">
+      <%= select_tag(:tag_id, options_from_collection_for_select(@tags, 'id', 'name'))%>
+    </div>
+    <%= submit_tag("Add Tag", class: "button") %>
+  <% end %>
+<% end %>
+
+<div class="container">
 <%= link_to 'Edit', edit_meal_path(@meal) %> |
 <%= link_to 'Back', meals_path %>
+</div>

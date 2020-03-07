@@ -25,6 +25,7 @@ class MealsController < ApplicationController
   end
 
   def show
+    @tags = Tag.all
   end
 
   def new
@@ -89,6 +90,44 @@ class MealsController < ApplicationController
     end
   end
 
+  def tag
+    if current_user.user_type != 'admin'
+      redirect_to meals_path, notice: 'Unauthorized Action'
+      return
+    end
+    meal = Meal.find(tag_params[:meal_id])
+    tag = Tag.find(tag_params[:tag_id])
+    meal.tags << tag
+    respond_to do |format|
+      if meal.save
+        format.html { redirect_to meal, notice: 'Tag added!.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to meal, alert: 'Unable add tag.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
+  def untag
+    if current_user.user_type != 'admin'
+      redirect_to meals_path, notice: 'Unauthorized Action'
+      return
+    end
+    meal = Meal.find(tag_params[:meal_id])
+    tag = Tag.find(tag_params[:tag_id])
+    meal.tags -= [tag]
+    respond_to do |format|
+      if meal.save
+        format.html { redirect_to meal, notice: 'Tag removed!.' }
+        format.json { head :no_content }
+      else
+        format.html { redirect_to meal, alert: 'Unable remove tag.' }
+        format.json { head :no_content }
+      end
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_meal
@@ -101,5 +140,9 @@ class MealsController < ApplicationController
   # Never trust parameters from the scary internet, only allow the white list through.
   def meal_params
     params.require(:meal).permit(:name, :global_meal)
+  end
+
+  def tag_params
+    params.permit(:meal_id, :tag_id)
   end
 end
