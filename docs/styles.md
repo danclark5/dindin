@@ -13,4 +13,4 @@ All pages need to provide a title `<% provide :title, "Home" %>`
 
 ## Buttons
 
-TBD
+All buttons should use the `button` and `is-primary` classes.

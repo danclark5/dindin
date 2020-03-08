@@ -1,17 +1,17 @@
 <% provide :title, "Home" %>
 
 <div class=box>
-<h5 class="title is-5"> For Today </h5>
-<% if @upcoming_meals[0].meal_id %>
-  <%= @upcoming_meals[0].meal_name %> </br></br>
-<% else %>
-  Nothing is planned for today.</br></br>
-  How about <%= @suggested_meals[0].name %>
-<%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
-  <%= form.hidden_field(:date, value: Date.today) %>
-  <%= form.hidden_field(:meal_id, value: @suggested_meals[0].id) %>
-  <%= form.submit "Add" %>
-<% end %>
+  <h5 class="title is-5"> For Today </h5>
+  <% if @upcoming_meals[0].meal_id %>
+    <%= @upcoming_meals[0].meal_name %> </br></br>
+  <% else %>
+    Nothing is planned for today.</br></br>
+    How about <%= @suggested_meals[0].name %>
+  <%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
+    <%= form.hidden_field(:date, value: Date.today) %>
+    <%= form.hidden_field(:meal_id, value: @suggested_meals[0].id) %>
+    <%= form.submit "Add", class: "button is-primary" %>
+  <% end %>
 <% end %>
 </div>
 
@@ -25,22 +25,22 @@
     <%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
       <%= form.hidden_field(:date, value: 1.days.since) %>
       <%= form.hidden_field(:meal_id, value: @suggested_meals[1].id) %>
-      <%= form.submit "Add" %>
+      <%= form.submit "Add", class: "button is-primary" %>
     <% end %>
   <% end %>
 </div>
 
 <div class=box>
-<h5 class="title is-5"> For <%= 2.day.since.strftime("%A") %></h5>
-<% if @upcoming_meals[2].meal_id %>
-  <%= @upcoming_meals[2].meal_name %> </br></br>
-<% else %>
-  Nothing is planned for today.</br></br>
-  How about <%= @suggested_meals[2].name %>?
-<%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
-  <%= form.hidden_field(:date, value: 2.days.since) %>
-  <%= form.hidden_field(:meal_id, value: @suggested_meals[2].id) %>
-  <%= form.submit "Add" %>
-<% end %>
-<% end %>
+  <h5 class="title is-5"> For <%= 2.day.since.strftime("%A") %></h5>
+  <% if @upcoming_meals[2].meal_id %>
+    <%= @upcoming_meals[2].meal_name %> </br></br>
+  <% else %>
+    Nothing is planned for today.</br></br>
+    How about <%= @suggested_meals[2].name %>?
+    <%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
+      <%= form.hidden_field(:date, value: 2.days.since) %>
+      <%= form.hidden_field(:meal_id, value: @suggested_meals[2].id) %>
+      <%= form.submit "Add", class: "button is-primary" %>
+    <% end %>
+  <% end %>
 </div>
