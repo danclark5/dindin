@@ -4,10 +4,10 @@ class Meal < ApplicationRecord
   attr_accessor :global_meal
 
   validates :name, presence: true
-  has_many :scheduled_meals
-  has_many :meal_suggestion_logs
+  has_many :scheduled_meals, dependent: :destroy
+  has_many :meal_suggestion_logs, dependent: :destroy
   belongs_to :user, optional: true
-  has_and_belongs_to_many :tags
+  has_and_belongs_to_many :tags, dependent: :destroy
 
   pg_search_scope :search, against: :name, using: {:tsearch => {:prefix => true}}
   scope :meals_for, ->(user) {
