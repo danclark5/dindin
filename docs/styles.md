@@ -4,7 +4,7 @@ Below are the styles for user facing pages. Note that these are influenced by Bu
 
 ## Headings
 
-Headings should use the `subtitle` and `is-1` classes along with the `h1` tag. The only exception to this is the home
+Headings should use the `subtitle` and `is-2` classes along with the `h2` tag. The only exception to this is the home
 page. That page uses the `title` and `is-1` classes.
 
 ## Page Titles
