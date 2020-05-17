@@ -14,7 +14,7 @@ RSpec.describe MealsController, type: :controller do
   describe "GET #index" do
     it "returns a success response" do
       create(:meal)
-      get :index, params: {}
+      get :index 
       expect(response).to be_successful
     end
   end
