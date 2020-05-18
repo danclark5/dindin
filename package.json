@@ -2,8 +2,10 @@
   "name": "dindin",
   "private": true,
   "dependencies": {
+    "@rails/ujs": "^6.0.3",
     "@rails/webpacker": "4.2.2",
-    "bulma": "^0.8.0"
+    "bulma": "^0.8.0",
+    "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.11.0"
