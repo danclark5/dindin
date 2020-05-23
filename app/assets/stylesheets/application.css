@@ -12,8 +12,6 @@
  *
  *= require bulma/bulma
  *= require font-awesome
- *= require jquery-ui/core
- *= require jquery-ui/autocomplete
  *= require_tree .
  *= require_self
  */
