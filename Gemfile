@@ -16,8 +16,6 @@ gem 'webpacker', '~> 4.0'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
-# Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
-gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -30,8 +28,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'pg'
 gem 'pg_search'
 gem 'devise'
-gem 'jquery-rails'
-gem 'jquery-ui-rails'
 gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
 
