@@ -1,5 +1,5 @@
 <br/>
-<%= form_with model: @scheduled_meal do |form| %>
+<%= form_with model: @scheduled_meal, local: true do |form| %>
   <% if @scheduled_meal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@scheduled_meal.errors.count, "error") %> prohibited this scheduled_meal from being saved:</h2>
