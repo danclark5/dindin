@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
 
   authenticated :user do
-    root 'application#hello', as: :authenticated_root
+    root 'landing#index', as: :authenticated_root
   end
   root 'static_pages#home'
   resources :scheduled_meals do
@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       post 'attach_suggested_meal'
     end
   end
+
   post '/meals/tag', to: 'meals#tag'
   delete '/meals/untag', to: 'meals#untag'
   resources :meals
