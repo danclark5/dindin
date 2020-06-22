@@ -8,8 +8,8 @@
     <% else %>
       Nothing is planned.</br></br>
       How about <%= meal[1].name %>
-      <%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path do |form| %>
-        <%= form.hidden_field(:date, value: Date.today) %>
+      <%= form_with model: @scheduled_meal, url: attach_suggested_meal_scheduled_meals_path, local: true do |form| %>
+        <%= form.hidden_field(:date, value: meal[0].schedule_date) %>
         <%= form.hidden_field(:meal_id, value: meal[1].id) %>
         <%= form.submit "Add", class: "button is-primary" %>
       <% end %>
