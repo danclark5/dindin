@@ -32,6 +32,7 @@ export default class extends Controller {
    */
 
   beforeReflex (element, reflex) {
+    console.log('1234')
     // document.body.classList.add('wait')
   }
 
@@ -46,4 +47,5 @@ export default class extends Controller {
   afterReflex (element, reflex) {
     // document.body.classList.remove('wait')
   }
+
 }
