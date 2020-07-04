@@ -14,6 +14,9 @@
                                                 data-meal_id="<%=meal[1].id%>"
                                                 data-reflex-root="#<%="scheduled_meal_#{meal[0].schedule_date.strftime('%F')}"%>"
                                                 > Add </a>
+          <a href="#" class="button is-primary" data-reflex="click->MealReflex#reload_suggested_meal"
+                                                data-reflex-root="#<%="scheduled_meal_#{meal[0].schedule_date.strftime('%F')}"%>"
+                                                > <span class="icon"> <i class="fa fa-refresh"></i> </span> </a>
       </div>
     <% end %>
   </div>
