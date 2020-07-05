@@ -30,7 +30,7 @@ class ScheduledMealsController < ApplicationController
 
     respond_to do |format|
       if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.save
-        format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully created.' }
+        format.html { redirect_to root_path, notice: 'Scheduled meal was successfully created.' }
         format.json { render :show, status: :created, location: scheduled_meals_path }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class ScheduledMealsController < ApplicationController
   def update
     respond_to do |format|
       if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.update(scheduled_meal_params)
-        format.html { redirect_to scheduled_meals_path, notice: 'Scheduled meal was successfully updated.' }
+        format.html { redirect_to root_path, notice: 'Scheduled meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @scheduled_meal }
       else
         format.html { render :edit }

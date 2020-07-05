@@ -6,7 +6,7 @@
     <% if meal[0].meal_id %>
       <div class="pb-3"><%= meal[0].meal_name %> </div>
       <div>
-        <%#<%= link_to('Change', edit_scheduled_meal_path(meal[0].id), class: "button is-primary") %>
+        <%= link_to('Change', edit_scheduled_meal_path(meal[0].id), class: "button is-primary") %>
         <a href="#" class="button is-primary" data-controller="scheduled-meals"
                                               data-confirm="Are you sure?"
                                               data-action="confirm:complete->scheduled-meals#remove_scheduled_meal"
