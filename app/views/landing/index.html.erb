@@ -6,12 +6,10 @@
     <% if meal[0].meal_id %>
       <div class="pb-3"><%= meal[0].meal_name %> </div>
       <div>
-        <%= link_to('Change', edit_scheduled_meal_path(meal[0].id), class: "button is-primary") %>
-        <a href="#" class="button is-primary" 
-
-                                              data-method="delete" 
+        <%#<%= link_to('Change', edit_scheduled_meal_path(meal[0].id), class: "button is-primary") %>
+        <a href="#" class="button is-primary" data-controller="scheduled-meals"
                                               data-confirm="Are you sure?"
-                    data-reflex="click->ScheduledMealsReflex#remove_scheduled_meal"
+                                              data-action="confirm:complete->scheduled-meals#remove_scheduled_meal"
                                               data-scheduled_meal_id="<%=meal[0].id%>"
                                               data-reflex-root="#<%="scheduled_meal_#{meal[0].schedule_date.strftime('%F')}"%>"
                                               > Drop </a>
@@ -20,7 +18,7 @@
       <div class="pb-3">Nothing is planned.</div>
       <div class="pb-3">How about <%= meal[1].name %></div>
       <div>
-          <%= link_to('Pick Meal', new_scheduled_meal_path(date: meal[0].schedule_date.strftime('%F')), class: "button is-primary") %>
+          <%#<%= link_to('Pick Meal', new_scheduled_meal_path(date: meal[0].schedule_date.strftime('%F')), class: "button is-primary") %>
           <a href="#" class="button is-primary" data-reflex="click->MealReflex#attach_suggested_meal"
                                                 data-date="<%=meal[0].schedule_date.strftime('%F') %>"
                                                 data-meal_id="<%=meal[1].id%>"

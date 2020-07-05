@@ -1,13 +1,13 @@
 import ApplicationController from './application_controller'
+import { Controller } from 'stimulus'
+import StimulusReflex from 'stimulus_reflex'
 
 
 /* This is the custom StimulusReflex controller for ScheduledMealsReflex.
  * Learn more at: https://docs.stimulusreflex.com
  */
 export default class extends ApplicationController {
-  connect () {
-    StimulusReflex.register(this)
-  }
+
   /* Reflex specific lifecycle methods.
    * Use methods similar to this example to handle lifecycle concerns for a specific Reflex method.
    * Using the lifecycle is optional, so feel free to delete these stubs if you don't need them.
@@ -30,16 +30,14 @@ export default class extends ApplicationController {
   //  element.innerText = 'Updating...'
   // }
 
-  // updateSuccess(element, reflex) {
-  //   element.innerText = 'Updated Successfully.'
-  // }
 
   // updateError(element, reflex, error) {
   //   console.error('updateError', error);
   //   element.innerText = 'Update Failed!'
   // }
 
-  beforeReflex(element, reflex) {
-    console.log('asdf')
+  remove_scheduled_meal(event, response) {
+    event.preventDefault()
+    if (event["detail"][0]) this.stimulate('ScheduledMealsReflex#remove_scheduled_meal', event.target)
   }
 }
