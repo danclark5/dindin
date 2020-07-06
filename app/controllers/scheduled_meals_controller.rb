@@ -1,6 +1,7 @@
 class ScheduledMealsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_scheduled_meal, only: [:show, :edit, :update, :destroy]
+  after_action :save_previous_url, only: [:new, :edit]
 
   def index
     start_date = DateTime.now.in_time_zone(current_user.preferred_timezone)
@@ -30,7 +31,7 @@ class ScheduledMealsController < ApplicationController
 
     respond_to do |format|
       if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.save
-        format.html { redirect_to root_path, notice: 'Scheduled meal was successfully created.' }
+        format.html { redirect_to session[:my_previous_url].to_s, notice: 'Scheduled meal was successfully created.' }
         format.json { render :show, status: :created, location: scheduled_meals_path }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class ScheduledMealsController < ApplicationController
   def update
     respond_to do |format|
       if desired_meal && desired_meal.accessible_to_user?(current_user) && @scheduled_meal.update(scheduled_meal_params)
-        format.html { redirect_to root_path, notice: 'Scheduled meal was successfully updated.' }
+        format.html { redirect_to session[:my_previous_url].to_s, notice: 'Scheduled meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @scheduled_meal }
       else
         format.html { render :edit }
@@ -103,5 +104,10 @@ class ScheduledMealsController < ApplicationController
 
   def attach_scheduled_meal_params
     params.require(:scheduled_meal).permit(:meal_id, :date)
+  end
+
+  def save_previous_url
+    # session[:previous_url] is a Rails built-in variable to save last url.
+    session[:my_previous_url] = URI(request.referer || '')
   end
 end
