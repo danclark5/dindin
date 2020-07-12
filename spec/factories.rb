@@ -31,4 +31,8 @@ FactoryBot.define do
   factory :tag do
     name { "A tag" }
   end
+
+  factory :ingredient do
+    name { "An ingredient" }
+  end
 end
