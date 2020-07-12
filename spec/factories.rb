@@ -35,4 +35,8 @@ FactoryBot.define do
   factory :ingredient do
     name { "An ingredient" }
   end
+
+  factory :ingredient_category do
+    name { "An ingredient category" }
+  end
 end

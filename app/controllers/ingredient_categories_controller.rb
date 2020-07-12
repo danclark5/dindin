@@ -1,28 +1,22 @@
 class IngredientCategoriesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :ensure_admin
   before_action :set_ingredient_category, only: [:show, :edit, :update, :destroy]
 
-  # GET /ingredient_categories
-  # GET /ingredient_categories.json
   def index
     @ingredient_categories = IngredientCategory.all
   end
 
-  # GET /ingredient_categories/1
-  # GET /ingredient_categories/1.json
   def show
   end
 
-  # GET /ingredient_categories/new
   def new
     @ingredient_category = IngredientCategory.new
   end
 
-  # GET /ingredient_categories/1/edit
   def edit
   end
 
-  # POST /ingredient_categories
-  # POST /ingredient_categories.json
   def create
     @ingredient_category = IngredientCategory.new(ingredient_category_params)
 
@@ -37,8 +31,6 @@ class IngredientCategoriesController < ApplicationController
     end
   end
 
-  # PATCH/PUT /ingredient_categories/1
-  # PATCH/PUT /ingredient_categories/1.json
   def update
     respond_to do |format|
       if @ingredient_category.update(ingredient_category_params)
@@ -51,8 +43,6 @@ class IngredientCategoriesController < ApplicationController
     end
   end
 
-  # DELETE /ingredient_categories/1
-  # DELETE /ingredient_categories/1.json
   def destroy
     @ingredient_category.destroy
     respond_to do |format|
@@ -62,13 +52,19 @@ class IngredientCategoriesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_ingredient_category
-      @ingredient_category = IngredientCategory.find(params[:id])
-    end
+  def set_ingredient_category
+    @ingredient_category = IngredientCategory.find(params[:id])
+  end
 
-    # Only allow a list of trusted parameters through.
-    def ingredient_category_params
-      params.require(:ingredient_category).permit(:name)
-    end
+  def ingredient_category_params
+    params.require(:ingredient_category).permit(:name)
+  end
+
+  def admin?
+    current_user.user_type == 'admin'
+  end
+
+  def ensure_admin
+    redirect_to root_url, notice: 'Unauthorized Action' and return unless admin?
+  end
 end

@@ -1,13 +1,8 @@
  require 'rails_helper'
 
 RSpec.describe "/ingredients", type: :request do
-  let(:valid_attributes) {
-    { name: 'Garlic' }
-  }
-
-  let(:invalid_attributes) {
-    { name: nil }
-  }
+  let(:valid_attributes) { { name: 'Garlic' ) }
+  let(:invalid_attributes) { { name: nil } }
 
   describe "GET /index" do
     before do
