@@ -5,6 +5,7 @@ RSpec.describe "ingredients/edit", type: :view do
     @ingredient = assign(:ingredient, Ingredient.create!(
       name: "MyString"
     ))
+    assign(:ingredient_categories, [create(:ingredient_category)])
   end
 
   it "renders the edit ingredient form" do

@@ -5,6 +5,7 @@ RSpec.describe "ingredients/new", type: :view do
     assign(:ingredient, Ingredient.new(
       name: "MyString"
     ))
+    assign(:ingredient_categories, [create(:ingredient_category)])
   end
 
   it "renders new ingredient form" do
