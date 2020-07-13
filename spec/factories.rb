@@ -31,4 +31,12 @@ FactoryBot.define do
   factory :tag do
     name { "A tag" }
   end
+
+  factory :ingredient do
+    name { "An ingredient" }
+  end
+
+  factory :ingredient_category do
+    name { "An ingredient category" }
+  end
 end

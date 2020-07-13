@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :ingredient_categories
+  resources :ingredients
   devise_for :users
 
   authenticated :user do
