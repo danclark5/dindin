@@ -1,8 +1,9 @@
  require 'rails_helper'
 
 RSpec.describe "/ingredients", type: :request do
-  let(:valid_attributes) { { name: 'Garlic' ) }
-  let(:invalid_attributes) { { name: nil } }
+  let!(:ingredient_category) { create(:ingredient_category) }
+  let(:valid_attributes) { { name: 'Garlic', ingredient_catgory: ingredient_category.id } }
+  let(:invalid_attributes) { { name: nil , ingredient_catgory: 'Invalid Category' } }
 
   describe "GET /index" do
     before do
@@ -186,7 +187,6 @@ RSpec.describe "/ingredients", type: :request do
       end
 
       context "with valid parameters" do
-
         it "updates the requested ingredient" do
           patch ingredient_url(ingredient), params: { ingredient: new_attributes }
           ingredient.reload

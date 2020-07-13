@@ -12,9 +12,11 @@ class IngredientsController < ApplicationController
 
   def new
     @ingredient = Ingredient.new
+    @ingredient_categories = IngredientCategory.all
   end
 
   def edit
+    @ingredient_categories = IngredientCategory.all
   end
 
   def create
@@ -25,6 +27,7 @@ class IngredientsController < ApplicationController
         format.html { redirect_to @ingredient, notice: 'Ingredient was successfully created.' }
         format.json { render :show, status: :created, location: @ingredient }
       else
+        @ingredient_categories = IngredientCategory.all
         format.html { render :new }
         format.json { render json: @ingredient.errors, status: :unprocessable_entity }
       end
@@ -37,6 +40,7 @@ class IngredientsController < ApplicationController
         format.html { redirect_to @ingredient, notice: 'Ingredient was successfully updated.' }
         format.json { render :show, status: :ok, location: @ingredient }
       else
+        @ingredient_categories = IngredientCategory.all
         format.html { render :edit }
         format.json { render json: @ingredient.errors, status: :unprocessable_entity }
       end
@@ -62,7 +66,7 @@ class IngredientsController < ApplicationController
   end
 
   def ingredient_params
-    params.require(:ingredient).permit(:name)
+    params.require(:ingredient).permit(:name, :ingredient_category_id)
   end
 
   def admin?

@@ -16,6 +16,11 @@
     <%= form.text_field :name %>
   </div>
 
+  <div class="field">
+    <%= form.label :ingredient_category%>
+    <%= form.select :ingredient_category_id, options_from_collection_for_select(@ingredient_categories, :id, :name, selected: ingredient.ingredient_category_id), include_blank: true %>
+  </div>
+
   <div class="actions">
     <%= form.submit %>
   </div>
