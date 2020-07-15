@@ -32,6 +32,4 @@
   </div>
 <% end %>
 
-<%= link_to "Past Meals", root_path(start_date: @past_start_date), class: "button is-link" %>
-<%= link_to "Future Meals", root_path(start_date: @future_start_date), class: "button is-link" %>
-
+<%= render(DateControlComponent.new(@past_start_date, @future_start_date)) %>
