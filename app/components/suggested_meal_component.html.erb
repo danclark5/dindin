@@ -1,0 +1,15 @@
+<div>
+  <div class="pb-3">Nothing is planned.</div>
+  <div class="pb-3">How about <%= @suggested_meal.name %></div>
+  <div>
+    <a href="#" class="button is-primary" data-reflex="click->MealReflex#attach_suggested_meal"
+                                          data-date="<%=@schedule_date %>"
+                                          data-meal_id="<%=@suggested_meal.id%>"
+                                          data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>"
+                                          > Schedule </a>
+    <%= link_to('Lookup', new_scheduled_meal_path(date: @schedule_date), class: "button is-primary") %>
+    <a href="#" class="button is-primary" data-reflex="click->MealReflex#reload_suggested_meal"
+                                          data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>">
+                                          <span class="icon"><i class="fa fa-refresh"></i></span></a>
+  </div>
+</div>

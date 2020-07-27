@@ -1,0 +1,10 @@
+<div class="pb-3"><%= @scheduled_meal.meal_name %> </div>
+<div>
+  <%= link_to('Change', edit_scheduled_meal_path(@scheduled_meal.id), class: "button is-primary") %>
+  <a href="#" class="button is-primary" data-controller="scheduled-meals"
+                                        data-confirm="Are you sure?"
+                                        data-action="confirm:complete->scheduled-meals#remove_scheduled_meal"
+                                        data-scheduled_meal_id="<%=@scheduled_meal.id%>"
+                                        data-reflex-root="#<%="scheduled_meal_#{@scheduled_meal.schedule_date.strftime('%F')}"%>"
+                                        > Drop </a>
+</div>
