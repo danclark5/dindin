@@ -1,0 +1,4 @@
+<%= component_controller do %>
+  <%= select_tag @name, options_for_select(@options), data: @data %>
+  <%= reflex_tag :hello, :button, "Click" %>
+<% end %>

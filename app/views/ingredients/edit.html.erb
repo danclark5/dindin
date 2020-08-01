@@ -2,5 +2,8 @@
 
 <%= render 'form', ingredient: @ingredient %>
 
+<%= render(CounterComponent.new) %>
+<%# render(IngredientSelectComponent.new(data: {reflex: "change->IngredientSelectComponent#update_select_options"})) %>
+
 <%= link_to 'Show', @ingredient %> |
 <%= link_to 'Back', ingredients_path %>
