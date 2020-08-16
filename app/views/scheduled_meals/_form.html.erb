@@ -1,5 +1,5 @@
 <br/>
-<%= form_with model: @scheduled_meal, local: true do |form| %>
+<%= form_with model: @scheduled_meal, local: true, html: { autocomplete: "off" } do |form| %>
   <% if @scheduled_meal.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@scheduled_meal.errors.count, "error") %> prohibited this scheduled_meal from being saved:</h2>
@@ -12,7 +12,7 @@
   <% end %>
 
   <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
-  <div class="ui-widget">
+  <div>
     <input data-autocomplete-source="/meals" type="text" name="meal" id="meal" class="input">
   </div>
   <%= form.hidden_field(:meal_id) %>
