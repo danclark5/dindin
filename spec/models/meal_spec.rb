@@ -29,8 +29,9 @@ RSpec.describe Meal, type: :model do
     end
   end
 
-  describe ".user_meals" do
+  describe ".meals_for" do
     context "the user has no owned meals" do
+      # TODO: this is wrong I think. It's creating users with meals. See ingredients.
       let!(:user_meals) { create_list(:user_with_meal, 2) }
       let!(:user) { user_meals.first }
       it "returns meals that belong to that user or global meals" do
