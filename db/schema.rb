@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_16_153918) do
+ActiveRecord::Schema.define(version: 2020_08_16_203302) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,6 +29,13 @@ ActiveRecord::Schema.define(version: 2020_08_16_153918) do
     t.integer "user_id"
     t.index ["ingredient_category_id"], name: "index_ingredients_on_ingredient_category_id"
     t.index ["user_id"], name: "index_ingredients_on_user_id"
+  end
+
+  create_table "ingredients_meals", id: false, force: :cascade do |t|
+    t.bigint "meal_id", null: false
+    t.bigint "ingredient_id", null: false
+    t.index ["ingredient_id"], name: "index_ingredients_meals_on_ingredient_id"
+    t.index ["meal_id"], name: "index_ingredients_meals_on_meal_id"
   end
 
   create_table "meal_suggestion_logs", force: :cascade do |t|

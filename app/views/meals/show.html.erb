@@ -3,6 +3,11 @@
   <%=@meal.name %>
 </h2>
 
+<div id="meal-ingredients">
+<%= render(CounterComponent.new()) %>
+<%= render(ManageMealIngredientsComponent.new(@meal)) %>
+</div>
+
 <div class="tags">
 <% @meal.tags.each do |tag| %>
   <span class="tag is-primary">

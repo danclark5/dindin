@@ -30,6 +30,7 @@ gem 'devise'
 gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
 gem 'view_component'
+gem 'view_component_reflex', '2.1.2'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

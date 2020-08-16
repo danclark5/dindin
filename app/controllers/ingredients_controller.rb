@@ -1,10 +1,23 @@
 class IngredientsController < ApplicationController
   before_action :authenticate_user!
-  before_action :ensure_admin
   before_action :set_ingredient, only: [:show, :edit, :update, :destroy]
 
   def index
     @ingredients = Ingredient.all
+    respond_to do |format|
+      format.html { @ingredients = Ingredient.ingredients_for(current_user) }
+      format.json do
+        if params.fetch(:term, "").empty?
+          @ingredients = Ingredient.ingredients_for(current_user).
+            select("ingredients.id as value", "ingredients.name as label", "'' as tag").order(label: :asc).all
+        else
+          @ingredients = Ingredient.ingredients_for(current_user).
+            search(params[:term]).
+            select("ingredients.id as value", "ingredients.name as label").order(label: :asc).all
+        end
+        render json: @ingredients
+      end
+    end
   end
 
   def show
@@ -21,6 +34,9 @@ class IngredientsController < ApplicationController
 
   def create
     @ingredient = Ingredient.new(ingredient_params)
+    unless ingredient_params[:global_ingredient] == '1' && current_user.user_type == 'admin'
+      @ingredient.user = current_user
+    end
 
     respond_to do |format|
       if @ingredient.save
@@ -36,7 +52,18 @@ class IngredientsController < ApplicationController
 
   def update
     respond_to do |format|
+      if current_user.user_type != 'admin' and @ingredient.user != current_user
+        redirect_to ingredients_path, notice: 'Unauthorized Action'
+        return
+      end
       if @ingredient.update(ingredient_params)
+        if current_user.user_type == 'admin'
+          if ingredient_params[:global_ingredient] == '1'
+            @ingredient.user = nil
+          else
+            @ingredient.user = current_user
+          end
+        end
         format.html { redirect_to @ingredient, notice: 'Ingredient was successfully updated.' }
         format.json { render :show, status: :ok, location: @ingredient }
       else
@@ -58,22 +85,13 @@ class IngredientsController < ApplicationController
   private
 
   def set_ingredient
-    if current_user.user_type != 'admin'
-      redirect_to root_url, notice: 'Unauthorized Action'
-      return
-    end
-    @ingredient = Ingredient.find(params[:id])
+    @ingredient = Ingredient.ingredients_for(current_user).find(params[:id])
+    @ingredient.global_ingredient = true if @ingredient.user.nil?
+  rescue ActiveRecord::RecordNotFound
+    redirect_to ingredients_path, alert: "Ingredient not found"
   end
 
   def ingredient_params
-    params.require(:ingredient).permit(:name, :ingredient_category_id)
-  end
-
-  def admin?
-    current_user.user_type == 'admin'
-  end
-
-  def ensure_admin
-    redirect_to root_url, notice: 'Unauthorized Action' and return unless admin?
+    params.require(:ingredient).permit(:name, :ingredient_category_id, :global_ingredient)
   end
 end
