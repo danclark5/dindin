@@ -17,6 +17,9 @@ document.addEventListener("turbolinks:load", function() {
       $('#meal').val(ui.item.label);
       return false;
     },
+    close: function(_, ui) {
+      $('meal').blur();
+    },
     minLength: 0
   })
   .autocomplete("instance")._renderItem = function(ul,meal) {
