@@ -1,27 +1,26 @@
-<%= component_controller do %>
-  <div>
-    <h1 class="title is-2">Ingredients</h1>
-    <div>
-      <input data-autocomplete-source="/ingredients" type="text" name="ingredient" id="ingredient" class="input">
-    </div>
+<%= component_controller do %> 
+  <div> 
+    <h3 class="subtitle is-3">Ingredients</h3>
+    <div class="field has-addons">
+      <p class="control">
+        <input data-autocomplete-source="/ingredients" type="text" name="ingredient" id="ingredient" class="input">
+      </p>
+      <p class="control">
     <a href="#" id="add-ingredient-button" class="button is-primary" data-reflex="click->ManageMealIngredientsComponent#add_ingredient"
                                           data-meal_id="<%=@meal.id%>"
                                           data-ingredient_id=""
                                           data-key=<%= key %>
                                         > Add </a>
+      </p>
+    </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Name</th>
-        </tr>
-      </thead>
+    <table class="table mt-3">
       <tbody>
         <% @meal.ingredients.each do |ingredient| %>
           <tr>
             <td><%=ingredient.name%></td>
             <td>
-              <a href="#" class="button is-primary" data-reflex="click->ManageMealIngredientsComponent#remove_ingredient"
+              <a href="#" class="button is-small is-primary" data-reflex="click->ManageMealIngredientsComponent#remove_ingredient"
                                           data-meal_id="<%=@meal.id%>"
                                           data-ingredient_id="<%=ingredient.id%>"
                                           data-key=<%= key %>

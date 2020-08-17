@@ -4,7 +4,11 @@
 </h2>
 
 <div id="meal-ingredients">
-<%= render(ManageMealIngredientsComponent.new(@meal)) %>
+<% if current_user.user_type == 'admin' or @meal.user == current_user %>
+  <%= render(ManageMealIngredientsComponent.new(@meal)) %>
+<% else %>
+  <%= render(MealIngredientsComponent.new(@meal)) %>
+<% end %>
 </div>
 
 <div class="tags">
