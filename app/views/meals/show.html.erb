@@ -3,6 +3,14 @@
   <%=@meal.name %>
 </h2>
 
+<div id="meal-ingredients">
+<% if current_user.user_type == 'admin' or @meal.user == current_user %>
+  <%= render(ManageMealIngredientsComponent.new(@meal, current_user)) %>
+<% else %>
+  <%= render(MealIngredientsComponent.new(@meal)) %>
+<% end %>
+</div>
+
 <div class="tags">
 <% @meal.tags.each do |tag| %>
   <span class="tag is-primary">

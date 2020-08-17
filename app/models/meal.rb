@@ -6,6 +6,7 @@ class Meal < ApplicationRecord
   validates :name, presence: true
   has_many :scheduled_meals, dependent: :destroy
   has_many :meal_suggestion_logs, dependent: :destroy
+  has_and_belongs_to_many :ingredients
   belongs_to :user, optional: true
   has_and_belongs_to_many :tags, dependent: :destroy
 

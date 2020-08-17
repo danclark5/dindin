@@ -16,6 +16,12 @@ FactoryBot.define do
         create(:meal, name: "User Meal", user: user)
       end
     end
+
+    factory :user_with_ingredient do
+      after(:create) do |user|
+        create(:ingredient, name: "User Ingredient", user: user)
+      end
+    end
   end
 
   factory :meal do

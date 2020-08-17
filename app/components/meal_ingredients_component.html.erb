@@ -1,0 +1,12 @@
+<div>
+  <h3 class="subtitle is-3">Ingredients</h3>
+  <table class="table mt-3">
+    <tbody>
+      <% @ingredients.each do |ingredient| %>
+        <tr>
+          <td><%=ingredient.name%></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

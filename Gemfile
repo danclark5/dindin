@@ -29,7 +29,9 @@ gem 'pg_search'
 gem 'devise'
 gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
+gem "stimulus_reflex", '3.3.0.pre2'
 gem 'view_component'
+gem 'view_component_reflex'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -62,4 +64,3 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem "stimulus_reflex", "~> 3.2"

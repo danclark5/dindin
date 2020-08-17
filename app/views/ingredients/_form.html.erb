@@ -21,6 +21,13 @@
     <%= form.select :ingredient_category_id, options_from_collection_for_select(@ingredient_categories, :id, :name, selected: ingredient.ingredient_category_id), include_blank: true %>
   </div>
 
+  <% if current_user.user_type == 'admin' %>
+    <div class="field">
+      <%= form.label :global_ingredient, class: "checkbox" %>
+      <%= form.check_box :global_ingredient %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= form.submit %>
   </div>
