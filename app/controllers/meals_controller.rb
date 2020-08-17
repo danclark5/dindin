@@ -4,7 +4,7 @@ class MealsController < ApplicationController
 
   def index
     respond_to do |format|
-      format.html { @meals = Meal.includes(:user).meals_for(current_user) }
+      format.html { @meals = Meal.includes(:user).meals_for(current_user).order(name: :asc) }
       format.json do
          if params.fetch(:term, "").empty?
            @meals = Meal.meals_for(current_user).

@@ -32,4 +32,8 @@ class Meal < ApplicationRecord
   def accessible_to_user?(user)
     self.user == user || self.user.nil?
   end
+
+  def global_meal?
+    self.user.nil?
+  end
 end
