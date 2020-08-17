@@ -5,7 +5,9 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Global?</th>
+      <% if current_user.user_type == 'admin'%>
+        <th>Global?</th>
+      <% end %>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -14,7 +16,9 @@
     <% @meals.each do |meal| %>
       <tr>
         <td><%= link_to meal.name, meal %></td>
-        <td><%= meal.global? ? 'Yes' : 'No'  %></td>
+        <% if current_user.user_type == 'admin'%>
+          <td><%= meal.global? ? 'Yes' : 'No'  %></td>
+        <% end %>
         <% if current_user.user_type == 'admin' || meal.user == current_user%>
           <td><%= link_to 'Edit', edit_meal_path(meal) %></td>
         <% else %>
