@@ -1,12 +1,17 @@
 class ManageMealIngredientsComponent <  ViewComponentReflex::Component
   def initialize(meal)
-    @ingredients = meal.ingredients 
+    @meal = meal
   end
 
   def add_ingredient
   end
 
   def remove_ingredient
-    puts "YOLOLOLOLOL"
+    @meal = Meal.find(element.dataset[:meal_id])
+    ingredient = @meal.ingredients.find(element.dataset[:ingredient_id])
+
+    if ingredient
+      @meal.ingredients.delete(ingredient)
+    end
   end
 end

@@ -1,6 +1,9 @@
 <%= component_controller do %>
   <div>
     <h1 class="title is-2">Ingredients</h1>
+    <div>
+      <input data-autocomplete-source="/ingredients" type="text" name="ingredient" id="ingredient" class="input">
+    </div>
     <table>
       <thead>
         <tr>
@@ -8,10 +11,17 @@
         </tr>
       </thead>
       <tbody>
-        <% @ingredients.each do |ingredient| %>
+        <% @meal.ingredients.each do |ingredient| %>
           <tr>
             <td><%=ingredient.name%></td>
-            <td><%= reflex_tag :remove_ingredient, :button, "Remove Ingredient" %></td>
+            <td>
+              <a href="#" class="button is-primary" data-reflex="click->ManageMealIngredientsComponent#remove_ingredient"
+                                          data-meal_id="<%=@meal.id%>"
+                                          data-ingredient_id="<%=ingredient.id%>"
+                                          data-key=<%= key %>
+                                        > Remove </a>
+
+           </td>
           </tr>
         <% end %>
       </tbody>

@@ -12,7 +12,7 @@ class IngredientsController < ApplicationController
             select("ingredients.id as value", "ingredients.name as label", "'' as tag").order(label: :asc).all
         else
           @ingredients = Ingredient.ingredients_for(current_user).
-            search(params[:term]).
+            ingredient_search(params[:term]).
             select("ingredients.id as value", "ingredients.name as label").order(label: :asc).all
         end
         render json: @ingredients

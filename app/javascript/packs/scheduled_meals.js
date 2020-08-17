@@ -1,6 +1,23 @@
 document.addEventListener("turbolinks:load", function() {
   require("jquery-ui");
 
+  if (document.getElementById("ingredient")) {
+    console.log('asdf')
+    $('#ingredient').autocomplete({
+      source: $('#ingredient').data('autocomplete-source'),
+      select: function(_, ui) {
+        return false;
+      },
+      minLength: 0
+    });
+
+    $('#ingredient').focus( function() {
+      if (!$(this).val()) {
+        $(this).autocomplete("search",$(this).val())
+      }
+    });
+  }
+
   function build_meal_result(meal) {
     if (meal.tag) {
       tag = "<span class=\"tag is-primary is-pulled-right\">" + meal.tag + "</span>";
@@ -10,27 +27,26 @@ document.addEventListener("turbolinks:load", function() {
     return "<div class=\"meal_results\">" + meal.label + tag  + "</div>";
   }
 
-  $('#meal').autocomplete({
-    source: $('#meal').data('autocomplete-source'),
-    select: function(_, ui) {
-      $('#scheduled_meal_meal_id').val(ui.item.value);
-      $('#meal').val(ui.item.label);
-      return false;
-    },
-    close: function(_, ui) {
-      $('meal').blur();
-    },
-    minLength: 0
-  })
-  .autocomplete("instance")._renderItem = function(ul,meal) {
-    return $( "<li>" )
-      .append( build_meal_result(meal) )
-      .appendTo( ul );
-  };
+  if (document.getElementById("meal")) {
+    $('#meal').autocomplete({
+      source: $('#meal').data('autocomplete-source'),
+      select: function(_, ui) {
+        $('#scheduled_meal_meal_id').val(ui.item.value);
+        $('#meal').val(ui.item.label);
+        return false;
+      },
+      minLength: 0
+    })
+      .autocomplete("instance")._renderItem = function(ul,meal) {
+        return $( "<li>" )
+          .append( build_meal_result(meal) )
+          .appendTo( ul );
+      };
 
-  $('#meal').focus( function() {
-    if (!$(this).val()) {
-      $(this).autocomplete("search",$(this).val())
-    }
-  })
+    $('#meal').focus( function() {
+      if (!$(this).val()) {
+        $(this).autocomplete("search",$(this).val())
+      }
+    });
+  }
 });
