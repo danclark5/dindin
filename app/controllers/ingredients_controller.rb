@@ -76,10 +76,17 @@ class IngredientsController < ApplicationController
   end
 
   def destroy
-    @ingredient.destroy
-    respond_to do |format|
-      format.html { redirect_to ingredients_url, notice: 'Ingredient was successfully destroyed.' }
-      format.json { head :no_content }
+    if  current_user.user_type == 'admin' || @meal&.user == current_user
+      @ingredient.destroy
+      respond_to do |format|
+        format.html { redirect_to ingredients_url, notice: 'Ingredient was successfully destroyed.' }
+        format.json { head :no_content }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to ingredients_path, alert: 'Unable to remove ingredient.' }
+        format.json { head :no_content }
+      end
     end
   end
 

@@ -77,7 +77,7 @@ class MealsController < ApplicationController
   end
 
   def destroy
-    if @meal.user == current_user || current_user.user_type == 'admin'
+    if current_user.user_type == 'admin' || @meal&.user == current_user 
       @meal.destroy
       respond_to do |format|
         format.html { redirect_to meals_path, notice: 'Meal was successfully destroyed.' }

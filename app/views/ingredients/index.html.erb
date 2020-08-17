@@ -1,12 +1,14 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Ingredients</h1>
+<h2 class="subtitle is-2">Ingredients</h2>
 
 <table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th>Global</th>
+        <% if current_user.user_type == 'admin'%>
+          <th>Global</th>
+        <% end %>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -15,9 +17,15 @@
     <% @ingredients.each do |ingredient| %>
       <tr>
         <td><%= link_to ingredient.name, ingredient %></td>
-        <td><%= ingredient.global? ? 'Yes' : 'No'  %></td>
-        <td><%= link_to 'Edit', edit_ingredient_path(ingredient) %></td>
-        <td><%= link_to 'Remove', ingredient, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% if current_user.user_type == 'admin'%>
+          <td><%= ingredient.global? ? 'Yes' : 'No'  %></td>
+        <% end %>
+        <% if current_user.user_type == 'admin' || ingredient.user == current_user%>
+          <td><%= link_to 'Edit', edit_ingredient_path(ingredient) %></td>
+        <% end %>
+        <% if current_user.user_type == 'admin' || ingredient.user == current_user%>
+          <td><%= link_to 'Remove', ingredient, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
