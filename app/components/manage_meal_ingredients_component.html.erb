@@ -4,6 +4,12 @@
     <div>
       <input data-autocomplete-source="/ingredients" type="text" name="ingredient" id="ingredient" class="input">
     </div>
+    <a href="#" id="add-ingredient-button" class="button is-primary" data-reflex="click->ManageMealIngredientsComponent#add_ingredient"
+                                          data-meal_id="<%=@meal.id%>"
+                                          data-ingredient_id=""
+                                          data-key=<%= key %>
+                                        > Add </a>
+
     <table>
       <thead>
         <tr>

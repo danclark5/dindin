@@ -2,10 +2,11 @@ document.addEventListener("turbolinks:load", function() {
   require("jquery-ui");
 
   if (document.getElementById("ingredient")) {
-    console.log('asdf')
     $('#ingredient').autocomplete({
       source: $('#ingredient').data('autocomplete-source'),
       select: function(_, ui) {
+        $('#ingredient').val(ui.item.label);
+        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', ui.item.value);
         return false;
       },
       minLength: 0

@@ -4,6 +4,9 @@ class ManageMealIngredientsComponent <  ViewComponentReflex::Component
   end
 
   def add_ingredient
+    @meal = Meal.find(element.dataset[:meal_id])
+    ingredient = Ingredient.find(element.dataset[:ingredient_id])
+    @meal.ingredients << ingredient
   end
 
   def remove_ingredient
