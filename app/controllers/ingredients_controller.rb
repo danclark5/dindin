@@ -63,6 +63,7 @@ class IngredientsController < ApplicationController
           else
             @ingredient.user = current_user
           end
+          @ingredient.save
         end
         format.html { redirect_to @ingredient, notice: 'Ingredient was successfully updated.' }
         format.json { render :show, status: :ok, location: @ingredient }

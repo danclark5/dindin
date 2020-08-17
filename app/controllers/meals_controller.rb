@@ -65,6 +65,7 @@ class MealsController < ApplicationController
           else
             @meal.user = current_user
           end
+          @meal.save
         end
         format.html { redirect_to @meal, notice: 'Meal was successfully updated.' }
         format.json { render :show, status: :ok, location: @meal }
