@@ -5,7 +5,7 @@
 
 <div id="meal-ingredients">
 <% if current_user.user_type == 'admin' or @meal.user == current_user %>
-  <%= render(ManageMealIngredientsComponent.new(@meal)) %>
+  <%= render(ManageMealIngredientsComponent.new(@meal, current_user)) %>
 <% else %>
   <%= render(MealIngredientsComponent.new(@meal)) %>
 <% end %>
