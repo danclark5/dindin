@@ -2,19 +2,20 @@
 
 <h1>Ingredients</h1>
 
-<table>
+<table class="table">
   <thead>
     <tr>
       <th>Name</th>
-      <th colspan="3"></th>
+      <th>Global</th>
+      <th colspan="2"></th>
     </tr>
   </thead>
 
   <tbody>
     <% @ingredients.each do |ingredient| %>
       <tr>
-        <td><%= ingredient.name %></td>
-        <td><%= link_to 'Show', ingredient %></td>
+        <td><%= link_to ingredient.name, ingredient %></td>
+        <td><%= ingredient.global? ? 'Yes' : 'No'  %></td>
         <td><%= link_to 'Edit', edit_ingredient_path(ingredient) %></td>
         <td><%= link_to 'Remove', ingredient, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>

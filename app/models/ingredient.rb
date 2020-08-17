@@ -14,4 +14,8 @@ class Ingredient < ApplicationRecord
     left_outer_joins(:user)
       .where("users.id = ? OR users.id is null", user.id)
   }
+
+  def global?
+    self.user.nil?
+  end
 end

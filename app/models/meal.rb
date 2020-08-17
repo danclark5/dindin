@@ -33,7 +33,7 @@ class Meal < ApplicationRecord
     self.user == user || self.user.nil?
   end
 
-  def global_meal?
+  def global?
     self.user.nil?
   end
 end
