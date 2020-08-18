@@ -8,15 +8,15 @@ class MealsController < ApplicationController
       format.json do
          if params.fetch(:term, "").empty?
            @meals = Meal.meals_for(current_user).
-             select("meals.id as value", "meals.name as label", "'' as tag").order(label: :asc).all
+             select("meals.id as value", "meals.name as label").order(label: :asc).all
          else
            direct_meals = Meal.meals_for(current_user).
              search(params[:term]).
-             select("meals.id as value", "meals.name as label", "'' as tag").reorder("")
+             select("meals.id as value", "meals.name as label").reorder("")
            tagged_meals = Tag.search(params[:term]).
              joins(:meals).
              merge(Meal.meals_for(current_user)).
-             select('"meals".id as value', '"meals".name as label', "tags.name as tag").reorder("")
+             select('"meals".id as value', '"meals".name as label').reorder("")
            @meals = Meal.from("(#{direct_meals.to_sql} UNION #{tagged_meals.to_sql}) AS meals").order(label: :asc)
          end
          render json: @meals
