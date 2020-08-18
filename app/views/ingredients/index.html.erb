@@ -6,9 +6,10 @@
   <thead>
     <tr>
       <th>Name</th>
-        <% if current_user.user_type == 'admin'%>
-          <th>Global</th>
-        <% end %>
+      <% if current_user.user_type == 'admin'%>
+        <th>Global</th>
+      <% end %>
+      <th>Category</th>
       <th colspan="2"></th>
     </tr>
   </thead>
@@ -20,6 +21,7 @@
         <% if current_user.user_type == 'admin'%>
           <td><%= ingredient.global? ? 'Yes' : 'No'  %></td>
         <% end %>
+        <td> <%= ingredient.ingredient_category&.name %></td>
         <% if current_user.user_type == 'admin' || ingredient.user == current_user%>
           <td><%= link_to 'Edit', edit_ingredient_path(ingredient) %></td>
         <% end %>
