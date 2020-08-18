@@ -3,5 +3,7 @@
 
 <%= render 'form', meal: @meal %>
 
+<%= render(ManageMealIngredientsComponent.new(@meal, current_user)) %>
+
 <%= link_to 'Show', @meal %> |
 <%= link_to 'Back', meals_path %>
