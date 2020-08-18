@@ -12,10 +12,14 @@
   <% end %>
 
   <%= form.hidden_field(:date, value: @scheduled_meal.date) %>
-  <div>
-    <input data-autocomplete-source="/meals" type="text" name="meal" id="meal" class="input">
-  </div>
   <%= form.hidden_field(:meal_id) %>
-  <%= form.submit "Save Meal", class:"button is-small is-primary"%>
+  <div class="field has-addons">
+    <p class="control">
+      <input data-autocomplete-source="/meals" type="text" name="meal" id="meal" class="input">
+    </p>
+    <p class="control">
+    <%= form.submit "Save Meal", class:"button is-primary"%>
+    </p>
+  </div>
 <% end %>
 <br/>
