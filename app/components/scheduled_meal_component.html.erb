@@ -1,4 +1,7 @@
 <div class="pb-3"><%= @scheduled_meal.meal_name %> </div>
+<% if @scheduled_meal.meal.recipe_url %>
+  <div class="pb-3"> <%= link_to "View Recipe", @scheduled_meal.meal.recipe_url %> </div>
+<% end %>
 <div>
   <%= link_to('Change', edit_scheduled_meal_path(@scheduled_meal.id), class: "button is-primary") %>
   <a href="#" class="button is-primary" data-controller="scheduled-meals"

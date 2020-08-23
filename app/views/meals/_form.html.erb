@@ -16,6 +16,11 @@
     <%= form.text_field :name, required: true, class: "input" %>
   </div>
 
+  <div class="field">
+    <%= form.label :recipe_link, class: "label" %>
+    <%= form.text_field :recipe_url, class: "input" %>
+  </div>
+
   <% if current_user.user_type == 'admin' %>
     <div class="field">
       <%= form.label :global_meal, class: "checkbox" %>

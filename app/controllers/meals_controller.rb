@@ -130,7 +130,6 @@ class MealsController < ApplicationController
   end
 
   private
-  # Use callbacks to share common setup or constraints between actions.
   def set_meal
     @meal = Meal.meals_for(current_user).find(params[:id])
     @meal.global_meal = true if @meal.user.nil?
@@ -138,9 +137,8 @@ class MealsController < ApplicationController
     redirect_to meals_path, alert: "Meal not found"
   end
 
-  # Never trust parameters from the scary internet, only allow the white list through.
   def meal_params
-    params.require(:meal).permit(:name, :global_meal)
+    params.require(:meal).permit(:name, :recipe_url, :global_meal)
   end
 
   def tag_params
