@@ -58,6 +58,7 @@ class MealsController < ApplicationController
         redirect_to meals_path, notice: 'Unauthorized Action'
         return
       end
+      Rails.logger.info("#{'*'*80}\nmeal_params: #{meal_params}")
       if @meal.update(meal_params)
         if current_user.user_type == 'admin'
           if meal_params[:global_meal] == '1'
