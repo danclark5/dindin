@@ -9,6 +9,16 @@ document.addEventListener("turbolinks:load", function() {
         document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', ui.item.value);
         return false;
       },
+      response: function(_, ui) {
+        if (ui["content"].length == 0) {
+          document.getElementById('create-ingredient').classList.remove("is-hidden")
+          console.log("Ingredient not found!")
+          const ingredient_label = document.getElementById('ingredient').value
+          document.getElementById('create-ingredient-link').setAttribute('data-ingredient_term', ingredient_label);
+        } else {
+          document.getElementById('create-ingredient').classList.add("is-hidden")
+        }
+      },
       minLength: 0
     });
 

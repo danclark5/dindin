@@ -10,5 +10,6 @@ export default class extends ApplicationController {
 
   afterReflex(anchorElement) {
     document.getElementById('ingredient').value = "";
+    document.getElementById('create-ingredient').classList.add("is-hidden")
   }
 }

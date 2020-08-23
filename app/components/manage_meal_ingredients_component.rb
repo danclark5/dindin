@@ -18,4 +18,14 @@ class ManageMealIngredientsComponent <  ViewComponentReflex::Component
       @meal.ingredients.delete(ingredient)
     end
   end
+
+  def create_ingredient
+    @meal = Meal.meals_for(@user).find(element.dataset[:meal_id])
+    ingredient = Ingredient.create(name: element.dataset[:ingredient_term])
+    if @user.user_type != 'admin'
+      ingredient.user = @user
+      ingredient.save
+    end
+    @meal.ingredients << ingredient
+  end
 end
