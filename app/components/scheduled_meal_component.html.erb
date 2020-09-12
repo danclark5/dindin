@@ -1,4 +1,4 @@
-<div class="pb-3"><%= @scheduled_meal.meal_name %> </div>
+<div class="pb-3"><%= link_to @scheduled_meal.meal_name, @scheduled_meal.meal %> </div>
 <% if @scheduled_meal.meal.recipe_url %>
   <div class="pb-3"> <%= link_to "View Recipe", @scheduled_meal.meal.recipe_url %> </div>
 <% end %>
