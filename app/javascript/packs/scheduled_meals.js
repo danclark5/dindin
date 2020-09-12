@@ -7,20 +7,29 @@ document.addEventListener("turbolinks:load", function() {
       select: function(_, ui) {
         $('#ingredient').val(ui.item.label);
         document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', ui.item.value);
+        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', ui.item.label);
         return false;
       },
+      search: function(_, ui) {
+        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
+        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
+      },
       response: function(_, ui) {
-        if (ui["content"].length == 0) {
-          document.getElementById('create-ingredient').classList.remove("is-hidden")
-          console.log("Ingredient not found!")
-          const ingredient_label = document.getElementById('ingredient').value
-          document.getElementById('create-ingredient-link').setAttribute('data-ingredient_term', ingredient_label);
-        } else {
-          document.getElementById('create-ingredient').classList.add("is-hidden")
+        if (!ui.content.some(elem => elem.label === this.value)) {
+          document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', 0);
+          document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', this.value);
+          ui["content"].unshift({value: 0, label: this.value})
         }
       },
       minLength: 0
-    });
+    }).autocomplete("instance")._renderMenu = function( ul, items ) {
+      //this._renderItemData( ul, {value: 0, label: this.element[0].value} )
+      let that = this;
+      $.each( items, function( index, item ) {
+        that._renderItemData( ul, item );
+      });
+      $( ul ).find( "li:odd" ).addClass( "odd" );
+    };
 
     $('#ingredient').focus( function() {
       if (!$(this).val()) {

@@ -11,18 +11,11 @@
                   data-reflex="click->ManageMealIngredientsComponent#add_ingredient"
                   data-meal_id="<%=@meal.id%>"
                   data-ingredient_id=""
+                  data-ingredient_term=""
                   data-key=<%= key %>
                   > Add </a>
       </p>
     </div>
-    <p id="create-ingredient" class="is-hidden has-text-danger">
-    Ingredient not found!
-    <a href="#" id="create-ingredient-link"
-                data-reflex="click->ManageMealIngredientsComponent#create_ingredient"
-                data-meal_id="<%=@meal.id%>"
-                data-key=<%= key %>
-              > Click here to add it </a>
-    </p>
 
     <table class="table mt-3">
       <tbody>
