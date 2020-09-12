@@ -11,8 +11,10 @@ document.addEventListener("turbolinks:load", function() {
         return false;
       },
       search: function(_, ui) {
-        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
-        document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
+        if (!this.value) {
+          document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
+          document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
+        }
       },
       response: function(_, ui) {
         if (!ui.content.some(elem => elem.label === this.value)) {
