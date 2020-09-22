@@ -1,0 +1,4 @@
+<% provide :title, "Shopping List" %>
+<h2 class="subtitle is-2">Your Shopping List</h2>
+<%=render(ShoppingListHeaderComponent.new(@is_shopping_list_present, @is_shopping_list_current, current_user)) %>
+<%=render(ShoppingListDetailsComponent.new(current_user)) %>

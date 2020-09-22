@@ -1,0 +1,25 @@
+<%= component_controller do %> 
+  <div id="shopping-list-header">
+    <hr/>
+    <span class="has-text-weight-bold"> Thru 10/5/2020 </span>
+    <a href="#" class="button is-primary is-small is-pulled-right"
+                id="reset_shopping_list_button"
+                data-reflex="click->ShoppingListHeaderComponent#clear_shopping_list"
+                data-key=<%= key %>
+              > Reset List </a>
+    <% if !@is_shopping_list_present %>
+      <a href="#" class="button is-primary is-small is-pulled-right"
+                  id="create_shopping_list_button"
+                  data-reflex="click->ShoppingListHeaderComponent#create_shopping_list"
+                  data-key=<%= key %>
+                > Create List </a>
+    <% elsif @is_shopping_list_present && !@is_shopping_list_current %>
+      <a href="#" class="button is-primary is-small is-pulled-right"
+                  id="update_shopping_list_button"
+                  data-reflex="click->ShoppingListHeaderComponent#update_shopping_list"
+                  data-key=<%= key %>
+                > Update List </a>
+    <% end %>
+    <hr/>
+  </div>
+<% end %>
