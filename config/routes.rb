@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'shopping_list/show', to: 'shopping_lists#show'
   resources :ingredient_categories
   resources :ingredients
   devise_for :users

@@ -1,0 +1,33 @@
+<%= component_controller do %> 
+ <div class="level-left  is-expanded">
+    <div class="level-item">
+      <label class="checkbox">
+        <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
+      </label>
+    </div>
+
+    <div class="level-item">
+      <% if @shopping_list_item.ingredient %>
+        <%=@shopping_list_item.ingredient.name%>
+      <% else %>
+        <%=@shopping_list_item.scheduled_meal.meal.name%>
+      <% end %>
+    </div>
+
+    <div class="level-item">
+      <% if @shopping_list_item.ingredient %>
+        <%=@shopping_list_item.ingredient.ingredient_category %>
+      <% else %>
+        &mdash;
+      <% end %>
+    </div>
+
+    <div class="level-item">
+      <% if @shopping_list_item.ingredient %>
+        <%=@shopping_list_item.scheduled_meal.meal.name%>
+      <% else %>
+        &mdash;
+      <% end %>
+    </div>
+ </div>
+<% end %>
