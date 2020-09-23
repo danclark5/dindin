@@ -3,6 +3,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
     @is_shopping_list_present = is_shopping_list_present
     @is_shopping_list_current = is_shopping_list_current
     @user = user
+    @shopping_list_end_date = get_shopping_list_end_date
   end
 
   def create_shopping_list
@@ -18,6 +19,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
         ShoppingListItem.create(scheduled_meal: scheduled_meal, user: @user, acquired: false)
       end
     end
+    @shopping_list_end_date = get_shopping_list_end_date
     refresh! '.shopping-list-details', selector
   end
 
@@ -37,12 +39,19 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
         ShoppingListItem.create(scheduled_meal: scheduled_meal, user: @user, acquired: false)
       end
     end
+    @shopping_list_end_date = get_shopping_list_end_date
     refresh! '.shopping-list-details', selector
   end
 
   def clear_shopping_list
     ShoppingListItem.items_for(@user).destroy_all
+    @shopping_list_end_date = nil
     refresh! '.shopping-list-details', selector
+  end
+
+  def get_shopping_list_end_date
+    shopping_list_items = ShoppingListItem.items_for(@user)
+    shopping_list_items.max_by { |sli| sli.scheduled_meal.date }.scheduled_meal.date if shopping_list_items.any?
   end
 
 end
