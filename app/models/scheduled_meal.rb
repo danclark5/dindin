@@ -2,6 +2,8 @@ class ScheduledMeal < ApplicationRecord
   belongs_to :meal
   belongs_to :user
 
+  has_many :shopping_list_items, dependent: :destroy
+
   scope :scheduled_meals_for, ->(user) {
     left_outer_joins(:user)
       .where("users.id = ? OR users.id is null", user.id)
