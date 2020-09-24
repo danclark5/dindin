@@ -11,4 +11,9 @@ class ShoppingListItemComponent < ViewComponentReflex::Component
     @shopping_list_item.acquired = !@shopping_list_item.acquired
     @shopping_list_item.save
   end
+
+  def delete
+    @shopping_list_item.destroy
+    refresh! '.shopping-list-details', selector
+  end
 end
