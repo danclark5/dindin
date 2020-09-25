@@ -51,7 +51,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
 
   def get_shopping_list_end_date
     shopping_list_items = ShoppingListItem.items_for(@user)
-    shopping_list_items.max_by { |sli| sli.scheduled_meal.date }.scheduled_meal.date if shopping_list_items.any?
+    (shopping_list_items.max_by { |sli| sli&.scheduled_meal&.date || Date.today }.scheduled_meal&.date || Date.today) if shopping_list_items.any?
   end
 
 end
