@@ -1,28 +1,26 @@
-<%= component_controller(class: "level") do %>
-  <div class="level is-mobile">
-    <div class="level-left">
-      <div class="level-item">
-        <label class="checkbox">
-          <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
-        </label>
-      </div>
-
-      <div class="level-item">
-        <% if @shopping_list_item.ingredient %>
-          <%=@shopping_list_item.ingredient.name%>
-        <% else %>
-          <%=@shopping_list_item.scheduled_meal.meal.name%>
-        <% end %>
-      </div>
+<%= component_controller(class: "level is-mobile") do %>
+  <div class="level-left">
+    <div class="level-item">
+      <label class="checkbox">
+        <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
+      </label>
     </div>
-    <div class="level-right">
-      <div class=level-item">
-        <%= reflex_tag :delete, :button, class: "button is-danger" do %>
-          <span class="icon">
-            <i class="fa fa-trash"></i>
-          </span>
-        <% end %>
-      </div>
+
+    <div class="level-item">
+      <% if @shopping_list_item.ingredient %>
+        <%=@shopping_list_item.ingredient.name%>
+      <% else %>
+        <%=@shopping_list_item.scheduled_meal.meal.name%>
+      <% end %>
+    </div>
+  </div>
+  <div class="level-right">
+    <div class=level-item">
+      <%= reflex_tag "confirm:complete->delete", :button, class: "button is-danger", data: {confirm: "Are you sure?"}  do %>
+        <span class="icon">
+          <i class="fa fa-trash"></i>
+        </span>
+      <% end %>
     </div>
   </div>
 <% end %>
