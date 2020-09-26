@@ -5,14 +5,18 @@ class ShoppingListDetailsComponent < ViewComponentReflex::Component
   end
 
   def add_ingredient
+
     if element.dataset[:ingredient_id] != "0"
       ingredient = Ingredient.find(element.dataset[:ingredient_id])
-    else
-      ingredient = Ingredient.create(name: element.dataset[:ingredient_term].titleize)
+    elsif element.dataset[:ingredient_term].length > 0
       if @user.user_type != 'admin'
-        ingredient.user = @user
-        ingredient.save
+        user_id = @user.id
+      else
+        user_id = nil
       end
+      ingredient = Ingredient.find_or_create_by(name: element.dataset[:ingredient_term].titleize,
+                                             ingredient_category_id: USER_ITEM.id,
+                                             user_id: user_id)
     end
     ShoppingListItem.create(ingredient: ingredient, user: @user, acquired: false) if ingredient
     refresh! '.shopping-list-details', selector

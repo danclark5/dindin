@@ -13,9 +13,10 @@
         <div class="level-item">
           <a href="#" class="button is-primary is-small is-pulled-right"
                       id="reset_shopping_list_button"
-                      data-reflex="click->ShoppingListHeaderComponent#clear_shopping_list"
+                      data-reflex="confirm:complete->ShoppingListHeaderComponent#clear_shopping_list"
+                      data-confirm="Are you sure?"
                       data-key=<%= key %>
-                    > Reset List </a>
+                    > Clear List </a>
         </div>
       <% end %>
       <% if !@is_shopping_list_present %>

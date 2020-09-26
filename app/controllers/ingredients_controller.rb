@@ -7,12 +7,15 @@ class IngredientsController < ApplicationController
     respond_to do |format|
       format.html { @ingredients = Ingredient.ingredients_for(current_user) }
       format.json do
+        ingredient_only_clause = "coalesce(ingredients.ingredient_category_id, 0) != #{USER_ITEM.id}" if params.fetch("ingredients_only", 0)
         if params.fetch(:term, "").empty?
           @ingredients = Ingredient.ingredients_for(current_user).
+            where(ingredient_only_clause).
             select("ingredients.id as value", "ingredients.name as label", "'' as tag").order(label: :asc).all
         else
           @ingredients = Ingredient.ingredients_for(current_user).
             ingredient_search(params[:term]).
+            where(ingredient_only_clause).
             select("ingredients.id as value", "ingredients.name as label").order(label: :asc).all
         end
         render json: @ingredients

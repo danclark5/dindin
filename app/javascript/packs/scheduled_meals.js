@@ -17,7 +17,9 @@ document.addEventListener("turbolinks:load", function() {
         }
       },
       response: function(_, ui) {
-        if (!ui.content.some(elem => elem.label === this.value)) {
+        if (probable_item = ui.content.find(elem => elem.label.toLowerCase() === this.value.toLowerCase())) {
+          document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', probable_item.value);
+        } else {
           document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', 0);
           document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', this.value);
           ui["content"].unshift({value: 0, label: this.value})
