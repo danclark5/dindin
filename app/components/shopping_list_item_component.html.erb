@@ -16,11 +16,16 @@
   </div>
   <div class="level-right">
     <div class=level-item">
-      <%= reflex_tag "confirm:complete->delete", :button, class: "button is-danger", data: {confirm: "Are you sure?"}  do %>
-        <span class="icon">
-          <i class="fa fa-trash"></i>
-        </span>
-      <% end %>
+      <button class="button is-danger"
+              data-controller="shopping-lists"
+              data-action="confirm:complete->shopping-lists#remove_shopping_list_item"
+              data-confirm="Are you sure?"
+              data-key=<%= key %>
+            >
+            <span class="icon">
+              <i class="fa fa-trash"></i>
+            </span>
+      </button>
     </div>
   </div>
 <% end %>

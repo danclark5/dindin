@@ -13,7 +13,8 @@
         <div class="level-item">
           <a href="#" class="button is-primary is-small is-pulled-right"
                       id="reset_shopping_list_button"
-                      data-reflex="confirm:complete->ShoppingListHeaderComponent#clear_shopping_list"
+                      data-controller="shopping-lists"
+                      data-action="confirm:complete->shopping-lists#clear_shopping_list"
                       data-confirm="Are you sure?"
                       data-key=<%= key %>
                     > Clear List </a>
