@@ -1,17 +1,28 @@
 <%= component_controller(class: "level is-mobile") do %>
   <div class="level-left">
     <div class="level-item">
-      <label class="checkbox">
+      <div class="pretty p-icon p-toggle p-curve is-size-4">
         <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
-      </label>
-    </div>
-
-    <div class="level-item">
-      <% if @shopping_list_item.ingredient %>
-        <%=@shopping_list_item.ingredient.name%>
-      <% else %>
-        <%=@shopping_list_item.scheduled_meal.meal.name%>
-      <% end %>
+        <div class="state p-on">
+          <i class="icon fa fa-check-square has-text-success"></i>
+          <label>
+            <% if @shopping_list_item.ingredient %>
+              <%=@shopping_list_item.ingredient.name%>
+            <% else %>
+              <%=@shopping_list_item.scheduled_meal.meal.name%>
+            <% end %>
+          </label>
+        </div>
+        <div class="state p-off">
+          <label>
+            <% if @shopping_list_item.ingredient %>
+              <%=@shopping_list_item.ingredient.name%>
+            <% else %>
+              <%=@shopping_list_item.scheduled_meal.meal.name%>
+            <% end %>
+          </label>
+        </div>
+      </div>
     </div>
   </div>
   <div class="level-right">
