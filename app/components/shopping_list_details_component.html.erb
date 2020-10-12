@@ -2,7 +2,4 @@
   <div class="shopping-list-details">
     <%=render(ShoppingListItemComponent.with_collection(@shopping_list_items.all)) %>
   </div>
-  <% if @shopping_list_items.any? %>
-    <hr/>
-  <% end %>
 <% end %>

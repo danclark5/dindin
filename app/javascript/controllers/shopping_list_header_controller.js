@@ -13,4 +13,11 @@ export default class extends ApplicationController {
     event.preventDefault()
     if (event["detail"][0]) this.stimulate('ShoppingListItemComponent#delete', event.target)
   }
+
+  afterReflex(anchorElement) {
+    console.log("heh?");
+    document.getElementById('ingredient').value = "";
+    document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
+    document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
+  }
 }
