@@ -39,4 +39,27 @@
       <% end %>
     </div>
   </div>
+  <div class="level">
+    <div class="level-item">
+      <h2 class="subtitle">Add other items</h2>
+    </div>
+  </div>
+  <div class="level">
+    <div class="level-item">
+      <div class="field has-addons">
+        <p class="control">
+        <input data-autocomplete-source="/ingredients" type="text" name="ingredient" id="ingredient" class="input">
+        </p>
+        <p class="control">
+        <a href="#" id="add-ingredient-button"
+                    class="button is-primary"
+                    data-reflex="click->ShoppingListHeaderComponent#add_ingredient"
+                    data-ingredient_id=""
+                    data-ingredient_term=""
+                    data-key=<%= key %>
+                  > Add </a>
+        </p>
+      </div>
+    </div>
+  </div>
 <% end %>
