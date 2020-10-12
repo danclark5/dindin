@@ -15,7 +15,6 @@ export default class extends ApplicationController {
   }
 
   afterReflex(anchorElement) {
-    console.log("heh?");
     document.getElementById('ingredient').value = "";
     document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
     document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");

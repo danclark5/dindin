@@ -16,8 +16,8 @@
                       data-controller="shopping-list-header"
                       data-action="confirm:complete->shopping-list-header#clear_shopping_list"
                       data-confirm="Are you sure?"
-                      data-key=<%= key %>
-                    > Clear List </a>
+                      data-key=clear-<%= key %>
+                    > Clear the List </a>
         </div>
       <% end %>
       <% if !@is_shopping_list_present %>
@@ -25,7 +25,7 @@
           <a href="#" class="button is-primary is-small is-pulled-right"
                       id="create_shopping_list_button"
                       data-reflex="click->ShoppingListHeaderComponent#create_shopping_list"
-                      data-key=<%= key %>
+                      data-key=create-<%= key %>
                     > Create List </a>
         </div>
       <% elsif @is_shopping_list_present && !@is_shopping_list_current %>
@@ -33,7 +33,7 @@
           <a href="#" class="button is-primary is-small is-pulled-right"
                       id="update_shopping_list_button"
                       data-reflex="click->ShoppingListHeaderComponent#update_shopping_list"
-                      data-key=<%= key %>
+                      data-key=update-<%= key %>
                     > Update List </a>
         </div>
       <% end %>
