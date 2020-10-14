@@ -10,11 +10,9 @@ class ShoppingListItemComponent < ViewComponentReflex::Component
   def toggle_item
     @shopping_list_item.acquired = !@shopping_list_item.acquired
     @shopping_list_item.save
-    refresh! '.shopping-list-details', selector
   end
 
   def delete
     @shopping_list_item.destroy
-    refresh! '.shopping-list-details', selector
   end
 end
