@@ -9,34 +9,32 @@
       </div>
     <% end %>
     <div class="level-right">
-      <% if @is_shopping_list_present %>
-        <div class="level-item">
-          <a href="#" class="button is-primary is-small is-pulled-right"
-                      id="reset_shopping_list_button"
-                      data-controller="shopping-list-header"
-                      data-action="confirm:complete->shopping-list-header#clear_shopping_list"
-                      data-confirm="Are you sure?"
-                      data-key=clear-<%= key %>
-                    > Clear the List </a>
-        </div>
-      <% end %>
-      <% if !@is_shopping_list_present %>
-        <div class="level-item">
-          <a href="#" class="button is-primary is-small is-pulled-right"
-                      id="create_shopping_list_button"
-                      data-reflex="click->ShoppingListHeaderComponent#create_shopping_list"
-                      data-key=create-<%= key %>
-                    > Create List </a>
-        </div>
-      <% elsif @is_shopping_list_present && !@is_shopping_list_current %>
-        <div class="level-item">
-          <a href="#" class="button is-primary is-small is-pulled-right"
-                      id="update_shopping_list_button"
-                      data-reflex="click->ShoppingListHeaderComponent#update_shopping_list"
-                      data-key=update-<%= key %>
-                    > Update List </a>
-        </div>
-      <% end %>
+      <div class="level-item">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+          id="reset_shopping_list_button"
+          data-action="confirm:complete->shopping-list-header#clear_shopping_list"
+          data-confirm="Are you sure?"
+          data-key=<%= key %>
+                  style="display: <%= @is_shopping_list_present ? 'block' : 'none' %>"
+                  > Clear the List </a>
+      </div>
+      <div class="level-item">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+                    id="create_shopping_list_button"
+                    data-reflex="click->ShoppingListHeaderComponent#create_shopping_list"
+                    data-key=<%= key %>
+                  style="display: <%= @is_shopping_list_present ? 'none' : 'block' %>"
+                  > Create List </a>
+      </div>
+      <div class="level-item">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+                    id="update_shopping_list_button"
+                    data-reflex="click->ShoppingListHeaderComponent#update_shopping_list"
+                    data-key=<%= key %>
+
+                  style="display: <%= @is_shopping_list_present && !@is_shopping_list_current  ? 'block' : 'none' %>"
+                  > Update List </a>
+      </div>
     </div>
   </div>
   <div class="level">
