@@ -57,7 +57,7 @@ class IngredientCategoriesController < ApplicationController
   end
 
   def ingredient_category_params
-    params.require(:ingredient_category).permit(:name)
+    params.require(:ingredient_category).permit(:name, :icon_identifier, :accent_color)
   end
 
   def admin?

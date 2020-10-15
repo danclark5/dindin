@@ -27,7 +27,6 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'pg'
 gem 'pg_search'
 gem 'devise'
-gem 'font-awesome-rails'
 gem 'sendgrid-ruby'
 gem "stimulus_reflex", '3.3.0.pre2'
 gem 'view_component'

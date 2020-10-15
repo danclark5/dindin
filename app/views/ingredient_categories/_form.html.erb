@@ -12,11 +12,21 @@
   <% end %>
 
   <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
+    <%= form.label :name, class: "label" %>
+    <%= form.text_field :name, class: "input" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :icon_identifier, class: "label" %>
+    <%= form.text_field :icon_identifier, class: "input" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :accent_color, class: "label" %>
+    <%= form.text_field :accent_color, class: "input" %>
   </div>
 
   <div class="actions">
-    <%= form.submit %>
+    <%= form.submit class: "button is-small is-primary" %>
   </div>
 <% end %>

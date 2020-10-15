@@ -26,7 +26,14 @@
     </div>
   </div>
   <div class="level-right">
-    <div class=level-item">
+
+    <div class="level-item">
+      <% if @shopping_list_item.ingredient %>
+        <span class="fa-stack fa-2x">
+          <i class="fa fa-circle fa-stack-2x" style="color: <%= @shopping_list_item.ingredient&.ingredient_category&.accent_color %>"></i>
+          <i class="<%= @shopping_list_item.ingredient&.ingredient_category&.icon_identifier %> fa-stack-1x"></i>
+        </span>
+      <% end %>
       <button class="button is-danger"
               data-controller="shopping-list-header"
               data-action="confirm:complete->shopping-list-header#remove_shopping_list_item"

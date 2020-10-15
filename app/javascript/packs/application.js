@@ -20,3 +20,4 @@ require("turbolinks").start()
 
 import "controllers"
 import "channels"
+import "@fortawesome/fontawesome-free/js/all";
