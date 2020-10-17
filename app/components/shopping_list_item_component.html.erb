@@ -1,49 +1,71 @@
-<%= component_controller(class: "level is-mobile") do %>
-  <div class="level-left">
-    <div class="level-item">
-      <div class="pretty p-icon p-toggle p-curve is-size-5">
-        <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
-        <div class="state p-on">
-          <i class="icon fa fa-check-square has-text-success"></i>
-          <label>
-            <% if @shopping_list_item.ingredient %>
-              <%=@shopping_list_item.ingredient.name%>
-            <% else %>
-              <%=@shopping_list_item.scheduled_meal.meal.name%>
-            <% end %>
-          </label>
+<%= component_controller do %>
+  <div class="level is-mobile">
+    <div class="level-left">
+      <div class="level-item">
+        <div class="pretty p-icon p-toggle p-curve is-size-5">
+          <%= reflex_tag :toggle_item, :input, nil, type: "checkbox", checked: @shopping_list_item.acquired%>
+          <div class="state p-on">
+            <i class="icon fa fa-check-square has-text-success"></i>
+            <label>
+              <% if @shopping_list_item.ingredient %>
+                <%=@shopping_list_item.ingredient.name%>
+              <% else %>
+                <%=@shopping_list_item.scheduled_meal.meal.name%>
+              <% end %>
+            </label>
+          </div>
+          <div class="state p-off">
+            <label>
+              <% if @shopping_list_item.ingredient %>
+                <%=@shopping_list_item.ingredient.name%>
+              <% else %>
+                <%=@shopping_list_item.scheduled_meal.meal.name%>
+              <% end %>
+            </label>
+          </div>
         </div>
-        <div class="state p-off">
-          <label>
-            <% if @shopping_list_item.ingredient %>
-              <%=@shopping_list_item.ingredient.name%>
-            <% else %>
-              <%=@shopping_list_item.scheduled_meal.meal.name%>
-            <% end %>
-          </label>
+      </div>
+    </div>
+    <div class="level-right">
+
+      <div class="level-item">
+        <% if @shopping_list_item.ingredient %>
+          <span class="fa-stack fa-2x">
+            <i class="fa fa-circle fa-stack-2x" style="color: <%= @shopping_list_item.ingredient&.ingredient_category&.accent_color %>"></i>
+            <i class="<%= @shopping_list_item.ingredient&.ingredient_category&.icon_identifier %> fa-stack-1x"></i>
+          </span>
+        <% end %>
+      </div>
+      <div class="level-item">
+        <span class="fa-stack fa-2x shopping-item-caret" data-target="shopping_item_detail_<%= @shopping_list_item.id %>">
+          <i class="fa fa-circle fa-stack-2x has-text-primary"></i>
+          <i class="fas fa-caret-down fa-stack-1x has-text-white"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="shopping-list-item-detail is-hidden" id="shopping_item_detail_<%= @shopping_list_item.id %>">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          Meal: <%=@shopping_list_item.scheduled_meal.meal.name%>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <button class="button is-danger"
+                  data-controller="shopping-list-header"
+                  data-action="confirm:complete->shopping-list-header#remove_shopping_list_item"
+                  data-confirm="Are you sure?"
+                  data-key=<%= key %>
+                >
+                <span class="icon">
+                  <i class="fa fa-trash"></i>
+                </span>
+          </button>
         </div>
       </div>
     </div>
   </div>
-  <div class="level-right">
-
-    <div class="level-item">
-      <% if @shopping_list_item.ingredient %>
-        <span class="fa-stack fa-2x">
-          <i class="fa fa-circle fa-stack-2x" style="color: <%= @shopping_list_item.ingredient&.ingredient_category&.accent_color %>"></i>
-          <i class="<%= @shopping_list_item.ingredient&.ingredient_category&.icon_identifier %> fa-stack-1x"></i>
-        </span>
-      <% end %>
-      <button class="button is-danger"
-              data-controller="shopping-list-header"
-              data-action="confirm:complete->shopping-list-header#remove_shopping_list_item"
-              data-confirm="Are you sure?"
-              data-key=<%= key %>
-            >
-            <span class="icon">
-              <i class="fa fa-trash"></i>
-            </span>
-      </button>
-    </div>
-  </div>
+  <hr/>
 <% end %>
