@@ -46,13 +46,34 @@
   </div>
   <div class="shopping-list-item-detail is-hidden" id="shopping_item_detail_<%= @shopping_list_item.id %>">
     <div class="level is-mobile">
+      <div class="level-item">
+        <% if @shopping_list_item&.scheduled_meal&.meal&.name%>
+          Meal: <%=@shopping_list_item.scheduled_meal.meal.name%>
+        <% else %>
+          Meal: N/A
+        <% end %>
+      </div>
+    </div>
+    <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
-          <% if @shopping_list_item&.scheduled_meal&.meal&.name%>
-            Meal: <%=@shopping_list_item.scheduled_meal.meal.name%>
-          <% else %>
-            Meal: Not associated with a meal
-          <% end %>
+          Snooze for: <%=@shopping_list_item.snooze_until%>
+        </div>
+        <div class="level-item">
+          <button class="button is-primary"
+                  data-reflex="click->ShoppingListItemComponent#snooze"
+                  data-hours=1
+                  data-key=<%= key %>>
+            1 hour
+          </button>
+        </div>
+        <div class="level-item">
+          <button class="button is-primary"
+                  data-reflex="click->ShoppingListItemComponent#snooze"
+                  data-hours=24
+                  data-key=<%= key %>>
+            1 day
+          </button>
         </div>
       </div>
       <div class="level-right">

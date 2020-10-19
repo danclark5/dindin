@@ -15,4 +15,11 @@ class ShoppingListItemComponent < ViewComponentReflex::Component
   def delete
     @shopping_list_item.destroy
   end
+
+  def snooze
+    snooze_until = element.dataset[:hours].to_i.hours.from_now
+    @shopping_list_item.snooze_until = snooze_until
+    @shopping_list_item.save
+    refresh! '.shopping-list-details', selector
+  end
 end

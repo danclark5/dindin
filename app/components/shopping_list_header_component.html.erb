@@ -35,6 +35,13 @@
                   style="display: <%= @is_shopping_list_present && !@is_shopping_list_current  ? 'block' : 'none' %>"
                   > Update List </a>
       </div>
+      <div class="level-item">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+                    id="reset_snoozes_button"
+                    data-reflex="click->ShoppingListHeaderComponent#reset_snoozes"
+                    data-key=<%= key %>
+                  > Reset Snoozes </a>
+      </div>
     </div>
   </div>
   <div class="level">

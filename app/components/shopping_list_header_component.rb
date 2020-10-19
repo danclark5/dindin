@@ -55,7 +55,6 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
   end
 
   def add_ingredient
-
     if element.dataset[:ingredient_id] != "0"
       ingredient = Ingredient.find(element.dataset[:ingredient_id])
     elsif element.dataset[:ingredient_term].length > 0
@@ -71,6 +70,14 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
     ShoppingListItem.create(ingredient: ingredient, user: @user, acquired: false) if ingredient
     refresh! '.shopping-list-details', selector
     refresh! '#shopping-list-header', selector
+  end
+
+  def reset_snoozes
+    ShoppingListItem.items_for(@user).each do |item|
+      item.snooze_until = nil
+      item.save
+    end
+    refresh! '.shopping-list-details', selector
   end
 
 end
