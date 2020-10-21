@@ -4,7 +4,6 @@ class ShoppingListDetailsComponent < ViewComponentReflex::Component
     @shopping_list_items = ShoppingListItem.items_for(@user).
       includes(:ingredient).
       includes(:scheduled_meal).
-      where("snooze_until <= current_timestamp OR snooze_until is NULL").
       order("ingredients.ingredient_category_id, ingredients.name")
   end
 

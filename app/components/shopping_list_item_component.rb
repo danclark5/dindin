@@ -1,6 +1,7 @@
 class ShoppingListItemComponent < ViewComponentReflex::Component
   def initialize(shopping_list_item:)
     @shopping_list_item = shopping_list_item
+    @snoozed = (shopping_list_item.snooze_until && shopping_list_item.snooze_until > DateTime.current)
   end
 
   def collection_key
@@ -20,6 +21,6 @@ class ShoppingListItemComponent < ViewComponentReflex::Component
     snooze_until = element.dataset[:hours].to_i.hours.from_now
     @shopping_list_item.snooze_until = snooze_until
     @shopping_list_item.save
-    refresh! '.shopping-list-details', selector
+    @snoozed = true
   end
 end

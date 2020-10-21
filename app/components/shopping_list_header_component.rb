@@ -77,7 +77,6 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
       item.snooze_until = nil
       item.save
     end
-    refresh! '.shopping-list-details', selector
   end
 
 end
