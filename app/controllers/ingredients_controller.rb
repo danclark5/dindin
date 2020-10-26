@@ -5,7 +5,7 @@ class IngredientsController < ApplicationController
   def index
     @ingredients = Ingredient.all
     respond_to do |format|
-      format.html { @ingredients = Ingredient.ingredients_for(current_user) }
+      format.html { @ingredients = Ingredient.ingredients_for(current_user).order(name: :asc) }
       format.json do
         ingredient_only_clause = "coalesce(ingredients.ingredient_category_id, 0) != #{USER_ITEM.id}" if params.fetch("ingredients_only", 0)
         if params.fetch(:term, "").empty?
