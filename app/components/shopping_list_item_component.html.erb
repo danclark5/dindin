@@ -50,30 +50,39 @@
       <div class="level is-mobile">
         <div class="level-item">
           <% if @shopping_list_item&.scheduled_meal&.meal&.name%>
-            Meal: <%=@shopping_list_item.scheduled_meal.meal.name%>
-        <% else %>
-          Meal: N/A
+            Meal: <%=link_to(@shopping_list_item.scheduled_meal.meal.name, @shopping_list_item.scheduled_meal.meal)%>
         <% end %>
         </div>
+        <% if @shopping_list_item.ingredient%>
+          <div class="level-item">
+            <%=link_to("View Ingredient", @shopping_list_item.ingredient)%>
+          </div>
+        <% end %>
       </div>
       <div class="level is-mobile">
         <div class="level-left">
-          <div class="level-item">
-            <span> Snooze: </span>
-            <button class="button is-primary snooze_button"
-                    data-reflex="click->ShoppingListItemComponent#snooze"
-                    data-hours=1
-                    data-key=<%= key %>>
-                    1 hour
-            </button>
+          <div class="level-item is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Snooze</label>
+            </div>
           </div>
-          <div class="level-item">
-            <button class="button is-primary snooze_button"
-                    data-reflex="click->ShoppingListItemComponent#snooze"
-                    data-hours=24
-                  data-key=<%= key %>>
-                  1 day
-            </button>
+          <div class="level-item field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <button class="button is-primary snooze_button"
+                        data-reflex="click->ShoppingListItemComponent#snooze"
+                        data-hours=1
+                        data-key=<%= key %>>
+                        1 hour
+                </button>
+                <button class="button is-primary snooze_button"
+                        data-reflex="click->ShoppingListItemComponent#snooze"
+                        data-hours=24
+                        data-key=<%= key %>>
+                        1 day
+                </button>
+              </div>
+            </div>
           </div>
         </div>
         <div class="level-right">

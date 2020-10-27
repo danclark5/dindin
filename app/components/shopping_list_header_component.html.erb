@@ -9,30 +9,27 @@
       </div>
     <% end %>
     <div class="level is-mobile">
-      <div class="level-item">
+      <div class="level-item <%= @is_shopping_list_present ? '' : 'is-hidden' %>">
         <a href="#" class="button is-primary is-small is-pulled-right"
           id="reset_shopping_list_button"
           data-action="confirm:complete->shopping-list-header#clear_shopping_list"
           data-confirm="Are you sure?"
           data-key=<%= key %>
-                  style="display: <%= @is_shopping_list_present ? 'block' : 'none' %>"
                   > Clear the List </a>
       </div>
-      <div class="level-item">
+      <div class="level-item <%= @is_shopping_list_present ? 'is-hidden' : '' %>">
         <a href="#" class="button is-primary is-small is-pulled-right"
                     id="create_shopping_list_button"
                     data-reflex="click->ShoppingListHeaderComponent#create_shopping_list"
                     data-key=<%= key %>
-                  style="display: <%= @is_shopping_list_present ? 'none' : 'block' %>"
                   > Create List </a>
       </div>
-      <div class="level-item">
+      <div class="level-item <%= @is_shopping_list_present && !@is_shopping_list_current  ? '' : 'is-hidden' %>">
         <a href="#" class="button is-primary is-small is-pulled-right"
                     id="update_shopping_list_button"
                     data-reflex="click->ShoppingListHeaderComponent#update_shopping_list"
                     data-key=<%= key %>
 
-                  style="display: <%= @is_shopping_list_present && !@is_shopping_list_current  ? 'block' : 'none' %>"
                   > Update List </a>
       </div>
       <div class="level-item">

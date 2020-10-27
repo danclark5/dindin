@@ -21,7 +21,7 @@
       <tbody>
         <% @meal.ingredients.each do |ingredient| %>
           <tr>
-            <td><%=ingredient.name%></td>
+            <td><%=link_to(ingredient.name, ingredient)%></td>
             <td>
               <a href="#" class="button is-small is-primary" data-reflex="click->ManageMealIngredientsComponent#remove_ingredient"
                                           data-meal_id="<%=@meal.id%>"
