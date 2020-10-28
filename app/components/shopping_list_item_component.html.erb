@@ -1,7 +1,7 @@
 <%= component_controller do %>
 
   <% snoozed_until = @shopping_list_item.snooze_until %>
-  <div class="shopping_item_container <%= @snoozed ? 'is-hidden' : '' %>">
+  <div class="shopping_item_container <%= @snoozed ? 'is-hidden snoozed' : '' %>">
     <div class="level is-mobile">
       <div class="level-left">
         <div class="level-item">
