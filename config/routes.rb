@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   get 'static_pages/home'
   get 'static_pages/help'
   get 'static_pages/about'
+  get 'whats_new', to: 'static_pages#whats_new'
   get 'feedback/new', to: 'static_pages#feedback_new'
   post 'feedback', to: 'static_pages#feedback_post'
 end

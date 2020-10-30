@@ -61,7 +61,7 @@ function link_event_listeners(event) {
 document.addEventListener("turbolinks:load", link_event_listeners);
 
 document.addEventListener('stimulus-reflex:after', event => {
-  list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent'];
+  list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     link_event_listeners(event)
   }

@@ -10,6 +10,9 @@ class StaticPagesController < ApplicationController
   def about
   end
 
+  def whats_new
+  end
+
   def feedback_new
   end
 

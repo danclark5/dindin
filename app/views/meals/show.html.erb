@@ -3,11 +3,16 @@
   <%=@meal.name %>
 </h2>
 
-<% if @meal.recipe_url %>
-  <p class="mb-3">
-  <span class="label"> Recipe</span> <%= link_to @meal.recipe_url, @meal.recipe_url %> 
-  </p>
-<% end %>
+<div class="field">
+  <label class="label"> Recipe</label> 
+  <div class="control">
+    <% if @meal.recipe_url %>
+      <%= link_to @meal.recipe_url, @meal.recipe_url %> 
+    <% else %>
+      No Recipe Saved
+    <% end %>
+  </div>
+</div>
 
 <div id="meal-ingredients">
 <% if current_user.user_type == 'admin' or @meal.user == current_user %>

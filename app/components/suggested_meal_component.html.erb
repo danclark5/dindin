@@ -1,6 +1,6 @@
 <div>
   <div class="pb-3">Nothing is planned.</div>
-  <div class="pb-3">How about <%= @suggested_meal.name %></div>
+  <div class="pb-3">How about <%= link_to(@suggested_meal.name, @suggested_meal) %></div>
   <div>
     <a href="#" class="button is-primary" data-reflex="click->MealReflex#attach_suggested_meal"
                                           data-date="<%=@schedule_date %>"
