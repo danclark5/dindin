@@ -1,4 +1,4 @@
-function toggle_carret(event) {
+function toggle_caret(event) {
   event.currentTarget.classList.toggle('is-active');
   let target = document.getElementById(event.currentTarget.dataset.target);
   target.classList.toggle('is-hidden');
@@ -30,14 +30,17 @@ function toggle_show_snoozed(event){
 }
 
 function link_event_listeners(event) {
+  console.log("link els **************************************");
   const shopping_item_carets = document.querySelectorAll('.shopping-item-caret');
+  console.log(`${shopping_item_carets.length} of carets`);
   if (shopping_item_carets.length > 0) {
     shopping_item_carets.forEach(function(shopping_item) {
-      shopping_item.addEventListener("click", toggle_carret);
+      shopping_item.addEventListener("click", toggle_caret);
     });
   }
 
   const snooze_buttons = document.querySelectorAll('.snooze_button');
+  console.log(`${snooze_buttons.length} of snooze buttons`);
   if (snooze_buttons.length > 0) {
     snooze_buttons.forEach(function(snooze_button) {
       snooze_button.addEventListener("click",  toggle_snooze_button);
@@ -47,6 +50,7 @@ function link_event_listeners(event) {
   }
 
   const toggle_snoozes_buttons = document.querySelectorAll('#toggle_snoozes_button');
+  console.log(`${toggle_snoozes_buttons.length} of toggle snoozes`);
   if (toggle_snoozes_buttons.length > 0) {
     toggle_snoozes_buttons.forEach(function(toggle_snoozes_button) {
       toggle_snoozes_button.addEventListener("click", toggle_show_snoozed);
