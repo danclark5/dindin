@@ -30,7 +30,7 @@ function toggle_show_snoozed(event){
 }
 
 function link_event_listeners(event) {
-  console.log("link els **************************************");
+  console.log("link els");
   const shopping_item_carets = document.querySelectorAll('.shopping-item-caret');
   console.log(`${shopping_item_carets.length} of carets`);
   if (shopping_item_carets.length > 0) {
@@ -61,6 +61,7 @@ function link_event_listeners(event) {
 document.addEventListener("turbolinks:load", link_event_listeners);
 
 document.addEventListener('stimulus-reflex:after', event => {
+  console.log("stimulus-reflex:after**************************************");
   list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     link_event_listeners(event)
