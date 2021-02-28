@@ -10,7 +10,7 @@
     "node-forge": "^0.10.0",
     "pretty-checkbox": "^3.0.3",
     "stimulus": "^1.1.1",
-    "stimulus_reflex": "hopsoft/stimulus_reflex#master",
+    "stimulus_reflex": "3.4.1",
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
