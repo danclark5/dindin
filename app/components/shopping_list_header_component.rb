@@ -4,7 +4,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
     @is_shopping_list_current = is_shopping_list_current
     @user = user
     @shopping_list_end_date = get_shopping_list_end_date
-    Rails.logger.info("User: #{user}"})
+    Rails.logger.info("User: #{user}")
   end
 
   def create_shopping_list
@@ -45,7 +45,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
   end
 
   def clear_shopping_list
-    Rails.logger.info("User: #{@user}"})
+    Rails.logger.info("User: #{@user}")
     ShoppingListItem.items_for(@user).destroy_all
     @shopping_list_end_date = nil
     refresh! '.shopping-list-details', selector
