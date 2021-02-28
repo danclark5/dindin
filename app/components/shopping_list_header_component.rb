@@ -4,7 +4,7 @@ class ShoppingListHeaderComponent < ViewComponentReflex::Component
     @is_shopping_list_current = is_shopping_list_current
     @user_id = user.id
     @shopping_list_end_date = get_shopping_list_end_date
-    Rails.logger.info("User1: #{user_id}")
+    Rails.logger.info("User1: #{@user_id}")
   end
 
   def create_shopping_list
