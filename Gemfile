@@ -28,7 +28,7 @@ gem 'pg'
 gem 'pg_search'
 gem 'devise'
 gem 'sendgrid-ruby'
-gem "stimulus_reflex", github: "hopsoft/stimulus_reflex"
+gem "stimulus_reflex"
 gem 'view_component'
 gem 'view_component_reflex'
 
