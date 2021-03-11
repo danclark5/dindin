@@ -36,8 +36,37 @@ export default class extends ApplicationController {
   //   element.innerText = 'Update Failed!'
   // }
 
+  connect () {
+    console.log("called connect on scheduled_meals_controller");
+    StimulusReflex.register(this)
+  }
+
+  reflexSuccess(anchorElement, reflex, noop, reflexId) {
+    console.log("ReflexSuccess schedule_meals controller hehehe");
+  }
+  reflexError(anchorElement, reflex, noop, reflexId) {
+    console.log("ReflexError schedule_meals controller hehehe");
+  }
+  reflexHalted(anchorElement, reflex, noop, reflexId) {
+    console.log("ReflexHalted schedule_meals controller hehehe");
+  }
+
+  afterRemoveScheduledMeal(anchorElement, reflex, noop, reflexId) {
+    console.log("afterRSM schedule_meals controller hehehe");
+  }
+
   remove_scheduled_meal(event, response) {
     event.preventDefault()
+    console.log("called remove_scheduled_meal");
     if (event["detail"][0]) this.stimulate('ScheduledMealsReflex#remove_scheduled_meal', event.target)
+  }
+
+  afterReflex(anchorElement, reflex, noop, reflexId) {
+    console.log("after schedule_meals controller hehehe");
+  }
+
+
+  finalizeReflex(anchorElement, reflex, noop, reflexId) {
+    console.log("finalize scheduled_meals_controller hehehe");
   }
 }

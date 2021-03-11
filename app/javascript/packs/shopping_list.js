@@ -30,6 +30,7 @@ function toggle_show_snoozed(event){
 }
 
 function link_event_listeners(event) {
+  st_listeners(event)
   console.log("link els");
   const shopping_item_carets = document.querySelectorAll('.shopping-item-caret');
   console.log(`${shopping_item_carets.length} of carets`);
@@ -60,10 +61,36 @@ function link_event_listeners(event) {
 
 document.addEventListener("turbolinks:load", link_event_listeners);
 
-document.addEventListener('stimulus-reflex:after', event => {
-  console.log("stimulus-reflex:after**************************************");
-  list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
-  if (list.includes(event.detail.reflex.split("#")[0])){
-    link_event_listeners(event)
-  }
-})
+function st_listeners(event) {
+  document.addEventListener('stimulus-reflex:before', event => {
+    console.log("stimulus-reflex:before**************************************");
+  })
+  
+  document.addEventListener('stimulus-reflex:success', event => {
+    console.log("stimulus-reflex:success**************************************");
+  })
+  
+  document.addEventListener('stimulus-reflex:error', event => {
+    console.log("stimulus-reflex:error**************************************");
+  })
+  
+  document.addEventListener('stimulus-reflex:halted', event => {
+    console.log("stimulus-reflex:halted**************************************");
+  })
+  
+  document.addEventListener('stimulus-reflex:finalize', event => {
+    console.log("stimulus-reflex:finalize**************************************");
+  })
+  
+  document.addEventListener('stimulus-reflex:after', event => {
+    console.log("stimulus-reflex:after**************************************");
+  })
+  
+  // document.addEventListener('stimulus-reflex:after', event => {
+  //   console.log("stimulus-reflex:after**************************************");
+  //   list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
+  //   if (list.includes(event.detail.reflex.split("#")[0])){
+  //     link_event_listeners(event)
+  //   }
+  // })
+}
