@@ -67,7 +67,7 @@ document.addEventListener('stimulus-reflex:after', event => {
 
 document.addEventListener('stimulus-reflex:finalize', event => {
   console.log("finalize hits: " + event.detail.reflex)
-  list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
+  list = ['ShoppingList'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     link_event_listeners(event)
   }
