@@ -1,4 +1,4 @@
-class ManageMealIngredientsComponent <  ViewComponentReflex::Component
+class ManageMealIngredientsComponent < ViewComponent::Base
   def initialize(meal, user)
     @meal = meal
     @user = user

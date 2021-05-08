@@ -1,38 +1,38 @@
-<%= component_controller do %> 
-  <p> 
-    <span class="label">Ingredients</span>
-    <div class="field has-addons">
-      <p class="control">
-        <input data-autocomplete-source="/ingredients?ingredients_only=1" type="text" name="ingredient" id="ingredient" class="input">
-      </p>
-      <p class="control">
-      <a href="#" id="add-ingredient-button"
-                  class="button is-primary" 
-                  data-reflex="click->ManageMealIngredientsComponent#add_ingredient"
-                  data-meal_id="<%=@meal.id%>"
-                  data-ingredient_id=""
-                  data-ingredient_term=""
-                  data-key=<%= key %>
-                  > Add </a>
-      </p>
-    </div>
+<p>
+  <span class="label">Ingredients</span>
+  <div class="field has-addons">
+    <p class="control">
+      <input data-autocomplete-source="/ingredients?ingredients_only=1" type="text" name="ingredient" id="ingredient" class="input">
+    </p>
+    <p class="control">
+    <a href="#" id="add-ingredient-button"
+                class="button is-primary"
+                data-reflex="click->MealReflex#add_ingredient"
+                data-meal_id="<%=@meal.id%>"
+                data-ingredient_id=""
+                data-ingredient_term=""
+                data-reflex-root="#ingredient_table"
+              > Add </a>
+    </p>
+  </div>
 
-    <table class="table mt-3">
-      <tbody>
-        <% @meal.ingredients.each do |ingredient| %>
-          <tr>
-            <td><%=link_to(ingredient.name, ingredient)%></td>
-            <td>
-              <a href="#" class="button is-small is-primary" data-reflex="click->ManageMealIngredientsComponent#remove_ingredient"
-                                          data-meal_id="<%=@meal.id%>"
-                                          data-ingredient_id="<%=ingredient.id%>"
-                                          data-key=<%= key %>
-                                        > Remove </a>
-
-           </td>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-  </p>
-<% end %>
+  <table class="table mt-3" id="ingredient_table">
+    <tbody>
+      <% @meal.ingredients.each do |ingredient| %>
+        <tr>
+          <td><%=link_to(ingredient.name, ingredient)%></td>
+          <td>
+            <a href="#" class="button is-small is-primary"
+                        data-controller="meals"
+                        data-confirm="Are you sure?"
+                        data-action="confirm:complete->meals#remove_ingredient"
+                        data-meal_id="<%=@meal.id%>"
+                        data-ingredient_id="<%=ingredient.id%>"
+                        data-reflex-root="#ingredient_table"
+                      > Remove </a>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</p>
