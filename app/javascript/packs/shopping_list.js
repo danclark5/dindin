@@ -57,7 +57,6 @@ function link_event_listeners(event) {
 document.addEventListener("turbolinks:load", link_event_listeners);
 
 document.addEventListener('stimulus-reflex:after', event => {
-  console.log("after hits: " + event.detail.reflex)
   list = ['ShoppingListHeaderComponent'];
 
   if (list.includes(event.detail.reflex.split("#")[0])){
@@ -66,7 +65,6 @@ document.addEventListener('stimulus-reflex:after', event => {
 })
 
 document.addEventListener('stimulus-reflex:finalize', event => {
-  console.log("finalize hits: " + event.detail.reflex)
   list = ['ShoppingList'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     link_event_listeners(event)
