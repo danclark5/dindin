@@ -30,9 +30,7 @@ function toggle_show_snoozed(event){
 }
 
 function link_event_listeners(event) {
-  console.log("link els");
   const shopping_item_carets = document.querySelectorAll('.shopping-item-caret');
-  console.log(`${shopping_item_carets.length} of carets`);
   if (shopping_item_carets.length > 0) {
     shopping_item_carets.forEach(function(shopping_item) {
       shopping_item.addEventListener("click", toggle_caret);
@@ -40,7 +38,6 @@ function link_event_listeners(event) {
   }
 
   const snooze_buttons = document.querySelectorAll('.snooze_button');
-  console.log(`${snooze_buttons.length} of snooze buttons`);
   if (snooze_buttons.length > 0) {
     snooze_buttons.forEach(function(snooze_button) {
       snooze_button.addEventListener("click",  toggle_snooze_button);
@@ -50,7 +47,6 @@ function link_event_listeners(event) {
   }
 
   const toggle_snoozes_buttons = document.querySelectorAll('#toggle_snoozes_button');
-  console.log(`${toggle_snoozes_buttons.length} of toggle snoozes`);
   if (toggle_snoozes_buttons.length > 0) {
     toggle_snoozes_buttons.forEach(function(toggle_snoozes_button) {
       toggle_snoozes_button.addEventListener("click", toggle_show_snoozed);
@@ -61,8 +57,17 @@ function link_event_listeners(event) {
 document.addEventListener("turbolinks:load", link_event_listeners);
 
 document.addEventListener('stimulus-reflex:after', event => {
-  console.log("stimulus-reflex:after**************************************");
-  list = ['ShoppingListItemComponent', 'ShoppingListHeaderComponent', 'ShoppingListDetailsComponent'];
+  console.log("after hits: " + event.detail.reflex)
+  list = ['ShoppingListHeaderComponent'];
+
+  if (list.includes(event.detail.reflex.split("#")[0])){
+    link_event_listeners(event)
+  }
+})
+
+document.addEventListener('stimulus-reflex:finalize', event => {
+  console.log("finalize hits: " + event.detail.reflex)
+  list = ['ShoppingList'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     link_event_listeners(event)
   }

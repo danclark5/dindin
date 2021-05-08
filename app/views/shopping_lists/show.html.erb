@@ -1,5 +1,140 @@
 <% provide :title, "Shopping List" %>
 <h2 class="subtitle is-2">Your Shopping List</h2>
-<%=render(ShoppingListHeaderComponent.new(@is_shopping_list_present, @is_shopping_list_current, current_user)) %>
+<div class="level" id="shopping-list-header">
+  <% if @shopping_list_end_date %>
+    <div class="level">
+      <div class="level-item has-text-weight-bold"> Thru <%= @shopping_list_end_date%> </div>
+    </div>
+  <% else %>
+    <div class="level-item has-text-centered"> Looks like you need a list. Click Create list and a list will be created from the meals you've scheduled.
+    </div>
+  <% end %>
+  <div class="level is-mobile">
+    <div class="level-item <%= @is_shopping_list_present ? '' : 'is-hidden' %>">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+          id="reset_shopping_list_button"
+          data-controller="shopping-list"
+          data-action="confirm:complete->shopping-list#clear"
+          data-confirm="Are you sure?"
+                  > Clear the List </a>
+      </div>
+    <div class="level-item <%= @is_shopping_list_present ? 'is-hidden' : '' %>">
+      <a href="#" class="button is-primary is-small is-pulled-right"
+                  id="create_shopping_list_button"
+                  data-reflex="click->ShoppingList#create"
+                > Create List </a>
+    </div>
+    <div class="level-item">
+        <a href="#" class="button is-primary is-small is-pulled-right"
+                    id="reset_snoozes_button"
+                    data-reflex="click->ShoppingList#reset_snoozes"
+                  > Reset Snoozes </a>
+      </div>
+  </div>
+</div>
+
 <hr/>
-<%=render(ShoppingListDetailsComponent.new(current_user)) %>
+<% @shopping_list_items.each do |shopping_list_item| %>
+  <div class="shopping_item_container <%= shopping_list_item.snooze_until ? 'is-hidden snoozed' : '' %>">
+    <div class="level is-mobile">
+      <div class="level-left">
+        <div class="level-item">
+          <div class="pretty p-icon p-toggle p-curve is-size-5">
+            <%= content_tag :input, nil, type: "checkbox", checked: shopping_list_item.acquired, data: {reflex: "click->ShoppingList#toggle_item", item_id: shopping_list_item.id} %>
+            <div class="state p-on">
+              <i class="icon fa fa-check-square has-text-success"></i>
+              <label>
+                <% if shopping_list_item.ingredient %>
+                  <%=shopping_list_item.ingredient.name%>
+                <% else %>
+                  <%=shopping_list_item.scheduled_meal.meal.name%>
+                <% end %>
+              </label>
+            </div>
+            <div class="state p-off">
+              <label>
+                <% if shopping_list_item.ingredient %>
+                  <%=shopping_list_item.ingredient.name%>
+                <% else %>
+                  <%=shopping_list_item.scheduled_meal.meal.name%>
+                <% end %>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="level-right">
+        <div class="level-item">
+          <% if shopping_list_item.ingredient %>
+            <span class="fa-stack fa-2x">
+              <i class="fa fa-circle fa-stack-2x" style="color: <%= shopping_list_item.ingredient&.ingredient_category&.accent_color %>"></i>
+              <i class="<%= shopping_list_item.ingredient&.ingredient_category&.icon_identifier %> fa-stack-1x"></i>
+            </span>
+          <% end %>
+        </div>
+        <div class="level-item">
+          <span class="fa-stack fa-2x shopping-item-caret" data-target="shopping_item_detail_<%= shopping_list_item.id %>">
+            <i class="fa fa-circle fa-stack-2x has-text-primary"></i>
+            <i class="fas fa-caret-down fa-stack-1x has-text-white"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="shopping-list-item-detail is-hidden" id="shopping_item_detail_<%= shopping_list_item.id %>">
+      <div class="level is-mobile">
+        <div class="level-item">
+          <% if shopping_list_item&.scheduled_meal&.meal&.name%>
+            Meal: <%=link_to(shopping_list_item.scheduled_meal.meal.name, shopping_list_item.scheduled_meal.meal)%>
+        <% end %>
+        </div>
+        <% if shopping_list_item.ingredient%>
+          <div class="level-item">
+            <%=link_to("View Ingredient", shopping_list_item.ingredient)%>
+          </div>
+        <% end %>
+      </div>
+      <div class="level is-mobile">
+        <div class="level-left">
+          <div class="level-item is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Snooze</label>
+            </div>
+          </div>
+          <div class="level-item field is-horizontal">
+            <div class="field-body">
+              <div class="field">
+                <button class="button is-primary snooze_button"
+                        data-reflex="click->ShoppingList#snooze"
+                        data-item-id="<%=shopping_list_item.id%>"
+                        data-hours=1>
+                        1 hour
+                </button>
+                <button class="button is-primary snooze_button"
+                        data-reflex="click->ShoppingList#snooze"
+                        data-item-id="<%=shopping_list_item.id%>"
+                        data-hours=24>
+                        1 day
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="level-right">
+          <div class="level-item">
+            <button class="button is-danger"
+                    data-controller="shopping-list"
+                    data-action="confirm:complete->shopping-list#delete_item"
+                    data-confirm="Are you sure?"
+                    data-item-id="<%=shopping_list_item.id%>"
+                  >
+                  <span class="icon">
+                    <i class="fa fa-trash"></i>
+                  </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <hr/>
+  </div>
+<% end %>

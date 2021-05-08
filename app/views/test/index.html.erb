@@ -1,0 +1,8 @@
+Hey! This is in the view before the component.</br>
+<%=render(TestComponent.new()) %>
+Hey! This is in the view after the component, but before the std reflex</br>
+<a href="#"
+  data-reflex="click->Test#increment"
+  data-step="1" 
+  data-count="<%= @count.to_i %>"
+>Increment <%= @count.to_i %></a>

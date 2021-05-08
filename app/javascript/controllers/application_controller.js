@@ -46,4 +46,8 @@ export default class extends Controller {
   afterReflex (element, reflex) {
     // document.body.classList.remove('wait')
   }
+
+  finalizeReflex (element, reflex) {
+    // document.body.classList.remove('wait')
+  }
 }
