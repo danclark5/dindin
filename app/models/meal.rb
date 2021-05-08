@@ -18,8 +18,8 @@ class Meal < ApplicationRecord
 
   def self.get_suggested_meals(number_of_meals, user)
     meals = meals_for(user).
-      joins("left join scheduled_meals on scheduled_meals.meal_id = meals.id and scheduled_meals.user_id = #{user.id}").
-      joins("left join meal_suggestion_logs on meal_suggestion_logs.meal_id = meals.id and meal_suggestion_logs.user_id = #{user.id}").
+      joins("left join scheduled_meals on scheduled_meals.meal_id = meals.id and scheduled_meals.user_id = #{user.id} and scheduled_meals.created_at > current_date - 45").
+      joins("left join meal_suggestion_logs on meal_suggestion_logs.meal_id = meals.id and meal_suggestion_logs.user_id = #{user.id} and meal_suggestion_logs.created_at > current_date - 45").
       group(:id).
       select(:id, :name).
       order("(COUNT(scheduled_meals.meal_id) + COUNT(meal_suggestion_logs.meal_id) + random()*10) ASC").
