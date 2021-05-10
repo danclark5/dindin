@@ -1,6 +1,8 @@
 class ShoppingListsController < ApplicationController
   def show
     @shopping_list_items = ShoppingListItem.items_for(current_user.id)
+      .left_outer_joins(:ingredient)
+      .order(:acquired, :ingredient_category_id)
     @shopping_list_end_date = get_shopping_list_end_date
     @is_shopping_list_present = @shopping_list_items.count > 0
     @is_shopping_list_current = (covered_scheduled_meals & current_scheduled_meals).sort == current_scheduled_meals.sort
