@@ -1,19 +1,16 @@
 function autocomplete_ingredients() {
-  console.log("ingredient autocomplete loaded");
   $('#ingredient').autocomplete({
     source: $('#ingredient').data('autocomplete-source'),
     select: function(_, ui) {
       $('#ingredient').val(ui.item.label);
       document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', ui.item.value);
       document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', ui.item.label);
-      console.log("ingredient autocomplete select");
       return false;
     },
     search: function(_, ui) {
       if (!this.value) {
         document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
         document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
-        console.log("ingredient autocomplete search");
       }
     },
     response: function(_, ui) {
@@ -24,13 +21,11 @@ function autocomplete_ingredients() {
         document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', this.value);
         ui["content"].unshift({value: 0, label: this.value})
       }
-      console.log("ingredient autocomplete response");
     },
     minLength: 0
   })
 
   $('#ingredient').focus( function() {
-    console.log("ingredient focus");
     if (!$(this).val()) {
       $(this).autocomplete("search",$(this).val())
     }
@@ -57,7 +52,6 @@ function autocomplete_meals() {
 
 function link_event_listeners(event) {
   require("jquery-ui");
-  console.log('asdf');
   if (document.getElementById("ingredient")) {
     autocomplete_ingredients();
   }
@@ -70,8 +64,7 @@ function link_event_listeners(event) {
 document.addEventListener("turbolinks:load", link_event_listeners);
 
 document.addEventListener('stimulus-reflex:finalize', event => {
-  console.log(event.detail.reflex)
-  list = ['MealReflex'];
+  list = ['MealReflex', 'ShoppingList'];
   if (list.includes(event.detail.reflex.split("#")[0])){
     $("#ingredient").val("")
   }

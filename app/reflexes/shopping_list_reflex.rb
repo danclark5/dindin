@@ -46,4 +46,20 @@ class ShoppingListReflex < StimulusReflex::Reflex
     @shopping_list_item = ShoppingListItem.find(element.dataset[:item_id])
     @shopping_list_item.destroy
   end
+
+  def add_ingredient
+    if element.dataset[:ingredient_id] != "0"
+      ingredient = Ingredient.find(element.dataset[:ingredient_id])
+    elsif element.dataset[:ingredient_term].length > 0
+      if User.find(current_user.id).user_type != 'admin'
+        user_id = current_user.id
+      else
+        user_id = nil
+      end
+      ingredient = Ingredient.find_or_create_by(name: element.dataset[:ingredient_term].titleize,
+                                             ingredient_category_id: USER_ITEM.id,
+                                             user_id: current_user.id)
+    end
+    ShoppingListItem.create(ingredient: ingredient, user_id: current_user.id, acquired: false) if ingredient
+  end
 end

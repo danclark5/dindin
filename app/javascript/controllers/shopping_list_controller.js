@@ -14,7 +14,7 @@ export default class extends ApplicationController {
     if (event["detail"][0]) this.stimulate('ShoppingList#delete', event.target)
   }
 
-  afterReflex(anchorElement) {
+  finalizeReflex(anchorElement) {
     document.getElementById('ingredient').value = "";
     document.getElementById('add-ingredient-button').setAttribute('data-ingredient_id', "");
     document.getElementById('add-ingredient-button').setAttribute('data-ingredient_term', "");
