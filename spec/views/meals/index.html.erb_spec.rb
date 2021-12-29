@@ -18,7 +18,7 @@ RSpec.describe "meals/index", type: :view do
   it "doesn't show link to edit or destroy the meals" do
     render
     expect(rendered).not_to match /Edit/
-    expect(rendered).not_to match /Destroy/
+    expect(rendered).not_to match /Remove/
   end
 
   context "as an admin" do
@@ -28,7 +28,7 @@ RSpec.describe "meals/index", type: :view do
     it "shows edit and delete" do
       render
       expect(rendered).to match /Edit/
-      expect(rendered).to match /Destroy/
+      expect(rendered).to match /Remove/
     end
   end
 end
