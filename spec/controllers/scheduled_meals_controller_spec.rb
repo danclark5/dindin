@@ -65,9 +65,10 @@ RSpec.describe ScheduledMealsController, type: :controller do
         }.to change(ScheduledMeal, :count).by(1)
       end
 
-      it "redirects to the created scheduled_meal" do
+      it "redirects to the previous url" do
+        session[:my_previous_url] = root_url
         post :create, params: {scheduled_meal: valid_attributes}
-        expect(response).to redirect_to(ScheduledMeal)
+        expect(response).to redirect_to(root_url)
       end
     end
 
@@ -111,6 +112,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
 
       it "redirects to the scheduled_meal" do
         scheduled_meal = create(:scheduled_meal, user: subject.current_user)
+        session[:my_previous_url] = scheduled_meals_url
         put :update, params: {id: scheduled_meal.to_param, scheduled_meal: valid_attributes}
         expect(response).to redirect_to(ScheduledMeal)
       end
@@ -153,7 +155,7 @@ RSpec.describe ScheduledMealsController, type: :controller do
     it "redirects to the scheduled_meals list" do
       scheduled_meal = ScheduledMeal.create! valid_attributes.merge({ user: subject.current_user })
       delete :destroy, params: {id: scheduled_meal.to_param}
-      expect(response).to redirect_to(scheduled_meals_url)
+      expect(response).to redirect_to(root_url)
     end
 
     it "redirects when viewing another user's scheduled meal" do

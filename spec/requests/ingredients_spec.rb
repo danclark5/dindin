@@ -16,9 +16,9 @@ RSpec.describe "/ingredients", type: :request do
         sign_in user
       end
 
-      it "redirects to the landing page" do
+      it "renders a successful response" do
         get ingredients_url
-        expect(response).to redirect_to(root_url)
+        expect(response).to be_successful
       end
     end
 
@@ -44,9 +44,9 @@ RSpec.describe "/ingredients", type: :request do
         sign_in user
       end
 
-      it "redirects to the landing page" do
+      it "renders a successful response" do
         get ingredients_url
-        expect(response).to redirect_to(root_url)
+        expect(response).to be_successful
       end
     end
 
@@ -70,9 +70,9 @@ RSpec.describe "/ingredients", type: :request do
         sign_in user
       end
 
-      it "redirects to the landing page" do
+      it "renders a successful response" do
         get new_ingredient_url
-        expect(response).to redirect_to(root_url)
+        expect(response).to be_successful
       end
     end
 
@@ -98,9 +98,9 @@ RSpec.describe "/ingredients", type: :request do
         sign_in user
       end
 
-      it "redirects to the landing page" do
+      it "renders a successful response" do
         get edit_ingredient_url(ingredient)
-        expect(response).to redirect_to(root_url)
+        expect(response).to be_successful
       end
     end
 
@@ -124,10 +124,32 @@ RSpec.describe "/ingredients", type: :request do
         sign_in user
       end
 
-      it "redirects to the landing page" do
-        post ingredients_url, params: { ingredient: valid_attributes }
-        expect(response).to redirect_to(root_url)
+      context "with valid parameters" do
+        it "creates a new Ingredient" do
+          expect {
+            post ingredients_url, params: { ingredient: valid_attributes }
+          }.to change(Ingredient, :count).by(1)
+        end
+
+        it "redirects to the created ingredient" do
+          post ingredients_url, params: { ingredient: valid_attributes }
+          expect(response).to redirect_to(ingredient_url(Ingredient.last))
+        end
       end
+
+      context "with invalid parameters" do
+        it "does not create a new Ingredient" do
+          expect {
+            post ingredients_url, params: { ingredient: invalid_attributes }
+          }.to change(Ingredient, :count).by(0)
+        end
+
+        it "renders a successful response (i.e. to display the 'new' template)" do
+          post ingredients_url, params: { ingredient: invalid_attributes }
+          expect(response).to be_successful
+        end
+      end
+
     end
 
     context 'is an admin user' do
@@ -168,15 +190,46 @@ RSpec.describe "/ingredients", type: :request do
     let(:ingredient) { create(:ingredient) }
     let(:new_attributes) { {name: "Onion"} }
 
-    context 'is a free user' do
+    context 'as a free user' do
       before do
-        user = create(:user)
-        sign_in user
+        @user = create(:user)
+        sign_in @user
       end
 
-      it "redirects to the landing page" do
-        patch ingredient_url(ingredient), params: { ingredient: new_attributes }
-        expect(response).to redirect_to(root_url)
+      context "where the ingredient is owned by the user" do
+        before do
+          ingredient.user = @user
+          ingredient.save
+        end
+
+        context "with valid parameters" do
+          it "updates the requested ingredient" do
+            patch ingredient_url(ingredient), params: { ingredient: new_attributes }
+            ingredient.reload
+            expect(ingredient.name).to eq("Onion")
+          end
+
+          it "redirects to the ingredient" do
+            patch ingredient_url(ingredient), params: { ingredient: new_attributes }
+            ingredient.reload
+            expect(response).to redirect_to(ingredient_url(ingredient))
+          end
+        end
+
+        context "with invalid parameters" do
+          it "renders a successful response (i.e. to display the 'edit' template)" do
+            patch ingredient_url(ingredient), params: { ingredient: invalid_attributes }
+            expect(response).to be_successful
+          end
+        end
+      end
+
+      context "where the ingredient is not owned by the user" do
+        it "redirects to the ingredient" do
+          patch ingredient_url(ingredient), params: { ingredient: new_attributes }
+          ingredient.reload
+          expect(response).to redirect_to(ingredients_url)
+        end
       end
     end
 
@@ -214,13 +267,33 @@ RSpec.describe "/ingredients", type: :request do
 
     context 'is a free user' do
       before do
-        user = create(:user)
-        sign_in user
+        @user = create(:user)
+        sign_in @user
       end
 
-      it "redirects to the landing page" do
-        delete ingredient_url(ingredient)
-        expect(response).to redirect_to(root_url)
+      context "where the ingredient is owned by the user" do
+        before do
+          ingredient.user = @user
+          ingredient.save
+        end
+
+        it "destroys the requested ingredient" do
+          expect {
+            delete ingredient_url(ingredient)
+          }.to change(Ingredient, :count).by(-1)
+        end
+
+        it "redirects to the ingredients list" do
+          delete ingredient_url(ingredient)
+          expect(response).to redirect_to(ingredients_url)
+        end
+      end
+
+      context "where the ingredient is not owned by the user" do
+        it "redirects to the ingredient" do
+          delete ingredient_url(ingredient)
+          expect(response).to redirect_to(ingredients_url)
+        end
       end
     end
 

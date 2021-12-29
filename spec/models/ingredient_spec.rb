@@ -23,7 +23,6 @@ RSpec.describe Ingredient, type: :model do
         create_list(:ingredient, 10)
       end
       it "returns the user-owned and global ingredients" do
-        binding.pry
         expect(Ingredient.ingredients_for(user).length).to eq (20)
       end
     end

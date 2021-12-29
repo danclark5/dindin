@@ -79,7 +79,7 @@ class IngredientsController < ApplicationController
   end
 
   def destroy
-    if  current_user.user_type == 'admin' || @meal&.user == current_user
+    if  current_user.user_type == 'admin' || @ingredient&.user == current_user
       @ingredient.destroy
       respond_to do |format|
         format.html { redirect_to ingredients_url, notice: 'Ingredient was successfully destroyed.' }

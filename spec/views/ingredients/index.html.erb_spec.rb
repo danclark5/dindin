@@ -2,6 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "ingredients/index", type: :view do
   before(:each) do
+    user = create(:user)
+    sign_in user
+
     assign(:ingredients, [
       Ingredient.create!(
         name: "Name"
