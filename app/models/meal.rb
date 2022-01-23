@@ -16,19 +16,6 @@ class Meal < ApplicationRecord
       .where("users.id = ? OR users.id is null", user.id)
   }
 
-  def self.get_suggested_meals(number_of_meals, user)
-    meals = meals_for(user).
-      joins("left join scheduled_meals on scheduled_meals.meal_id = meals.id and scheduled_meals.user_id = #{user.id} and scheduled_meals.created_at > current_date - 45").
-      joins("left join meal_suggestion_logs on meal_suggestion_logs.meal_id = meals.id and meal_suggestion_logs.user_id = #{user.id} and meal_suggestion_logs.created_at > current_date - 45").
-      group(:id).
-      select(:id, :name).
-      order("(COUNT(scheduled_meals.meal_id) + COUNT(meal_suggestion_logs.meal_id) + random()*10) ASC").
-      limit(number_of_meals).all.shuffle
-
-    MealSuggestionLog.create(meals.map { |meal| {meal_id: meal.id, user_id: user.id} })
-    meals
-  end
-
   def accessible_to_user?(user)
     self.user == user || self.user.nil?
   end

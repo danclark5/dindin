@@ -1,12 +1,12 @@
 <% provide :title, "Home" %>
 
-<% @meals.each do |meal| %>
-  <div id="<%="scheduled_meal_#{meal[0].schedule_date.strftime('%F')}"%>" class=box>
-    <h5 class="title is-5"> <%= "For #{meal[0].schedule_date.strftime('%A')}"%></h5>
-    <% if meal[0].meal_id %>
-      <%= render(ScheduledMealComponent.new(meal[0])) %>
+<% @meal_schedule.each do |day| %>
+  <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class=box>
+    <h5 class="title is-5"> <%= "For #{day.date.strftime('%A')}"%></h5>
+    <% if day.meal.class == ScheduledMeal %>
+      <%= render(ScheduledMealComponent.new(day.meal)) %>
     <% else %>
-      <%= render(SuggestedMealComponent.new(meal[1],meal[0].schedule_date.strftime('%F'))) %>
+      <%= render(SuggestedMealComponent.new(day.meal, day.date.strftime('%F'))) %>
     <% end %>
   </div>
 <% end %>
