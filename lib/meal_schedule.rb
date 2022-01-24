@@ -9,7 +9,7 @@ class MealSchedule
       dates_unscheduled = (from_date..to_date).select { |d| !dates_scheduled.include?(d) }
       if dates_unscheduled.present?
         suggested_meals = suggest_meals(dates_unscheduled.count, user)
-        schedule += suggested_meals.zip(dates_unscheduled).map { |sgm| OpenStruct.new(date: sgm[1], meal: sgm[0]) }
+        schedule += suggested_meals.zip(dates_unscheduled).map { |sgm| OpenStruct.new(date: sgm[1], suggestions: [sgm[0]]) }
       end
 
       schedule.sort_by(&:date)

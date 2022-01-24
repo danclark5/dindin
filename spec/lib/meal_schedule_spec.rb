@@ -143,8 +143,8 @@ describe MealSchedule do
       end
 
       it 'returns only suggested meals' do
-        meal_scheduled= MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_scheduled.map { |um| um.meal.class }.uniq).to eq([Meal])
+        meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
+        expect(meal_schedule.map(&:suggestions).flatten).to all(be_a(Meal))
       end
     end
 
@@ -162,7 +162,7 @@ describe MealSchedule do
 
       it 'returns the suggested meals' do
         meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_schedule[1].meal.class).to eq(Meal)
+        expect(meal_schedule[1].suggestions).to all(be_a(Meal))
       end
     end
 
@@ -224,7 +224,7 @@ describe MealSchedule do
 
         it 'returns a schedule with a suggested meal on the second day' do
           schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-          expect(schedule[2].meal).to be_a(Meal)
+          expect(schedule[2].suggestions).to all(be_a(Meal))
         end
 
         it 'returns the schedule in chronological order' do
