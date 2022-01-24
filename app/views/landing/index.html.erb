@@ -6,7 +6,7 @@
     <% if day.meal.class == ScheduledMeal %>
       <%= render(ScheduledMealComponent.new(day.meal)) %>
     <% else %>
-      <%= render(SuggestedMealComponent.new(day.meal, day.date.strftime('%F'))) %>
+      <%= render(SuggestedMealComponent.new(day.suggestions, day.date.strftime('%F'))) %>
     <% end %>
   </div>
 <% end %>

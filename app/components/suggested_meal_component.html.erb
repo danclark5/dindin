@@ -1,12 +1,17 @@
 <div id="<%="scheduled_meal_#{@schedule_date}"%>_suggestion">
-  <div class="pb-3">Nothing is planned.</div>
-  <div id="<%="scheduled_meal_#{@schedule_date}"%>_suggestion_link" class="pb-3">How about <%= link_to(@suggested_meal.name, @suggested_meal) %></div>
+  <div class="pb-3">Here are some options:</div>
+  <% @meal_suggestions.each_with_index do |meal, i| %>
+    <div id="<%="scheduled_meal_#{@schedule_date}"%>_suggestion_link_<%=i%>" class="pb-3">
+      <a href="#" class="button is-primary" data-reflex="click->MealReflex#attach_suggested_meal"
+                                            data-date="<%=@schedule_date %>"
+                                            data-meal_id="<%=meal.id%>"
+                                            data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>">
+        <span class="icon"><i class="fas fa-utensils"></i></span>
+      </a>
+      <%= link_to(meal.name, meal, class: "is-size-5") %>
+    </div>
+  <% end %>
   <div>
-    <a href="#" class="button is-primary" data-reflex="click->MealReflex#attach_suggested_meal"
-                                          data-date="<%=@schedule_date %>"
-                                          data-meal_id="<%=@suggested_meal.id%>"
-                                          data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>"
-                                          > Schedule </a>
     <%= link_to('Lookup', new_scheduled_meal_path(date: @schedule_date), class: "button is-primary") %>
     <a href="#" id="<%="scheduled_meal_#{@schedule_date}_new_suggestion"%>"
                 class="button is-primary"
