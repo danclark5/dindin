@@ -7,27 +7,7 @@ describe MealSchedule do
     @meal_names = %w(Hot\ Dogs Fried\ Chicken Spaghetti Extra\ Meal)
   end
 
-  describe '#scheduled_upcoming_meals' do
-    it 'returns an empty array if to_date is before from_date' do
-      scheduled_meals = create_list(:scheduled_meal, 3, user: @user) do |scheduled_meal, i|
-        scheduled_meal.date = Date.today + i
-        scheduled_meal.save
-      end
-      expect(MealSchedule.scheduled_upcoming_meals(from_date: Date.today, to_date: Date.today - 1, user: @user)).to eq []
-    end
-
-    it 'raises an exception if not given a valid user' do
-      expect { MealSchedule.scheduled_upcoming_meals(days: 0) }.to raise_error(ArgumentError)
-    end
-
-    it 'returns a single meal for the current day if not passed a date range' do
-      scheduled_meals = create_list(:scheduled_meal, 3, user: @user) do |scheduled_meal, i|
-        scheduled_meal.date = Date.today + i
-        scheduled_meal.save
-      end
-      expect(MealSchedule.scheduled_upcoming_meals(user: @user)).to eq [scheduled_meals.first]
-    end
-
+  describe '#upcoming_scheduled_meals' do
     context 'there are meals scheduled for the user' do
       context 'all days are scheduled with a meal' do
         it 'returns the meals for the date range specified, all days have a meal' do
@@ -36,8 +16,8 @@ describe MealSchedule do
             scheduled_meal.save
           end
 
-          schedule = MealSchedule.scheduled_upcoming_meals(from_date: Date.today, to_date: Date.today + 2, user: @user)
-          expect(schedule).to eq scheduled_meals
+          schedule = MealSchedule.new(days: 3, user: @user)
+          expect(schedule.upcoming_scheduled_meals).to eq scheduled_meals
         end
       end
 
@@ -48,15 +28,16 @@ describe MealSchedule do
             scheduled_meal.save
           end
 
-          schedule = MealSchedule.scheduled_upcoming_meals(from_date: Date.today, to_date: Date.today + 2, user: @user)
-          expect(schedule).to eq scheduled_meals
+          schedule = MealSchedule.new(days: 3, user: @user)
+          expect(schedule.upcoming_scheduled_meals).to eq scheduled_meals
         end
       end
     end
 
     context 'there are no meals scheduled for the user' do
       it 'returns an array with no meals attached' do
-        expect(MealSchedule.scheduled_upcoming_meals(user: @user)).to eq []
+        schedule = MealSchedule.new(days: 3, user: @user)
+        expect(schedule.upcoming_scheduled_meals).to eq []
       end
     end
   end
@@ -67,32 +48,35 @@ describe MealSchedule do
     end
     context "7 meals are requested" do
       it "returns 7 unique meals" do
-        expect(MealSchedule.suggest_meals(7, @user).uniq.length).to eq(7)
+        schedule = MealSchedule.new(days: 1, user: @user)
+        expect(schedule.suggest_meals(7).uniq.length).to eq(7)
       end
 
       it "stores the suggestions" do
-        MealSchedule.suggest_meals(7, @user)
+        MealSchedule.new(days: 1, user: @user).suggest_meals(7)
         expect(MealSuggestionLog.count). to eq(7)
       end
     end
 
     context "0 meals are requested" do
       it "returns an empty array" do
-        expect(MealSchedule.suggest_meals(0, @user)).to match_array([])
+        schedule = MealSchedule.new(days: 1, user: @user)
+        expect(schedule.suggest_meals(0)).to match_array([])
       end
 
       it "does not store the suggestions" do
-        MealSchedule.suggest_meals(0, @user)
+        MealSchedule.new(days: 1, user: @user).suggest_meals(0)
         expect(MealSuggestionLog.count). to eq(0)
       end
     end
 
-    it 'raises an exception if not given a valid user' do
-      expect { MealSchedule.scheduled_upcoming_meals(days: 0) }.to raise_error(ArgumentError)
+    it 'raises an exception if not given a number of meals' do
+      schedule = MealSchedule.new(days: 1, user: @user)
+      expect { schedule.suggest_meals }.to raise_error(ArgumentError)
     end
   end
 
-  describe '#upcoming_meals_and_suggestions' do
+  describe '#generate' do
     before do
         @expected_meal_ids = []
         @meals = create_list(:meal, 5) do |meal, i|
@@ -103,12 +87,13 @@ describe MealSchedule do
     it 'returns an array with an element for each date' do
       expected_dates = (Date.today..4.days.from_now.to_date).to_a
 
-      schedule = MealSchedule.upcoming_meals_and_suggestions(days: 5, user: @user)
+      schedule = MealSchedule.new(days: 5, user: @user).generate
       expect(schedule.map { |m| m.date }).to eq(expected_dates)
     end
 
     it 'returns an empty set if asked for 0 meals' do
-      expect(MealSchedule.upcoming_meals_and_suggestions(days: 0, user: @user)).to eq []
+      schedule = MealSchedule.new(days: 0, user: @user).generate
+      expect(schedule).to eq []
     end
 
     context 'there are meals scheduled' do
@@ -120,7 +105,7 @@ describe MealSchedule do
           scheduled_meal.meal.save
         end
 
-        meals_scheduled = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).map { |um| um.meal.meal.name }
+        meals_scheduled = MealSchedule.new(days: 3, user: @user).generate.map { |um| um.meal.meal.name }
         expect(meals_scheduled).to eq(@meal_names.slice(0, 3))
       end
 
@@ -132,19 +117,20 @@ describe MealSchedule do
           scheduled_meal.meal.save
         end
 
-        meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_schedule.map { |um| um.meal.class}.uniq).to eq([ScheduledMeal])
+        schedule = MealSchedule.new(days: 3, user: @user).generate
+        expect(schedule.map { |um| um.meal}).to all(be_a(ScheduledMeal))
       end
     end
 
     context 'there are no meals scheduled' do
       it 'returns all the requested meals' do
-        expect(MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).count).to eq(3)
+        schedule = MealSchedule.new(days: 3, user: @user).generate
+        expect(schedule.count).to eq(3)
       end
 
       it 'returns only suggested meals' do
-        meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_schedule.map(&:suggestions).flatten).to all(be_a(Meal))
+        schedule = MealSchedule.new(days: 3, user: @user).generate
+        expect(schedule.map(&:suggestions).flatten).to all(be_a(Meal))
       end
     end
 
@@ -155,14 +141,14 @@ describe MealSchedule do
       end
 
       it 'returns the scheduled meals' do
-        meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_schedule.first.meal.id).to eq(@expected_meal_ids[0])
-        expect(meal_schedule.last.meal.id).to eq(@expected_meal_ids[1])
+        schedule = MealSchedule.new(days: 3, user: @user).generate
+        expect(schedule.first.meal.id).to eq(@expected_meal_ids[0])
+        expect(schedule.last.meal.id).to eq(@expected_meal_ids[1])
       end
 
       it 'returns the suggested meals' do
-        meal_schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
-        expect(meal_schedule[1].suggestions).to all(be_a(Meal))
+        schedule = MealSchedule.new(days: 3, user: @user).generate
+        expect(schedule[1].suggestions).to all(be_a(Meal))
       end
     end
 
@@ -187,18 +173,19 @@ describe MealSchedule do
         end
 
         it 'returns a schedule with 4 meals for 3 days' do
-          schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).map { |um| um.meal.meal.name }
-          expect(MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).count).to eq(4)
+          schedule = MealSchedule.new(days: 3, user: @user).generate
+          expect(schedule.count).to eq(4)
         end
 
         it 'returns a schedule with only ScheduledMeals' do
-          schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
+          schedule = MealSchedule.new(days: 3, user: @user).generate
           expect(schedule.map(&:meal)).to all(be_a(ScheduledMeal))
         end
 
         it 'will not attempt to suggest meals' do
-          expect(MealSchedule).not_to receive(:suggest_meals)
-          MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
+          schedule = MealSchedule.new(days: 3, user: @user)
+          expect(schedule).not_to receive(:suggest_meals)
+          schedule.generate
         end
       end
 
@@ -219,16 +206,17 @@ describe MealSchedule do
         end
 
         it 'returns a schedule with 4 meals for 3 days' do
-          expect(MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).count).to eq(4)
+          schedule = MealSchedule.new(days: 3, user: @user).generate
+          expect(schedule.count).to eq(4)
         end
 
         it 'returns a schedule with a suggested meal on the second day' do
-          schedule = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user)
+          schedule = MealSchedule.new(days: 3, user: @user).generate
           expect(schedule[2].suggestions).to all(be_a(Meal))
         end
 
         it 'returns the schedule in chronological order' do
-          schedule_dates = MealSchedule.upcoming_meals_and_suggestions(days: 3, user: @user).map(&:date)
+          schedule_dates = MealSchedule.new(days: 3, user: @user).generate.map(&:date)
           expect(schedule_dates).to eq(schedule_dates.sort)
         end
       end
