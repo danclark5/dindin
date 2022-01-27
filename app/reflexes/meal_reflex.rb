@@ -8,7 +8,7 @@ class MealReflex < StimulusReflex::Reflex
   end
 
   def reload_suggested_meal
-    meal_suggestions = MealSchedule.suggest_meals(3, current_user)
+    meal_suggestions = MealSchedule.new(user: current_user).suggest_meals(3)
     morph element.dataset[:reflex_root] + "_suggestion", render(SuggestedMealComponent.new(meal_suggestions ,element.dataset[:date]))
   end
 
