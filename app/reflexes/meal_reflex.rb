@@ -4,12 +4,14 @@ class MealReflex < StimulusReflex::Reflex
   def attach_suggested_meal
     scheduled_meal = ScheduledMeal.new(meal_id: element.dataset[:meal_id].to_i, date: element.dataset[:date], user: current_user)
     scheduled_meal.save
-    morph element.dataset[:reflex_root] + "_suggestion", render(ScheduledMealComponent.new(scheduled_meal))
+    scheduled_date = Date.parse(element.dataset[:date])
+    morph element.dataset[:reflex_root], render(ScheduledMealComponent.new(scheduled_meal, scheduled_date))
   end
 
   def reload_suggested_meal
     meal_suggestions = MealSchedule.new(user: current_user).suggest_meals(3)
-    morph element.dataset[:reflex_root] + "_suggestion", render(SuggestedMealComponent.new(meal_suggestions ,element.dataset[:date]))
+    scheduled_date = Date.parse(element.dataset[:date])
+    morph element.dataset[:reflex_root], render(SuggestedMealComponent.new(meal_suggestions, scheduled_date))
   end
 
   def add_ingredient

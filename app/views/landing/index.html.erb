@@ -2,17 +2,10 @@
 
 <% @meal_schedule.each do |day| %>
   <% if day.meal.class == ScheduledMeal %>
-    <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class="box has-background-success-light">
+    <%= render(ScheduledMealComponent.new(day.meal, day.date)) %>
   <% else %>
-    <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class="box has-background-warning-light">
+    <%= render(SuggestedMealComponent.new(day.suggestions, day.date)) %>
   <% end %>
-    <h5 class="title is-5"> <%= "For #{day.date.strftime('%A')}"%></h5>
-    <% if day.meal.class == ScheduledMeal %>
-      <%= render(ScheduledMealComponent.new(day.meal)) %>
-    <% else %>
-      <%= render(SuggestedMealComponent.new(day.suggestions, day.date.strftime('%F'))) %>
-    <% end %>
-  </div>
 <% end %>
 
 <%= render(DateControlComponent.new(@past_start_date, @future_start_date)) %>
