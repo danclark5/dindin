@@ -55,18 +55,24 @@ export default class extends ApplicationController {
     console.log("afterRSM schedule_meals controller hehehe");
   }
 
-  remove_scheduled_meal(event, response) {
+  remove(event, response) {
     event.preventDefault()
-    console.log("called remove_scheduled_meal");
-    if (event["detail"][0]) this.stimulate('ScheduledMealsReflex#remove_scheduled_meal', event.target)
+    console.log("called remove");
+    if (event["detail"][0]) this.stimulate('ScheduledMealsReflex#remove', event.target)
+  }
+
+  push_out(event, response) {
+    event.preventDefault()
+    console.log("called push_out");
+    if (event["detail"][0]) this.stimulate('ScheduledMealsReflex#push_out', event.target)
   }
 
   afterReflex(anchorElement, reflex, noop, reflexId) {
-    console.log("after schedule_meals controller hehehe");
+    console.log("after schedule_meals controller");
   }
 
 
   finalizeReflex(anchorElement, reflex, noop, reflexId) {
-    console.log("finalize scheduled_meals_controller hehehe");
+    console.log("finalize scheduled_meals_controller");
   }
 }

@@ -1,4 +1,6 @@
-<div id="<%="scheduled_meal_#{@schedule_date}"%>_suggestion">
+<div id="<%="scheduled_meal_#{@schedule_date.strftime('%F')}"%>" class="p-1">
+  <div class="box has-background-warning-light">
+  <h5 class="title is-5"> <%= "For #{@schedule_date.strftime('%A')}"%></h5>
   <div class="pb-3">Here are some options:</div>
   <% @meal_suggestions.each_with_index do |meal, i| %>
     <div id="<%="scheduled_meal_#{@schedule_date}"%>_suggestion_link_<%=i%>" class="pb-3">
@@ -6,7 +8,7 @@
                                             data-date="<%=@schedule_date %>"
                                             data-meal_id="<%=meal.id%>"
                                             data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>">
-        <span class="icon"><i class="fas fa-utensils"></i></span>
+                                            <span class="icon"><i class="fas fa-utensils"></i></span>
       </a>
       <%= link_to(meal.name, meal, class: "is-size-5") %>
     </div>
@@ -18,7 +20,8 @@
                 data-reflex="click->MealReflex#reload_suggested_meal"
                 data-date="<%=@schedule_date %>"
                 data-reflex-root="#<%="scheduled_meal_#{@schedule_date}"%>">
-      <span class="icon"><i class="fas fa-redo"></i></span>
+                <span class="icon"><i class="fas fa-redo"></i></span>
     </a>
+  </div>
   </div>
 </div>
