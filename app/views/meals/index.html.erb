@@ -1,6 +1,8 @@
 <% provide :title, "Meals" %>
 <h2 class="subtitle is-2">Meals</h2>
 
+<h5 class="subtitle is-5"> <%= link_to('Add a New Meal', new_meal_path) %> </h5>
+
 <table class="table">
   <thead>
     <tr>
@@ -36,4 +38,3 @@
 
 <br>
 
-<%= link_to 'New Meal', new_meal_path %>
