@@ -1,7 +1,11 @@
 <% provide :title, "Home" %>
 
 <% @meal_schedule.each do |day| %>
-  <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class=box>
+  <% if day.meal.class == ScheduledMeal %>
+    <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class="box has-background-success-light">
+  <% else %>
+    <div id="<%="scheduled_meal_#{day.date.strftime('%F')}"%>" class="box has-background-warning-light">
+  <% end %>
     <h5 class="title is-5"> <%= "For #{day.date.strftime('%A')}"%></h5>
     <% if day.meal.class == ScheduledMeal %>
       <%= render(ScheduledMealComponent.new(day.meal)) %>

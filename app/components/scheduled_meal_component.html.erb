@@ -1,5 +1,5 @@
 <div id="<%="scheduled_meal_#{@scheduled_meal.date}_actual"%>">
-  <div class="pb-3"><%= link_to @scheduled_meal.meal.name, @scheduled_meal.meal %> </div>
+  <div class="pb-3"><%= link_to(@scheduled_meal.meal.name, @scheduled_meal.meal, class: "is-size-5") %> </div>
   <% if @scheduled_meal.meal.recipe_url %>
     <div class="pb-3"> <%= link_to "View Recipe", @scheduled_meal.meal.recipe_url %> </div>
   <% end %>
