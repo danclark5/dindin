@@ -21,4 +21,7 @@ class ScheduledMealsReflex < ApplicationReflex
     return Date.parse(params[:start_date]) if params.include? :start_date
     Time.now.in_time_zone(current_user.preferred_timezone).to_date
   end
+
+  def push_scheduled_meal
+  end
 end
