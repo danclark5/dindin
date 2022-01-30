@@ -8,4 +8,22 @@
   <% end %>
 <% end %>
 
+<article id="meal_swap_message" class="message is-info is-hidden">
+  <div class="message-header">
+    <p>Swap Meals</p>
+  </div>
+  <div class="message-body">
+    <div id="meal_swap_message_body_ready" class="is-hidden">
+      You're ready to swap!
+      <a href="#" id = "meal_swap_button"
+         class="button is-primary" data-reflex="click->ScheduledMealsReflex#swap_meals"
+                                            data-first_meal=""
+                                            data-second_meal=""
+                                            > Swap </a>
+    </div>
+    <div id="meal_swap_message_body_initial" class="is-hidden">
+      Select another meal to swap
+    </div>
+  </div>
+</article>
 <%= render(DateControlComponent.new(@past_start_date, @future_start_date)) %>

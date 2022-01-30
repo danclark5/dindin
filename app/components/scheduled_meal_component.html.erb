@@ -1,5 +1,5 @@
-<div id="<%="scheduled_meal_#{@schedule_date.strftime('%F')}"%>" class="p-1">
-  <div class="box has-background-success-light">
+<div id="<%="scheduled_meal_#{@schedule_date.strftime('%F')}"%>" class="p-1 scheduled_meal_card">
+  <div class="box has-background-success-light" data-scheduled_meal_id="<%=@scheduled_meal.id%>">
   <h5 class="title is-5"> <%= "For #{@schedule_date.strftime('%A')}"%></h5>
     <div class="pb-3"><%= link_to(@scheduled_meal.meal.name, @scheduled_meal.meal, class: "is-size-5") %> </div>
     <% if @scheduled_meal.meal.recipe_url.present? %>
