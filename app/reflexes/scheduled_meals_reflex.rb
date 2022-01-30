@@ -17,11 +17,16 @@ class ScheduledMealsReflex < ApplicationReflex
     @future_start_date = (relevant_start_date + 3.days).strftime('%F')
   end
 
+  def swap_meals
+    first_meal = ScheduledMeal.find_by(id: element.dataset[:first_meal].to_i, user: current_user)
+    second_meal = ScheduledMeal.find_by(id: element.dataset[:second_meal].to_i, user: current_user)
+
+    first_meal.swap_meal(second_meal)
+  end
+
   private def relevant_start_date
     return Date.parse(params[:start_date]) if params.include? :start_date
     Time.now.in_time_zone(current_user.preferred_timezone).to_date
   end
 
-  def push_scheduled_meal
-  end
 end
